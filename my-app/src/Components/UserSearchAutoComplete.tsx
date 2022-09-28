@@ -1,13 +1,27 @@
 import { TextField } from "@material-ui/core";
+import { AutocompleteInputChangeReason } from "@material-ui/lab";
 import Autocomplete from '@mui/material/Autocomplete';
-import React, { SyntheticEvent } from "react";
+import React, { ChangeEvent, EventHandler, SyntheticEvent, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { getAccountData } from "../store/RiotApi";
+
+let timer: NodeJS.Timeout;
 
 export default function UserSearchAutoComplete() {
+    interface UserList {
+        label?: string
+    }
+
+
+    useEffect(() => {
+        // console.log(autoComplete)
+    }, [])
+    
+    const [userList, setUserList] = useState<UserList[]>([]);
 
     const navigate = useNavigate();
 
-    const handleChange = (e: React.SyntheticEvent, value: {label: string} | null) => {
+    const handleChangeAutoComplete = (e: React.SyntheticEvent, value: UserList | null) => {
         if(value?.label){
             const [username, tagline] = value.label.split("#");
             navigate(`/profile?username=${username}&tagline=${tagline}`, {
@@ -19,23 +33,33 @@ export default function UserSearchAutoComplete() {
         }
     }
 
+    const handleChangeTextField = async (e: React.SyntheticEvent, value: string, reason: AutocompleteInputChangeReason) => {
+        clearTimeout(timer);
+        timer = setTimeout(async () => {
+            if(value.includes("#")){
+                console.log(value);
+                const [label, tagline] = value.split("#");
+                const USER_LIST = await getAccountData(label, tagline, true);
+                setUserList([USER_LIST]);
+            }
+        }, 1000);
+
+    }
+
+    useEffect(() => {
+        console.log("렌더링")
+    })
+
     return (
         <>
             <Autocomplete
                 disablePortal
                 id="user-select-autocomplete"
-                options={[
-                    { label: "김윤숭#17세" },
-                    { label: "Daystar#Lunar" },
-                    { label: "연막쿨이야#ZERG" },
-                    { label: "LUCAS Martin#IRMH" },
-                    { label: "얼 곰#0818" },
-                    { label: "DRX X1S#VSW1N" },
-                    { label: "가재맨#기무현서뿌" }
-                ]}
-                onChange={handleChange}
+                options={userList}
+                onInputChange={handleChangeTextField}
+                onChange={handleChangeAutoComplete}
                 sx={{ width: 300 }}
-                renderInput={(params) => <TextField {...params} label="유저 검색" />}
+                renderInput={(params) => <TextField {...params} label="유저 검색"/>}
             />
         </>
     )
