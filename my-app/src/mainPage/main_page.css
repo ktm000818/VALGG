@@ -2,10 +2,17 @@ body{
     margin: 0;
 }
 
-.main_content{
+.main{
     position: relative;
     background: url("https://valorant.op.gg/images/main_bg_pc.png") center top no-repeat;
     /* width: 100%; */
     min-height: 1080px;
     background-size: cover;
+}
+
+.main_content{
+    width: 50%;
+    height: 900px;
+    margin: auto;
+    padding-top: 50px;
 }
