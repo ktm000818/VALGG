@@ -1,11 +1,3 @@
-.header{
-  display: flex;
-  justify-content: space-between;
-  background-color: #E84057;
-  height: 70px;
-}
-
-
 .App {
   text-align: center;
 }
