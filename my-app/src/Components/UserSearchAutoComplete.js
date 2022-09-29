@@ -8,19 +8,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const jsx_runtime_1 = require("react/jsx-runtime");
-// import { TextField } from "@material-ui/core";
-// import { AutocompleteInputChangeReason } from "@material-ui/lab";
 const material_1 = require("@mui/material");
-const Autocomplete_1 = __importDefault(require("@mui/material/Autocomplete"));
+// import Autocomplete from '@mui/material/Autocomplete';
 const react_1 = require("react");
 const react_router_dom_1 = require("react-router-dom");
 const RiotApi_1 = require("../store/RiotApi");
 const Utils_1 = require("../Utils");
+// const ac = styled(Autocomplete) `
+//     color: tomato;
+// `
 function UserSearchAutoComplete() {
     (0, react_1.useEffect)(() => {
         // console.log(autoComplete)
@@ -51,6 +49,6 @@ function UserSearchAutoComplete() {
     (0, react_1.useEffect)(() => {
         console.log("렌더링");
     });
-    return ((0, jsx_runtime_1.jsx)(jsx_runtime_1.Fragment, { children: (0, jsx_runtime_1.jsx)(Autocomplete_1.default, { disablePortal: true, id: "user-select-autocomplete", options: userList, onInputChange: handleChangeTextField, onChange: handleChangeAutoComplete, sx: { width: 300 }, renderInput: (params) => (0, jsx_runtime_1.jsx)(material_1.TextField, Object.assign({}, params, { label: "\uC720\uC800 \uAC80\uC0C9" })) }) }));
+    return ((0, jsx_runtime_1.jsx)(jsx_runtime_1.Fragment, { children: (0, jsx_runtime_1.jsx)(material_1.Autocomplete, { autoComplete: true, disablePortal: true, id: "user-select-autocomplete", options: userList, onInputChange: handleChangeTextField, onChange: handleChangeAutoComplete, sx: { width: 300 }, renderInput: (params) => (0, jsx_runtime_1.jsx)(material_1.TextField, Object.assign({}, params, { label: "\uC720\uC800 \uAC80\uC0C9" })) }) }));
 }
 exports.default = UserSearchAutoComplete;
