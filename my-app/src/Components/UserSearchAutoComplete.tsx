@@ -1,13 +1,21 @@
-import { TextField } from "@material-ui/core";
-import { AutocompleteInputChangeReason } from "@material-ui/lab";
-import Autocomplete from '@mui/material/Autocomplete';
+// import { TextField } from "@material-ui/core";
+// import { AutocompleteInputChangeReason } from "@material-ui/lab";
+import styled from '@emotion/styled';
+import { TextField, AutocompleteInputChangeReason, Autocomplete } from '@mui/material';
+// import Autocomplete from '@mui/material/Autocomplete';
 import React, { ChangeEvent, EventHandler, SyntheticEvent, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAccountData } from "../store/RiotApi";
+import { debounce } from '../Utils';
 
-let timer: NodeJS.Timeout;
+
+// const ac = styled(Autocomplete) `
+//     color: tomato;
+// `
 
 export default function UserSearchAutoComplete() {
+    
+
     interface UserList {
         label?: string
     }
@@ -34,15 +42,14 @@ export default function UserSearchAutoComplete() {
     }
 
     const handleChangeTextField = async (e: React.SyntheticEvent, value: string, reason: AutocompleteInputChangeReason) => {
-        clearTimeout(timer);
-        timer = setTimeout(async () => {
+        debounce(async () => {
             if(value.includes("#")){
                 console.log(value);
                 const [label, tagline] = value.split("#");
                 const USER_LIST = await getAccountData(label, tagline, true);
                 setUserList([USER_LIST]);
             }
-        }, 1000);
+        }, 2000)
 
     }
 

@@ -1,8 +1,15 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const jsx_runtime_1 = require("react/jsx-runtime");
-require("./main_page.css");
-function MainPage() {
-    return ((0, jsx_runtime_1.jsx)(jsx_runtime_1.Fragment, { children: (0, jsx_runtime_1.jsx)("div", { className: 'main_content' }) }));
+import React, { useState, useEffect } from 'react';
+import "./main_page.css"
+import Autocomplete from '@mui/material/Autocomplete';
+import UserSearchAutoComplete from "../components/UserSearchAutoComplete";
+
+export default function MainPage() {
+
+    return (
+        <>
+            <div className='main_content'>
+                <UserSearchAutoComplete/>
+            </div>
+        </>
+    )
 }
-exports.default = MainPage;
