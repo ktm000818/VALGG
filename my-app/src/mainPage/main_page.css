@@ -3,5 +3,9 @@ body{
 }
 
 .main_content{
-
+    position: relative;
+    background: url("https://valorant.op.gg/images/main_bg_pc.png") center top no-repeat;
+    /* width: 100%; */
+    min-height: 1080px;
+    background-size: cover;
 }
