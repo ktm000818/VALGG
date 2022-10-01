@@ -14,7 +14,6 @@ export default function UserSearchAutoComplete() {
 
 
     useEffect(() => {
-        // console.log(autoComplete)
     }, [])
 
     const [userList, setUserList] = useState<UserList[]>([]);
@@ -36,17 +35,14 @@ export default function UserSearchAutoComplete() {
     const handleChangeTextField = async (e: React.SyntheticEvent, value: string, reason: AutocompleteInputChangeReason) => {
         debounce(async () => {
             if (value.includes("#")) {
-                console.log(value);
                 const [label, tagline] = value.split("#");
                 const USER_LIST = await getAccountData(label, tagline, true);
                 setUserList([USER_LIST]);
             }
         }, 2000)
-
     }
 
     useEffect(() => {
-        console.log("렌더링")
     })
 
     return (

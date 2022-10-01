@@ -18,13 +18,31 @@ const baseUrl = "https://api.henrikdev.xyz";
 function getAccountData(username, tagline, onlyname) {
     var _a;
     return __awaiter(this, void 0, void 0, function* () {
-        const response = yield axios_1.default.get(`${baseUrl}/valorant/v1/account/${username}/${tagline}`);
-        if (onlyname) {
-            const { name, tag } = response.data.data;
-            return { label: `${name}#${tag}` };
+        try {
+            const response = yield axios_1.default.get(`${baseUrl}/valorant/v1/account/${username}/${tagline}`);
+            console.log(response);
+            if (onlyname) {
+                if (response.status === 200) {
+                    const { name, tag } = response.data.data;
+                    return { label: `${name}#${tag}` };
+                }
+                else {
+                    return {};
+                }
+            }
+            else {
+                if (response.status === 200) {
+                    return (_a = response.data) === null || _a === void 0 ? void 0 : _a.data;
+                }
+                else {
+                    return {};
+                }
+            }
         }
-        else {
-            return (_a = response.data) === null || _a === void 0 ? void 0 : _a.data;
+        catch (error) {
+            console.log(error);
+            // console.log
+            return { label: "검색결과가 없습니다." };
         }
     });
 }

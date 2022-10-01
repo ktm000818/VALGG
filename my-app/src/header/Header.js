@@ -1,8 +1,40 @@
-import AutoComplete from "../components/AutoComplete";
+import { useCallback, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
+import CustomAutoComplete from "../components/CustomAutoComplete";
 import UserSearchAutoComplete from "../components/UserSearchAutoComplete";
+import { getAccountData } from "../store/RiotApi";
+import { debounce } from "../Utils";
 import "./header.css"
 
 export default function Header() {
+
+    const [userList, setUserList] = useState([{ label: '' }]);
+    const navigate = useNavigate();
+
+    const handleChangeAutoComplete = useCallback((value) => {
+        console.log(value)
+        if (value) {
+            const [username, tagline] = value.split("#");
+            navigate(`/profile?username=${username}&tagline=${tagline}`, {
+                state: {
+                    username,
+                    tagline
+                }
+            })
+        }
+    }, [Navigate])
+
+    const handleChangeTextField = useCallback(async (value) => {
+        if (value.includes("#")) {
+            debounce(async () => {
+                const [label, tagline] = value.split("#");
+                const USER_LIST = await getAccountData(label, tagline, true);
+                setUserList([USER_LIST]);
+            }, 500)
+        } else {
+            setUserList([{ label: '' }]);
+        }
+    }, [userList])
 
     return (
         <div className="header">
@@ -25,11 +57,9 @@ export default function Header() {
 
                 <div style={{ display: "inline-block", alignItems: "center" }}>
                     VALORANT
-
                 </div>
             </div>
-            <AutoComplete/>
-            <UserSearchAutoComplete />
+            <CustomAutoComplete options={userList} onInputChange={handleChangeTextField} onChange={handleChangeAutoComplete} />
         </div>
     )
 }

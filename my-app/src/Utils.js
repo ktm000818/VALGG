@@ -8,7 +8,7 @@ let timer;
  */
 function debounce(callback, timeout) {
     clearTimeout(timer);
-    setTimeout(() => {
+    timer = setTimeout(() => {
         if (typeof callback === 'function') {
             callback();
         }

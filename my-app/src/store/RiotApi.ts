@@ -6,13 +6,30 @@ type Region = 'eu' | 'na' | 'ap' | 'kr';
 const baseUrl = "https://api.henrikdev.xyz";
 
 export async function getAccountData(username: string, tagline: string, onlyname?: boolean): Promise<object> {
-    const response = await axios.get(`${baseUrl}/valorant/v1/account/${username}/${tagline}`);
-    if (onlyname) {
-        const { name, tag } = response.data.data;
-        return { label: `${name}#${tag}` }
-    } else {
-        return response.data?.data;
+    try {
+        const response = await axios.get(`${baseUrl}/valorant/v1/account/${username}/${tagline}`);
+        console.log(response);
+        if (onlyname) {
+            if (response.status === 200) {
+                const { name, tag } = response.data.data;
+                return { label: `${name}#${tag}` }
+            } else {
+                return {};
+            }
+
+        } else {
+            if (response.status === 200) {
+                return response.data?.data;
+            } else {
+                return {};
+            }
+        }
+    } catch (error) {
+        console.log(error)
+        // console.log
+        return { label: "검색결과가 없습니다." };
     }
+
 }
 
 export async function getMMRData(version: Version, region: Region, username: string, tagline: string): Promise<object> {
