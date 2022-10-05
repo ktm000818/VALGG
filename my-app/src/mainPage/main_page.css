@@ -1,8 +1,8 @@
-body{
+body {
     margin: 0;
 }
 
-.main{
+.main {
     position: relative;
     background: url("https://valorant.op.gg/images/main_bg_pc.png") center top no-repeat;
     /* width: 100%; */
@@ -10,9 +10,24 @@ body{
     background-size: cover;
 }
 
-.main_content{
+.main_content {
+    position: relative;
     width: 50%;
     height: 900px;
     margin: auto;
     padding-top: 50px;
+}
+
+.main_content_logo_image {
+    width: 100%;
+    position: absolute;
+    left: 0;
+}
+
+.main_content_autoComplete {
+    position: absolute;
+    margin: auto;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
