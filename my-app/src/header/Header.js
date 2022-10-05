@@ -11,8 +11,7 @@ export default function Header() {
     const [userList, setUserList] = useState([{ label: '' }]);
     const navigate = useNavigate();
 
-    const handleChangeAutoComplete = useCallback((value) => {
-        console.log(value)
+    const handleChangeAutoComplete = (value) => {
         if (value) {
             const [username, tagline] = value.split("#");
             navigate(`/profile?username=${username}&tagline=${tagline}`, {
@@ -22,9 +21,9 @@ export default function Header() {
                 }
             })
         }
-    }, [Navigate])
+    };
 
-    const handleChangeTextField = useCallback(async (value) => {
+    const handleChangeTextField = async (value) => {
         if (value.includes("#")) {
             debounce(async () => {
                 const [label, tagline] = value.split("#");
@@ -34,7 +33,7 @@ export default function Header() {
         } else {
             setUserList([{ label: '' }]);
         }
-    }, [userList])
+    };
 
     return (
         <div className="header">
