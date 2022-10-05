@@ -1,8 +1,28 @@
+@font-face {
+  font-family: "Noto Sans KR";
+  src: url("../public/fonts/NotoSansKR-Regular.woff") format("woff");
+}
+
+/* @font-face {
+  font-family: "Apple SD Gothic Neo";
+  src: url("../public/fonts/AppleSDGothicNeoB.woff") format("woff"),
+  url("../public/fonts/AppleSDGothicNeoEB.woff") format("woff"),
+  url("../public/fonts/AppleSDGothicNeoH.woff") format("woff"),
+  url("../public/fonts/AppleSDGothicNeoL.woff") format("woff"),
+  url("../public/fonts/AppleSDGothicNeoM.woff") format("woff"),
+  url("../public/fonts/AppleSDGothicNeoR.woff") format("woff"),
+  url("../public/fonts/AppleSDGothicNeoSB.woff") format("woff"),
+  url("../public/fonts/AppleSDGothicNeoT.woff") format("woff"),
+  url("../public/fonts/AppleSDGothicNeoUL.woff") format("woff");
+} */
+
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  color: white;
+  font-family: apple-system, BlinkMacSystemFont, 'Noto Sans KR', 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
