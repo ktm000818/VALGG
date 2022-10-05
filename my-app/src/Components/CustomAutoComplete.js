@@ -29,7 +29,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const jsx_runtime_1 = require("react/jsx-runtime");
 const styled_1 = __importDefault(require("@emotion/styled"));
 const react_1 = __importStar(require("react"));
-const CustomAutoComplete = ({ options = [{ label: '' }], id = '', onChange = () => { }, onInputChange = () => { } }) => {
+const CustomAutoComplete = ({ options = [{ label: '' }], id = '', onChange = () => { }, onInputChange = () => { }, style = { width: 200 } }) => {
     var _a;
     const [inputValue, setInputValue] = (0, react_1.useState)('');
     const [hasInputValue, SetHasInputValue] = (0, react_1.useState)(false);
@@ -61,18 +61,19 @@ const CustomAutoComplete = ({ options = [{ label: '' }], id = '', onChange = () 
             // setDropDownList(filteredDropDownList);
         }
     };
-    const handleChange = (0, react_1.useCallback)((e) => {
+    const handleChange = (e) => {
         var _a;
         setInputValue((_a = e.target) === null || _a === void 0 ? void 0 : _a.value);
-    }, [inputValue]);
-    const selectDropDown = (0, react_1.useCallback)((e, selected = '') => {
+    };
+    const selectDropDown = (e, selected = '') => {
         var _a;
         onChange(((_a = e === null || e === void 0 ? void 0 : e.target) === null || _a === void 0 ? void 0 : _a.innerText) || selected);
-    }, [inputValue]);
-    const deleteInputValue = (0, react_1.useCallback)(() => {
+        deleteInputValue();
+    };
+    const deleteInputValue = () => {
         setInputValue('');
-    }, [inputValue]);
-    const handleKeyPress = (0, react_1.useCallback)((e) => {
+    };
+    const handleKeyPress = (e) => {
         var _a;
         if (inputValue) {
             const focusedItemLabel = (_a = Object.values(options)[dropDownLiKey]) === null || _a === void 0 ? void 0 : _a.label;
@@ -90,18 +91,18 @@ const CustomAutoComplete = ({ options = [{ label: '' }], id = '', onChange = () 
                     break;
             }
         }
-    }, [dropDownLiKey]);
-    return ((0, jsx_runtime_1.jsx)(jsx_runtime_1.Fragment, { children: (0, jsx_runtime_1.jsxs)(Container, { children: [(0, jsx_runtime_1.jsxs)(CustomInputContainer, Object.assign({ id: id, hasInputValue: hasInputValue }, { children: [(0, jsx_runtime_1.jsx)(CustomInput, { value: inputValue, onChange: handleChange, onKeyDown: handleKeyPress }), (0, jsx_runtime_1.jsx)(DeleteButton, Object.assign({ onClick: deleteInputValue }, { children: "x" }))] })), hasInputValue && ((0, jsx_runtime_1.jsxs)(DropDownListUl, { children: [options.length === 1 && ((_a = options[0]) === null || _a === void 0 ? void 0 : _a.label) === '' && (0, jsx_runtime_1.jsx)(DropDownListLi, { children: "\uAC80\uC0C9 \uC911 . . ." }, 0), options.map((item, index) => ((0, jsx_runtime_1.jsx)(DropDownListLi, Object.assign({ className: dropDownLiKey === index ? 'selected' : '', id: index + "id", onClick: selectDropDown }, { children: item.label }), index)))] }))] }) }));
+    };
+    return ((0, jsx_runtime_1.jsx)(jsx_runtime_1.Fragment, { children: (0, jsx_runtime_1.jsxs)(Container, { children: [(0, jsx_runtime_1.jsxs)(CustomInputContainer, Object.assign({ id: id, hasInputValue: hasInputValue }, { children: [(0, jsx_runtime_1.jsx)(CustomInput, { value: inputValue, onChange: handleChange, onKeyDown: handleKeyPress, style: style }), (0, jsx_runtime_1.jsx)(DeleteButton, Object.assign({ onClick: deleteInputValue }, { children: "x" }))] })), hasInputValue && ((0, jsx_runtime_1.jsxs)(DropDownListUl, Object.assign({ style: style }, { children: [options.length === 1 && ((_a = options[0]) === null || _a === void 0 ? void 0 : _a.label) === '' && (0, jsx_runtime_1.jsx)(DropDownListLi, { children: "\uAC80\uC0C9 \uC911 . . ." }, 0), options.map((item, index) => ((0, jsx_runtime_1.jsx)(DropDownListLi, Object.assign({ className: dropDownLiKey === index ? 'selected' : '', id: index + "id", onClick: selectDropDown }, { children: item.label }), index)))] })))] }) }));
 };
 const Container = styled_1.default.div `
     padding: 10px;
 `;
 const actvBorderRadius = '10px 10px 0 0';
 const inactvBorderRadius = '10px 10px 10px 10px';
-const CustomInputContainer = react_1.default.memo(styled_1.default.div `
+const CustomInputContainer = styled_1.default.div `
     position: relative;
     display: flex;
-    flex-direction: row;
+    // flex-direction: row;
     padding: 16px;
     border: 1px solid lightgray;
     border-radius: ${props => props.hasInputValue ? actvBorderRadius : inactvBorderRadius};
@@ -110,10 +111,10 @@ const CustomInputContainer = react_1.default.memo(styled_1.default.div `
     &:focus-within {
         box-shadow: 0 10px 10px rgb(0, 0, 0, 0.3);
     }
-`);
+`;
 const CustomInput = styled_1.default.input `
     flex-grow: 1;
-    width: 200px;
+    width: ${props => props.style.width};
     margin: 0;
     padding: 0;
     background-color: transparent;
@@ -121,17 +122,17 @@ const CustomInput = styled_1.default.input `
     outline: none;
     font-size: 16px;
 `;
-const DeleteButton = react_1.default.memo(styled_1.default.button `
+const DeleteButton = styled_1.default.button `
     position: absolute;
     width: 30px;
     right: 0;
     background-color: transparent;
     border: none;
     cursor: pointer;
-`);
+`;
 const DropDownListUl = styled_1.default.ul `
     position: absolute;
-    width: 202px;
+    width: ${props => props.style.width};
     display: block;
     list-style: none;
     background-color: white;

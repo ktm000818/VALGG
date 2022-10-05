@@ -4,8 +4,9 @@ import { debounce } from "../Utils";
 import PropTypes from "prop-types";
 
 interface properties {
-    options: dropDownList[]
-    id: string,
+    options: dropDownList[];
+    style: React.CSSProperties;
+    id: string;
     onChange: (value: string) => void;
     onInputChange: (value: string) => void;
 }
@@ -14,7 +15,13 @@ interface dropDownList {
     label: string
 }
 
-const CustomAutoComplete = ({ options = [{ label: '' }], id = '', onChange = () => { }, onInputChange = () => { } }: properties) => {
+const CustomAutoComplete = ({ 
+    options = [{ label: '' }],
+    id = '',
+    onChange = () => { },
+    onInputChange = () => { },
+    style = {width: 200}
+}: properties) => {
 
 
     const [inputValue, setInputValue] = useState<string>('');
@@ -50,21 +57,22 @@ const CustomAutoComplete = ({ options = [{ label: '' }], id = '', onChange = () 
             // const filteredDropDownList = options.filter(item => item.label.includes(inputValue));
             // setDropDownList(filteredDropDownList);
         }
-    }
+    };
 
-    const handleChange = useCallback((e: React.SyntheticEvent) => {
+    const handleChange = (e: React.SyntheticEvent) => {
         setInputValue((e.target as HTMLInputElement)?.value)
-    }, [inputValue])
+    };
 
-    const selectDropDown = useCallback((e: React.SyntheticEvent | null, selected = '') => {
-        onChange((e?.target as HTMLLIElement)?.innerText || selected)
-    }, [inputValue])
+    const selectDropDown = (e: React.SyntheticEvent | null, selected = '') => {
+        onChange((e?.target as HTMLLIElement)?.innerText || selected);
+        deleteInputValue();
+    };
 
-    const deleteInputValue = useCallback(() => {
+    const deleteInputValue = () => {
         setInputValue('');
-    }, [inputValue])
+    };
 
-    const handleKeyPress = useCallback((e: React.KeyboardEvent) => {
+    const handleKeyPress = (e: React.KeyboardEvent) => {
         if (inputValue) {
             const focusedItemLabel = Object.values(options)[dropDownLiKey]?.label;
 
@@ -82,17 +90,17 @@ const CustomAutoComplete = ({ options = [{ label: '' }], id = '', onChange = () 
                     break;
             }
         }
-    }, [dropDownLiKey])
+    };
 
     return (
         <>
             <Container>
                 <CustomInputContainer id={id} hasInputValue={hasInputValue}>
-                    <CustomInput value={inputValue} onChange={handleChange} onKeyDown={handleKeyPress} />
+                    <CustomInput value={inputValue} onChange={handleChange} onKeyDown={handleKeyPress} style={style}/>
                     <DeleteButton onClick={deleteInputValue}>x</DeleteButton>
                 </CustomInputContainer>
                 {hasInputValue && (
-                    <DropDownListUl>
+                    <DropDownListUl style={style}>
                         {options.length === 1 && options[0]?.label === '' && <DropDownListLi key={0}>검색 중 . . .</DropDownListLi>}
                         {options.map((item, index) => (
                             <DropDownListLi
@@ -109,7 +117,7 @@ const CustomAutoComplete = ({ options = [{ label: '' }], id = '', onChange = () 
             </Container>
         </>
     )
-}
+};
 
 const Container = styled.div`
     padding: 10px;
@@ -118,10 +126,10 @@ const Container = styled.div`
 const actvBorderRadius = '10px 10px 0 0';
 const inactvBorderRadius = '10px 10px 10px 10px';
 
-const CustomInputContainer = React.memo(styled.div<{ hasInputValue: boolean }>`
+const CustomInputContainer = styled.div<{ hasInputValue: boolean }>`
     position: relative;
     display: flex;
-    flex-direction: row;
+    // flex-direction: row;
     padding: 16px;
     border: 1px solid lightgray;
     border-radius: ${props => props.hasInputValue ? actvBorderRadius : inactvBorderRadius};
@@ -130,11 +138,11 @@ const CustomInputContainer = React.memo(styled.div<{ hasInputValue: boolean }>`
     &:focus-within {
         box-shadow: 0 10px 10px rgb(0, 0, 0, 0.3);
     }
-`)
+`
 
-const CustomInput = styled.input`
+const CustomInput = styled.input<{style: React.CSSProperties}>`
     flex-grow: 1;
-    width: 200px;
+    width: ${props => props.style.width};
     margin: 0;
     padding: 0;
     background-color: transparent;
@@ -143,18 +151,18 @@ const CustomInput = styled.input`
     font-size: 16px;
 `
 
-const DeleteButton = React.memo(styled.button`
+const DeleteButton = styled.button`
     position: absolute;
     width: 30px;
     right: 0;
     background-color: transparent;
     border: none;
     cursor: pointer;
-`)
+`
 
-const DropDownListUl = styled.ul`
+const DropDownListUl = styled.ul<{style: React.CSSProperties}>`
     position: absolute;
-    width: 202px;
+    width: ${props => props.style.width};
     display: block;
     list-style: none;
     background-color: white;
