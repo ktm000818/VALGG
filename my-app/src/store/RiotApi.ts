@@ -1,18 +1,43 @@
-import axios from "axios"
+import axios from "axios";
 
-type Version = 'v1' | 'v2';
-type Region = 'eu' | 'na' | 'ap' | 'kr';
+export type Version = 'v1' | 'v2';
+export type Region = 'eu' | 'na' | 'ap' | 'kr';
+
+export interface AllProps {
+    name?: string;
+    tag?: string;
+    onlyname?: boolean;
+    version?: Version;
+    region?: Region;
+    puuid?: string;
+}
 
 const baseUrl = "https://api.henrikdev.xyz";
 
-export async function getAccountData(username: string, tagline: string, onlyname?: boolean): Promise<object> {
+export function getAllUserData(props: AllProps) {
+
+    let arr = [
+        getAccountDataTest(props),
+        getMMRData(props),
+        // getMMRDataByPUUID(props),
+        getMMRHistory(props),
+        getAllAvailableOffers(),
+        getFeaturedBundle(),
+        // getMMRHistoryByPUUID(props)
+    ]
+
+    return Promise.all(arr)
+
+}
+
+export async function getAccountData(name: string, tag: string, onlyname?: boolean): Promise<object> {
     try {
-        const response = await axios.get(`${baseUrl}/valorant/v1/account/${username}/${tagline}`);
-        console.log(response);
+        const response = await axios.get(`${baseUrl}/valorant/v1/account/${name}/${tag}`);
+
         if (onlyname) {
             if (response.status === 200) {
                 const { name, tag } = response.data.data;
-                return { label: `${name}#${tag}` }
+                return { name: `${name}#${tag}` }
             } else {
                 return {};
             }
@@ -26,40 +51,36 @@ export async function getAccountData(username: string, tagline: string, onlyname
         }
     } catch (error) {
         console.log(error)
-        // console.log
-        return { label: "검색결과가 없습니다." };
+        return { name: "검색결과가 없습니다." };
     }
 
 }
 
-export async function getMMRData(version: Version, region: Region, username: string, tagline: string): Promise<object> {
-    const response = await axios.get(`${baseUrl}/valorant/${version}/mmr/${region}/${username}/${tagline}`);
-    return response.data?.data;
+export function getAccountDataTest(props: AllProps) {
+    return axios.get(`${baseUrl}/valorant/v1/account/${props.name}/${props.tag}`)
 }
 
-export async function getMMRDataByPUUID(version: Version, region: Region, puuid: string): Promise<object> {
-    const response = await axios.get(`${baseUrl}/valorant/${version}/by-puuid/mmr/${region}/${puuid}`);
-    return response.data?.data;
+export function getMMRData(props: AllProps) {
+    return axios.get(`${baseUrl}/valorant/${props.version}/mmr/${props.region}/${props.name}/${props.tag}`);
 }
 
-export async function getMMRHistory(region: Region, username: string, tagline: string): Promise<object> {
-    const response = await axios.get(`${baseUrl}/valorant/v1/mmr-history/${region}/${username}/${tagline}`);
-    return response.data?.data;
+export function getMMRDataByPUUID(props: AllProps) {
+    return axios.get(`${baseUrl}/valorant/${props.version}/by-puuid/mmr/${props.region}/${props.puuid}`);
 }
 
-export async function getMMRHistoryByPUUID(region: Region, puuid: string): Promise<object> {
-    const response = await axios.get(`${baseUrl}/valorant/v1/by-puuid/mmr-history/${region}/${puuid}`);
-    return response.data?.data;
+export function getMMRHistory(props: AllProps) {
+    return axios.get(`${baseUrl}/valorant/v1/mmr-history/${props.region}/${props.name}/${props.tag}`);
+}
+
+export function getMMRHistoryByPUUID(props: AllProps) {
+    return axios.get(`${baseUrl}/valorant/v1/by-puuid/mmr-history/${props.region}/${props.puuid}`);
 }
 
 // non params 
-export async function getAllAvailableOffers() {
-    const response = await axios.get('https://api.henrikdev.xyz/valorant/v1/store-offers');
-    return response.data;
+export function getAllAvailableOffers() {
+    return axios.get('https://api.henrikdev.xyz/valorant/v1/store-offers');
 }
 
-export async function getFeaturedBundle() {
-    const response = await axios.get('https://api.henrikdev.xyz/valorant/v1/store-featured');
-    return response.data;
+export function getFeaturedBundle() {
+    return axios.get('https://api.henrikdev.xyz/valorant/v1/store-featured');
 }
-
