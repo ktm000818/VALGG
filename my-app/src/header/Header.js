@@ -1,23 +1,22 @@
-import { useCallback, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import CustomAutoComplete from "../components/CustomAutoComplete";
-import UserSearchAutoComplete from "../components/UserSearchAutoComplete";
 import { getAccountData } from "../store/RiotApi";
 import { debounce } from "../Utils";
-import "./header.css"
+import "./header.css";
 
 export default function Header() {
 
-    const [userList, setUserList] = useState([{ label: '' }]);
+    const [userList, setUserList] = useState([{ name: '' }]);
     const navigate = useNavigate();
 
     const handleChangeAutoComplete = (value) => {
         if (value) {
-            const [username, tagline] = value.split("#");
-            navigate(`/profile?username=${username}&tagline=${tagline}`, {
+            const [name, tag] = value.split("#");
+            navigate(`/profile?name=${name}&tag=${tag}`, {
                 state: {
-                    username,
-                    tagline
+                    name,
+                    tag
                 }
             })
         }
@@ -26,12 +25,12 @@ export default function Header() {
     const handleChangeTextField = async (value) => {
         if (value.includes("#")) {
             debounce(async () => {
-                const [label, tagline] = value.split("#");
-                const USER_LIST = await getAccountData(label, tagline, true);
+                const [name, tag] = value.split("#");
+                const USER_LIST = await getAccountData(name, tag, true);
                 setUserList([USER_LIST]);
             }, 500)
         } else {
-            setUserList([{ label: '' }]);
+            setUserList([{ name: '' }]);
         }
     };
 
