@@ -16,6 +16,8 @@
     display: flex;
     padding: 46px 0 24px;
     box-sizing: border-box;
+    background: url("https://opgg-valorant-cdn.akamaized.net/Characters/TopBars/Omen.png") no-repeat center top / contain ;
+
 }
 
 .profile{
@@ -25,14 +27,14 @@
 
 .profile_image_container{
     display: flex;
-    border-radius: 10px;
+    border-radius: 20px;
     overflow: hidden;
 }
 
 .profile_image{
     width: 100px;
     height: 100px;
-    src: url("");
+    /* content: url('https://valorant.op.gg/images/profile.png'); */
 }
 
 .profile_info_container{
@@ -59,12 +61,22 @@
 }
 
 .history_update_button{
-    background-color: brown;
-    margin-top: 16px
+    height: 40px;
+    padding: 0 16px;
+    border-radius: 5px;
+    color: lightgray;
+    background-color: #E84057;
+    margin-top: 16px;
+    border: 0px;
+    cursor: pointer;
+}
+
+.history_update_button:hover{
+    background-color: #AC2537;
 }
 
 .lastest_update_date{
-    color: lightgray;
+    color: white;
     font-size: 11px;
 }
 
