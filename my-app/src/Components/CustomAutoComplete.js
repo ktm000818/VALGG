@@ -29,7 +29,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const jsx_runtime_1 = require("react/jsx-runtime");
 const styled_1 = __importDefault(require("@emotion/styled"));
 const react_1 = __importStar(require("react"));
-const CustomAutoComplete = ({ options = [{ label: '' }], id = '', onChange = () => { }, onInputChange = () => { }, style = { width: 200 } }) => {
+const CustomAutoComplete = ({ options = [{ name: '' }], id = '', onChange = () => { }, onInputChange = () => { }, style = { width: 200 } }) => {
     var _a;
     const [inputValue, setInputValue] = (0, react_1.useState)('');
     const [hasInputValue, SetHasInputValue] = (0, react_1.useState)(false);
@@ -57,7 +57,7 @@ const CustomAutoComplete = ({ options = [{ label: '' }], id = '', onChange = () 
         }
         else {
             SetHasInputValue(true);
-            // const filteredDropDownList = options.filter(item => item.label.includes(inputValue));
+            // const filteredDropDownList = options.filter(item => item.name.includes(inputValue));
             // setDropDownList(filteredDropDownList);
         }
     };
@@ -76,7 +76,7 @@ const CustomAutoComplete = ({ options = [{ label: '' }], id = '', onChange = () 
     const handleKeyPress = (e) => {
         var _a;
         if (inputValue) {
-            const focusedItemLabel = (_a = Object.values(options)[dropDownLiKey]) === null || _a === void 0 ? void 0 : _a.label;
+            const focusedItemLabel = (_a = Object.values(options)[dropDownLiKey]) === null || _a === void 0 ? void 0 : _a.name;
             switch (e.key) {
                 case 'ArrowUp':
                     setDropDownLiKey((prev) => --prev);
@@ -92,7 +92,7 @@ const CustomAutoComplete = ({ options = [{ label: '' }], id = '', onChange = () 
             }
         }
     };
-    return ((0, jsx_runtime_1.jsx)(jsx_runtime_1.Fragment, { children: (0, jsx_runtime_1.jsxs)(Container, { children: [(0, jsx_runtime_1.jsxs)(CustomInputContainer, Object.assign({ id: id, hasInputValue: hasInputValue }, { children: [(0, jsx_runtime_1.jsx)(CustomInput, { value: inputValue, onChange: handleChange, onKeyDown: handleKeyPress, style: style }), (0, jsx_runtime_1.jsx)(DeleteButton, Object.assign({ onClick: deleteInputValue }, { children: "x" }))] })), hasInputValue && ((0, jsx_runtime_1.jsxs)(DropDownListUl, Object.assign({ style: style }, { children: [options.length === 1 && ((_a = options[0]) === null || _a === void 0 ? void 0 : _a.label) === '' && (0, jsx_runtime_1.jsx)(DropDownListLi, { children: "\uAC80\uC0C9 \uC911 . . ." }, 0), options.map((item, index) => ((0, jsx_runtime_1.jsx)(DropDownListLi, Object.assign({ className: dropDownLiKey === index ? 'selected' : '', id: index + "id", onClick: selectDropDown }, { children: item.label }), index)))] })))] }) }));
+    return ((0, jsx_runtime_1.jsx)(jsx_runtime_1.Fragment, { children: (0, jsx_runtime_1.jsxs)(Container, { children: [(0, jsx_runtime_1.jsxs)(CustomInputContainer, Object.assign({ id: id, hasInputValue: hasInputValue }, { children: [(0, jsx_runtime_1.jsx)(CustomInput, { value: inputValue, onChange: handleChange, onKeyDown: handleKeyPress, style: style }), (0, jsx_runtime_1.jsx)(DeleteButton, Object.assign({ onClick: deleteInputValue }, { children: "x" }))] })), hasInputValue && ((0, jsx_runtime_1.jsxs)(DropDownListUl, Object.assign({ style: style }, { children: [options.length === 1 && ((_a = options[0]) === null || _a === void 0 ? void 0 : _a.name) === '' && (0, jsx_runtime_1.jsx)(DropDownListLi, { children: "\uAC80\uC0C9 \uC911 . . ." }, 0), options.map((item, index) => ((0, jsx_runtime_1.jsx)(DropDownListLi, Object.assign({ className: dropDownLiKey === index ? 'selected' : '', id: index + "id", onClick: selectDropDown }, { children: item.name }), index)))] })))] }) }));
 };
 const Container = styled_1.default.div `
     padding: 10px;
@@ -121,6 +121,7 @@ const CustomInput = styled_1.default.input `
     border: none;
     outline: none;
     font-size: 16px;
+    color: black;
 `;
 const DeleteButton = styled_1.default.button `
     position: absolute;
@@ -143,7 +144,7 @@ const DropDownListUl = styled_1.default.ul `
 const DropDownListLi = styled_1.default.li `
     cursor: pointer;
     padding: 0 16px;
-
+    color: black;
     &.selected {
       background-color: lightgray;
     }

@@ -12,11 +12,11 @@ interface properties {
 }
 
 interface dropDownList {
-    label: string
+    name: string
 }
 
 const CustomAutoComplete = ({ 
-    options = [{ label: '' }],
+    options = [{ name: '' }],
     id = '',
     onChange = () => { },
     onInputChange = () => { },
@@ -54,7 +54,7 @@ const CustomAutoComplete = ({
 
         } else {
             SetHasInputValue(true);
-            // const filteredDropDownList = options.filter(item => item.label.includes(inputValue));
+            // const filteredDropDownList = options.filter(item => item.name.includes(inputValue));
             // setDropDownList(filteredDropDownList);
         }
     };
@@ -74,7 +74,7 @@ const CustomAutoComplete = ({
 
     const handleKeyPress = (e: React.KeyboardEvent) => {
         if (inputValue) {
-            const focusedItemLabel = Object.values(options)[dropDownLiKey]?.label;
+            const focusedItemLabel = Object.values(options)[dropDownLiKey]?.name;
 
             switch (e.key) {
                 case 'ArrowUp':
@@ -101,7 +101,7 @@ const CustomAutoComplete = ({
                 </CustomInputContainer>
                 {hasInputValue && (
                     <DropDownListUl style={style}>
-                        {options.length === 1 && options[0]?.label === '' && <DropDownListLi key={0}>검색 중 . . .</DropDownListLi>}
+                        {options.length === 1 && options[0]?.name === '' && <DropDownListLi key={0}>검색 중 . . .</DropDownListLi>}
                         {options.map((item, index) => (
                             <DropDownListLi
                                 className={dropDownLiKey === index ? 'selected' : ''}
@@ -109,7 +109,7 @@ const CustomAutoComplete = ({
                                 id={index + "id"}
                                 onClick={selectDropDown}
                             >
-                                {item.label}
+                                {item.name}
                             </DropDownListLi>
                         ))}
                     </DropDownListUl>
@@ -149,6 +149,7 @@ const CustomInput = styled.input<{style: React.CSSProperties}>`
     border: none;
     outline: none;
     font-size: 16px;
+    color: black;
 `
 
 const DeleteButton = styled.button`
@@ -174,7 +175,7 @@ const DropDownListUl = styled.ul<{style: React.CSSProperties}>`
 const DropDownListLi = styled.li`
     cursor: pointer;
     padding: 0 16px;
-
+    color: black;
     &.selected {
       background-color: lightgray;
     }
