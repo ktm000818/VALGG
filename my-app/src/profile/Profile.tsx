@@ -34,27 +34,28 @@ export default function Profile() {
 
     return (
         <>
-            <div className="profile_container">
-                <div style={{ width: "1300px", padding: "0 110px", margin: "0 auto", boxSizing: "border-box" }}>
-                    <div style={{ height: "200px", display: "flex", padding: "46px 0 24px", boxSizing: "border-box" }}>
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                            <div style={{ display: "flex", borderRadius: "10px", overflow: "hidden" }}>
-                                <img src="https://valorant.op.gg/images/profile.png" width={"100px"} height={"100px"} />
+            <div className="profile_header_container">
+                <div className="profile_header">
+                    <div className="profile_container">
+                        <div className="profile">
+                            <div className="profile_image_container">
+                                <img className="profile_image"/>
+                                {/* https://valorant.op.gg/images/profile.png */}
                             </div>
-                            <div style={{ padding: "0 24px"}}>
+                            <div className="profile_info_container">
                                 <div>
-                                    <strong style={{fontSize: "24px"}}>김된모</strong>
-                                    <span style={{ color: "lightgray" }}>#ZERG</span>
+                                    <strong className="profile_name">닉네임</strong>
+                                    <span className="profile_tag">#TAG</span>
                                 </div>
                                 <div>
-                                    <span style={{ color: "lightgray", fontSize: "11px" }}>래더 랭킹</span>
-                                    <span style={{ color: "lightblue", fontSize: "11px", marginLeft: "4px" }}>1231th</span>
-                                </div>
-                                <div style={{marginTop: "16px"}}>
-                                    <button>전적 갱신</button>
+                                    <span className="profile_ladder">래더 랭킹</span>
+                                    <span className="profile_ladder_rank">1231th</span>
                                 </div>
                                 <div>
-                                    <span style={{ color: "lightgray", fontSize: "11px" }}>최근 업데이트: 2일 전</span>
+                                    <button className="history_update_button">전적 갱신</button>
+                                </div>
+                                <div>
+                                    <span className="lastest_update_date">최근 업데이트: 2일 전</span>
                                 </div>
                             </div>
                         </div>
