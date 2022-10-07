@@ -96,12 +96,51 @@ export default function Profile() {
                     </div>
                 </div>
             </div>
-            <div style={{ display: "flex", height: "100vh", margin: "1rem", padding: "1rem", border: "1px solid black" }}>
-                <div style={{ flexGrow: "1", border: "1px solid black", marginRight: "1rem" }}>
+            <div className="main_container">
+                <div className="main_defail_container">
+                    <div className="stats_container">
+                        <div className="stats_detail_container">
+                            <div className="stats_rating_container">
+                                <span className="rating">레이팅</span>
+                                <select className="act"></select>
+                            </div>
+                            <div className="rank_info_container">
+                                <div className="rank_image_container">
+                                    <img className="rank_image" src={userData?.current_data?.images?.small}/>
+                                </div>
+                                <div className="rank_stats_container">
+                                    <span className="rank">다이아몬드 2</span>
+                                    <span className="kda">KDA 비율 2 : 1</span>
+                                    <span className="winlose">11승 3패</span>
+                                </div>
+                            </div>
 
-                </div>
-                <div style={{ flexGrow: "2", border: "1px solid black", marginLeft: "1rem" }}>
+                            <div className="record_container">
+                                <div className="record_dpr_container">
+                                    <span style={{ fontSize: "12px", color: "gray", textAlign: "center" }}>데미지/라운드</span>
+                                    <span style={{ textAlign: "center" }}>1</span>
+                                </div>
+                                <div style={{ display: "flex", justifyContent: "center", flexDirection: "column", flexBasis: "33%" }}>
+                                    <span style={{ fontSize: "12px", color: "gray", textAlign: "center" }}>K/D 비율</span>
+                                    <span style={{ textAlign: "center" }}>1</span>
+                                </div>
+                                <div style={{ display: "flex", justifyContent: "center", flexDirection: "column", flexBasis: "33%" }}>
+                                    <span style={{ fontSize: "12px", color: "gray", textAlign: "center" }}>승률</span>
+                                    <span style={{ textAlign: "center" }}>1</span>
+                                </div>
+                                <div style={{ display: "flex", justifyContent: "center", flexDirection: "column", flexBasis: "33%" }}>
+                                    <span style={{ fontSize: "12px", color: "gray", textAlign: "center" }}>점수/라운드</span>
+                                    <span style={{ textAlign: "center" }}>1</span>
+                                </div>
+                                <div>
+                                </div>
+                            </div>
 
+                        </div>
+                    </div>
+                    <div style={{ width: "740px", maxWidth: "740px", border: "1px solid black" }}>
+                        fdf
+                    </div>
                 </div>
             </div>
         </>
