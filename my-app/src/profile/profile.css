@@ -46,11 +46,11 @@
 }
 
 .profile_tag{
-    color: lightgray;
+    color: gray;
 }
 
 .profile_ladder{
-    color: lightgray;
+    color: gray;
     font-size: 11px;
 }
 
@@ -66,6 +66,7 @@
     border-radius: 5px;
     color: lightgray;
     background-color: #E84057;
+    font-weight: bold;
     margin-top: 16px;
     border: 0px;
     cursor: pointer;
@@ -78,6 +79,102 @@
 .lastest_update_date{
     color: white;
     font-size: 11px;
+}
+
+.main_container{
+    width: 1300px;
+    padding: 20px 110px;
+    margin: auto;
+    box-sizing: border-box;
+}
+
+.main_defail_container{
+    display: flex;
+}
+
+.stats_container{
+    width: 330px;
+    margin-right: auto;
+}
+
+.stats_detail_container{
+    background-color: #31313c;
+    border-radius: 4px;
+}
+
+.stats_rating_container{
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 16px;
+}
+
+.rating{
+    font-size: 13px;
+}
+
+.act{
+    width: 100px
+}
+
+.rank_info_container{
+    display: flex;
+    padding: 16px 16px;
+    margin: 2px 0 2px 0;
+    border-top: 1px solid #1C1C1F 
+}
+
+.rank_image_container{
+    width: 75px;
+    height: 72px;
+    margin-right: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 40px;
+    background-color: #282830;
+}
+
+.rank_image{
+    width: 50px;
+    height: 50px;
+}
+
+.rank_stats_container{
+    display: flex;
+    flex-direction: column;
+}
+
+.rank{
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 2px;
+}
+
+.kda{
+    font-size: 11px;
+    color: gray;
+    font-weight: bold;
+    margin-bottom: 2px;
+}
+
+.winlose{
+    font-size: 12px;
+    color: gray;
+}
+
+.record_container{
+    display: flex;
+    flex-wrap: wrap;
+    padding: 16px 16px;
+    margin: 2px 0 2px 0;
+    border-top: 1px solid #1C1C1F;
+}
+
+.record_dpr_container{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    flex-basis: 33%
 }
 
 /* url("https://opgg-valorant-cdn.akamaized.net/Characters/TopBars/Raze.png") right center / contain no-repeat */
