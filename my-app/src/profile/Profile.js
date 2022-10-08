@@ -117,20 +117,20 @@ export default function Profile() {
 
                             <div className="record_container">
                                 <div className="record_dpr_container">
-                                    <span style={{ fontSize: "12px", color: "gray", textAlign: "center" }}>데미지/라운드</span>
-                                    <span style={{ textAlign: "center" }}>1</span>
+                                    <span className="dpr_label">데미지/라운드</span>
+                                    <span className="dpr">1</span>
                                 </div>
-                                <div style={{ display: "flex", justifyContent: "center", flexDirection: "column", flexBasis: "33%" }}>
-                                    <span style={{ fontSize: "12px", color: "gray", textAlign: "center" }}>K/D 비율</span>
-                                    <span style={{ textAlign: "center" }}>1</span>
+                                <div className="record_kd_container">
+                                    <span className="kd_ratio_label">K/D 비율</span>
+                                    <span className="kd">1</span>
                                 </div>
-                                <div style={{ display: "flex", justifyContent: "center", flexDirection: "column", flexBasis: "33%" }}>
-                                    <span style={{ fontSize: "12px", color: "gray", textAlign: "center" }}>승률</span>
-                                    <span style={{ textAlign: "center" }}>1</span>
+                                <div className="record_win_ratio_container">
+                                    <span className="win_ratio_label">승률</span>
+                                    <span className="win_ratio">1</span>
                                 </div>
-                                <div style={{ display: "flex", justifyContent: "center", flexDirection: "column", flexBasis: "33%" }}>
-                                    <span style={{ fontSize: "12px", color: "gray", textAlign: "center" }}>점수/라운드</span>
-                                    <span style={{ textAlign: "center" }}>1</span>
+                                <div className="record_spr_container">
+                                    <span className="spr_label">점수/라운드</span>
+                                    <span className="spr">1</span>
                                 </div>
                                 <div>
                                 </div>

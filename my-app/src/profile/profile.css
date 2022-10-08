@@ -177,4 +177,65 @@
     flex-basis: 33%
 }
 
+.dpr_label{
+    font-size: 12px;
+    color: gray;
+    text-align: center;
+}
+
+.dpr{
+    text-align: center;
+}
+
+.record_kd_container{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    flex-basis: 33%;
+}
+
+.kd_ratio_label{
+    font-size: 12px;
+    color: gray;
+    text-align: center
+}
+
+.kd{
+    text-align: center;
+}
+
+.record_win_ratio_container{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    flex-basis: 33%;
+}
+
+.win_ratio_label{
+    font-size: 12px;
+    color: gray;
+    text-align: center
+}
+
+.win_ratio{
+    text-align: center;
+}
+
+.record_spr_container{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    flex-basis: 33%;
+}
+
+.spr_label{
+    font-size: 12px;
+    color: gray;
+    text-align: center
+}
+
+.spr{
+    text-align: center;
+}
+
 /* url("https://opgg-valorant-cdn.akamaized.net/Characters/TopBars/Raze.png") right center / contain no-repeat */
