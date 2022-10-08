@@ -2,6 +2,7 @@ import axios from "axios";
 
 export type Version = 'v1' | 'v2';
 export type Region = 'eu' | 'na' | 'ap' | 'kr';
+export type MatchFilter = 'escalation' | 'spikerush' | 'deathmatch' | 'competitive' | 'unrated' | 'replication';
 
 export interface AllProps {
     name?: string;
@@ -10,6 +11,8 @@ export interface AllProps {
     version?: Version;
     region?: Region;
     puuid?: string;
+    matchId?: string;
+    matchFilter?: MatchFilter;
 }
 
 const baseUrl = "https://api.henrikdev.xyz";
@@ -17,13 +20,14 @@ const baseUrl = "https://api.henrikdev.xyz";
 export function getAllUserData(props: AllProps) {
 
     let arr = [
+        getMatchHistoryByPUUID(props),
         getAccountDataTest(props),
-        getMMRData(props),
-        // getMMRDataByPUUID(props),
-        getMMRHistory(props),
+        // getMMRData(props),
+        // getMMRHistory(props),
+        getMMRDataByPUUID(props),
+        getMMRHistoryByPUUID(props),
         getAllAvailableOffers(),
         getFeaturedBundle(),
-        // getMMRHistoryByPUUID(props)
     ]
 
     return Promise.all(arr)
@@ -60,6 +64,7 @@ export function getAccountDataTest(props: AllProps) {
     return axios.get(`${baseUrl}/valorant/v1/account/${props.name}/${props.tag}`)
 }
 
+//MMR
 export function getMMRData(props: AllProps) {
     return axios.get(`${baseUrl}/valorant/${props.version}/mmr/${props.region}/${props.name}/${props.tag}`);
 }
@@ -75,6 +80,17 @@ export function getMMRHistory(props: AllProps) {
 export function getMMRHistoryByPUUID(props: AllProps) {
     return axios.get(`${baseUrl}/valorant/v1/by-puuid/mmr-history/${props.region}/${props.puuid}`);
 }
+//MMR
+
+//MATCH
+export function getMatchHistoryByPUUID(props: AllProps) {
+    return axios.get(`${baseUrl}/valorant/v3/by-puuid/matches/${props.region}/${props.puuid}?filter=${props.matchFilter}`);
+}
+
+export function getMatchData(props: AllProps){
+    return axios.get(`${baseUrl}/valorant/v2/match/${props.matchId}`);
+}
+//MATCH
 
 // non params 
 export function getAllAvailableOffers() {

@@ -12,18 +12,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getFeaturedBundle = exports.getAllAvailableOffers = exports.getMMRHistoryByPUUID = exports.getMMRHistory = exports.getMMRDataByPUUID = exports.getMMRData = exports.getAccountDataTest = exports.getAccountData = exports.getAllUserData = void 0;
+exports.getFeaturedBundle = exports.getAllAvailableOffers = exports.getMatchData = exports.getMatchHistoryByPUUID = exports.getMMRHistoryByPUUID = exports.getMMRHistory = exports.getMMRDataByPUUID = exports.getMMRData = exports.getAccountDataTest = exports.getAccountData = exports.getAllUserData = void 0;
 const axios_1 = __importDefault(require("axios"));
 const baseUrl = "https://api.henrikdev.xyz";
 function getAllUserData(props) {
     let arr = [
+        getMatchHistoryByPUUID(props),
         getAccountDataTest(props),
-        getMMRData(props),
-        // getMMRDataByPUUID(props),
-        getMMRHistory(props),
+        // getMMRData(props),
+        // getMMRHistory(props),
+        getMMRDataByPUUID(props),
+        getMMRHistoryByPUUID(props),
         getAllAvailableOffers(),
         getFeaturedBundle(),
-        // getMMRHistoryByPUUID(props)
     ];
     return Promise.all(arr);
 }
@@ -62,6 +63,7 @@ function getAccountDataTest(props) {
     return axios_1.default.get(`${baseUrl}/valorant/v1/account/${props.name}/${props.tag}`);
 }
 exports.getAccountDataTest = getAccountDataTest;
+//MMR
 function getMMRData(props) {
     return axios_1.default.get(`${baseUrl}/valorant/${props.version}/mmr/${props.region}/${props.name}/${props.tag}`);
 }
@@ -78,6 +80,17 @@ function getMMRHistoryByPUUID(props) {
     return axios_1.default.get(`${baseUrl}/valorant/v1/by-puuid/mmr-history/${props.region}/${props.puuid}`);
 }
 exports.getMMRHistoryByPUUID = getMMRHistoryByPUUID;
+//MMR
+//MATCH
+function getMatchHistoryByPUUID(props) {
+    return axios_1.default.get(`${baseUrl}/valorant/v3/by-puuid/matches/${props.region}/${props.puuid}?filter=${props.matchFilter}`);
+}
+exports.getMatchHistoryByPUUID = getMatchHistoryByPUUID;
+function getMatchData(props) {
+    return axios_1.default.get(`${baseUrl}/valorant/v2/match/${props.matchId}`);
+}
+exports.getMatchData = getMatchData;
+//MATCH
 // non params 
 function getAllAvailableOffers() {
     return axios_1.default.get('https://api.henrikdev.xyz/valorant/v1/store-offers');
