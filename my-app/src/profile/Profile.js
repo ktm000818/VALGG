@@ -33,22 +33,26 @@ export default function Profile() {
     /**
      * 유저의 전체 데이터 조회
      */
-    async function getWholeUserData() {
+    async function getWholeUserData(matchFilter = "competitive") {
         const { name, tag, region, puuid } = defaultUserData;
         const prop = {
             name,
             tag,
             version: "v2",
             region,
-            puuid
+            puuid,
+            matchFilter: matchFilter
         };
 
         const result = await getAllUserData(prop).then(values => values);
-
         const filteredResult = result.reduce((prev, curr) => {
             // MMR History만 Array로 반환됨.
-            if (Array.isArray(curr.data.data)) {
-                return { ...prev, MMRHistory: curr.data.data }
+            if(Array.isArray(curr.data.data)) {
+                if(Object.keys(curr.data.data[0]).includes("players")){
+                    return { ...prev,  MatchHistory: curr.data.data}
+                }else{
+                    return { ...prev, MMRHistory: curr.data.data }
+                }
             } else {
                 return { ...Object.assign({ ...prev }, curr.data.data) }
             }
@@ -63,9 +67,15 @@ export default function Profile() {
         })
     }
 
+    function setDefaultRankImage(e) {
+        e.target.src = '';
+    }
+
     useEffect(() => {
         console.log(userData)
     }, [userData])
+
+    const {card, last_update, current_data} = userData;
 
     return (
         <>
@@ -74,12 +84,12 @@ export default function Profile() {
                     <div className="profile_container">
                         <div className="profile">
                             <div className="profile_image_container">
-                                <img className="profile_image" src={userData?.card?.small} />
+                                <img className="profile_image" src={card?.small} />
                             </div>
                             <div className="profile_info_container">
                                 <div>
-                                    <strong className="profile_name">{defaultUserData.name}</strong>
-                                    <span className="profile_tag">#{defaultUserData.tag}</span>
+                                    <strong className="profile_name">{userData?.name}</strong>
+                                    <span className="profile_tag">#{userData?.tag}</span>
                                 </div>
                                 <div>
                                     <span className="profile_ladder">래더 랭킹</span>
@@ -89,7 +99,7 @@ export default function Profile() {
                                     <button className="history_update_button" onClick={setWholeUserData}>전적 갱신</button>
                                 </div>
                                 <div>
-                                    <span className="lastest_update_date">최근 업데이트: {userData.last_update}</span>
+                                    <span className="lastest_update_date">최근 업데이트: {last_update}</span>
                                 </div>
                             </div>
                         </div>
@@ -106,11 +116,13 @@ export default function Profile() {
                             </div>
                             <div className="rank_info_container">
                                 <div className="rank_image_container">
-                                    <img className="rank_image" src={userData?.current_data?.images?.small}/>
+                                    {current_data?.currenttier && (
+                                        <img className="rank_image" src={current_data?.images?.small} onError={setDefaultRankImage} />
+                                    )}
                                 </div>
                                 <div className="rank_stats_container">
-                                    <span className="rank">다이아몬드 2</span>
-                                    <span className="kda">KDA 비율 2 : 1</span>
+                                    <span className="rank">{current_data?.currenttierpatched ?? "unranked"}</span>
+                                    <span className="kda">최근 5게임 KDA 비율 2 : 1</span>
                                     <span className="winlose">11승 3패</span>
                                 </div>
                             </div>
@@ -139,7 +151,6 @@ export default function Profile() {
                         </div>
                     </div>
                     <div style={{ width: "740px", maxWidth: "740px", border: "1px solid black" }}>
-                        fdf
                     </div>
                 </div>
             </div>
