@@ -7,6 +7,7 @@ export default function Profile() {
     const [defaultUserData, setDefaultUserData] = useState({});
     const [userData, setUserData] = useState({});
     const { name, tag } = useLocation().state;
+    const [latestFiveGameKDRatio, setLatestFiveGameKDRatio] = useState(0);
 
     useEffect(() => {
         getDefaultUserData()
@@ -16,6 +17,11 @@ export default function Profile() {
         if (defaultUserData?.name)
             setWholeUserData();
     }, [defaultUserData])
+
+    useEffect(() => {
+        if(userData?.MatchHistory)
+            setLatestFiveGameKDRatio(getKDRatio(getLatestFiveGamesKD(userData.puuid)));
+    }, [userData])
 
     /**
      * 유저 기본정보 조회
@@ -71,6 +77,36 @@ export default function Profile() {
         e.target.src = '';
     }
 
+    function getLatestFiveGames(){
+        return userData.MatchHistory ?? [];
+    }
+
+    function getLatestFiveGamesKD(player_puuid = ''){
+        const LATEST_FIVE_GAME = getLatestFiveGames();
+
+        const killDeath = LATEST_FIVE_GAME.reduce((PREVIOUS_GAME, CURRENT_GAME) => {
+            const PLAYER = CURRENT_GAME.players.all_players.filter(player => player.puuid === player_puuid)[0];
+            if(PREVIOUS_GAME.kills === undefined){
+                return {kills: 0, deaths: 0}
+            }else{
+                return {kills: PLAYER.stats.kills + PREVIOUS_GAME.kills, deaths: PLAYER.stats.deaths + PREVIOUS_GAME.deaths}
+            }
+        }, {})
+
+        return killDeath;
+    }
+
+    function getKDRatio(killDeath = {}) {
+        const {kills, deaths} = killDeath;
+        
+        if(deaths === 0){
+            return kills;
+        }else{
+            const ratio = kills / deaths;
+            return ratio.toFixed(2);
+        }
+    }
+
     useEffect(() => {
         console.log(userData)
     }, [userData])
@@ -122,8 +158,8 @@ export default function Profile() {
                                 </div>
                                 <div className="rank_stats_container">
                                     <span className="rank">{current_data?.currenttierpatched ?? "unranked"}</span>
-                                    <span className="kda">최근 5게임 KDA 비율 2 : 1</span>
-                                    <span className="winlose">11승 3패</span>
+                                    <span className="kda">최근 5게임 KD 비율 {latestFiveGameKDRatio} : 1</span>
+                                    <span className="winlose">시즌 전적 : todo</span>
                                 </div>
                             </div>
 
