@@ -8,6 +8,8 @@ export default function Profile() {
     const [userData, setUserData] = useState({});
     const { name, tag } = useLocation().state;
     const [latestFiveGameKDRatio, setLatestFiveGameKDRatio] = useState(0);
+    const [seasonWins, setSeasonWins] = useState(0);
+    const [seasonDefeats, setSeasonDefeats] = useState(0);
 
     useEffect(() => {
         getDefaultUserData()
@@ -21,6 +23,11 @@ export default function Profile() {
     useEffect(() => {
         if(userData?.MatchHistory)
             setLatestFiveGameKDRatio(getKDRatio(getLatestFiveGamesKD(userData.puuid)));
+        if(userData?.by_season){
+            const {wins, number_of_games} = getSeasonGameWinDefeatRecord();
+            setSeasonWins(wins);
+            setSeasonDefeats(number_of_games - wins);
+        }
     }, [userData])
 
     /**
@@ -52,7 +59,6 @@ export default function Profile() {
 
         const result = await getAllUserData(prop).then(values => values);
         const filteredResult = result.reduce((prev, curr) => {
-            // MMR History만 Array로 반환됨.
             if(Array.isArray(curr.data.data)) {
                 if(Object.keys(curr.data.data[0]).includes("players")){
                     return { ...prev,  MatchHistory: curr.data.data}
@@ -111,6 +117,26 @@ export default function Profile() {
         console.log(userData)
     }, [userData])
 
+    function getSeasonGameWinDefeatRecord() {
+        const gameRecord = Object.values(userData?.by_season).reduce((PREV_SEASON, CURR_SEASON) => {
+            if(CURR_SEASON?.old === false && CURR_SEASON?.number_of_games){
+                if(!PREV_SEASON.number_of_games){
+                    return {number_of_games: CURR_SEASON.number_of_games, wins: CURR_SEASON.wins}
+                }else{
+                    return {number_of_games: CURR_SEASON.number_of_games + PREV_SEASON.number_of_games, wins: CURR_SEASON.wins + PREV_SEASON.wins}
+                }
+            }else{
+                if(!PREV_SEASON.number_of_games){
+                    return {...PREV_SEASON}
+                }else{
+                    return {number_of_games: 0 + PREV_SEASON.number_of_games, wins: 0 + PREV_SEASON.wins}
+                }
+            }
+        }, {})
+
+        return gameRecord;
+    }
+
     const {card, last_update, current_data} = userData;
 
     return (
@@ -159,7 +185,7 @@ export default function Profile() {
                                 <div className="rank_stats_container">
                                     <span className="rank">{current_data?.currenttierpatched ?? "unranked"}</span>
                                     <span className="kda">최근 5게임 KD 비율 {latestFiveGameKDRatio} : 1</span>
-                                    <span className="winlose">시즌 전적 : todo</span>
+                                    <span className="winlose">시즌 전적 : {`${seasonWins}승 ${seasonDefeats}패`}</span>
                                 </div>
                             </div>
 
