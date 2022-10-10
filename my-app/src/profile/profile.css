@@ -174,7 +174,9 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
-    flex-basis: 33%
+    flex-basis: 33%;
+    position: relative;
+
 }
 
 .dpr_label{
@@ -192,6 +194,15 @@
     justify-content: center;
     flex-direction: column;
     flex-basis: 33%;
+    position: relative;
+}
+
+.record_kd_container::before{
+    content: '';
+    width: 1px;
+    height: 15px;
+    background-color: black;
+    position: absolute;
 }
 
 .kd_ratio_label{
@@ -209,6 +220,15 @@
     justify-content: center;
     flex-direction: column;
     flex-basis: 33%;
+    position: relative;
+}
+
+.record_win_ratio_container::before{
+    content: '';
+    width: 1px;
+    height: 15px;
+    background-color: black;
+    position: absolute;
 }
 
 .win_ratio_label{
@@ -226,6 +246,7 @@
     justify-content: center;
     flex-direction: column;
     flex-basis: 33%;
+    position: relative;
 }
 
 .spr_label{

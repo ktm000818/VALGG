@@ -10,6 +10,7 @@ export default function Profile() {
     const [latestFiveGameKDRatio, setLatestFiveGameKDRatio] = useState(0);
     const [seasonWins, setSeasonWins] = useState(0);
     const [seasonDefeats, setSeasonDefeats] = useState(0);
+    const [latestFiveGamesDPR, setLatestFiveGamesDPR] = useState(0);
 
     useEffect(() => {
         getDefaultUserData()
@@ -21,8 +22,10 @@ export default function Profile() {
     }, [defaultUserData])
 
     useEffect(() => {
-        if(userData?.MatchHistory)
+        if(userData?.MatchHistory){
             setLatestFiveGameKDRatio(getKDRatio(getLatestFiveGamesKD(userData.puuid)));
+            setLatestFiveGamesDPR(getLatestFiveGamesDPR());
+        }
         if(userData?.by_season){
             const {wins, number_of_games} = getSeasonGameWinDefeatRecord();
             setSeasonWins(wins);
@@ -137,6 +140,37 @@ export default function Profile() {
         return gameRecord;
     }
 
+    function getLatestFiveGamesDPR(){
+        function getLatestFiveGamesWholeDamage(matches){
+
+            let sum = 0;
+
+             for(let match of Object.values(matches)){
+                for(let round of match.rounds){
+                    for(let player of round.player_stats){
+                        if(player.player_puuid === userData.puuid){
+                            sum += player.damage
+                        }
+                    }
+                }
+             }
+
+            return sum;
+        }
+
+        const latestFiveGamesRounds = userData?.MatchHistory.reduce((prev, curr) => {
+            if(prev){
+                return prev + curr.rounds.length;
+            }else{
+                return curr.rounds.length;
+            }
+        }, 0)
+
+        const latestFiveGamesWholeDamage = getLatestFiveGamesWholeDamage(userData.MatchHistory)
+
+        return (latestFiveGamesWholeDamage / latestFiveGamesRounds).toFixed(2);
+    }
+
     const {card, last_update, current_data} = userData;
 
     return (
@@ -192,7 +226,7 @@ export default function Profile() {
                             <div className="record_container">
                                 <div className="record_dpr_container">
                                     <span className="dpr_label">데미지/라운드</span>
-                                    <span className="dpr">1</span>
+                                    <span className="dpr">{latestFiveGamesDPR}</span>
                                 </div>
                                 <div className="record_kd_container">
                                     <span className="kd_ratio_label">K/D 비율</span>
