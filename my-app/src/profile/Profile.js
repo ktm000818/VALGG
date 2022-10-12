@@ -4,6 +4,7 @@ import { getAccountDataTest, getAllUserData } from "../store/RiotApi";
 import ProfileCard from "./profile-card/ProfileCard"
 import Rating from "./rating/Rating";
 import "./profile.css"
+import AgentPerfomance from "./agent-performance/AgentPerformance";
 
 export default function Profile() {
     const [defaultUserData, setDefaultUserData] = useState({});
@@ -81,8 +82,9 @@ export default function Profile() {
             <div className="main_container">
                 <div className="main_defail_container">
                    <Rating userData={userData}/>
-                   <div style={{ width: "740px", maxWidth: "740px", border: "1px solid black" }}>
-                    </div>
+                   <AgentPerfomance userData={userData}/>
+                   {/* <div style={{ width: "740px", maxWidth: "740px", border: "1px solid black" }}>
+                    </div> */}
                 </div>
             </div>
         </>
