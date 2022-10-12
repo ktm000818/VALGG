@@ -54,14 +54,15 @@ export default function Profile() {
 
         const result = await getAllUserData(prop).then(values => values);
         const filteredResult = result.reduce((prev, curr) => {
+            const responseData = curr.data.data;
             if (Array.isArray(curr.data.data)) {
-                if (Object.keys(curr.data.data[0]).includes("players")) {
-                    return { ...prev, MatchHistory: curr.data.data }
+                if (responseData.length > 0 && Object.keys(responseData[0]).includes("players")) {
+                    return { ...prev, MatchHistory: responseData }
                 } else {
-                    return { ...prev, MMRHistory: curr.data.data }
+                    return { ...prev, MMRHistory: responseData }
                 }
             } else {
-                return { ...Object.assign({ ...prev }, curr.data.data) }
+                return { ...Object.assign({ ...prev }, responseData) }
             }
         }, {})
 

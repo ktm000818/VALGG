@@ -50,7 +50,21 @@ export default function Rating({ userData }) {
             const MATCH_KILLS = PLAYER.stats.kills;
             const PLAY_TIME = CURRENT_GAME.metadata.game_length;
 
-            if (PREVIOUS_GAME.kills === undefined) {
+            if(LATEST_FIVE_GAME.length === 1){ 
+                // if match history array has only one object, just return it. 
+                return {
+                    kills: PLAYER.stats.kills,
+                    deaths: PLAYER.stats.deaths,
+                    assists: PLAYER.stats.assists,
+                    bodyshots: PLAYER.stats.bodyshots,
+                    headshots: PLAYER.stats.headshots,
+                    legshots: PLAYER.stats.legshots,
+                    score: PLAYER.stats.score,
+                    match_kills: [MATCH_KILLS],
+                    match_results: [MATCH_RESULT],
+                    play_time: PLAY_TIME
+                }
+            }else if (PREVIOUS_GAME.kills === undefined) {
                 return {
                     kills: 0,
                     deaths: 0,
@@ -81,6 +95,7 @@ export default function Rating({ userData }) {
 
         USER_STATS.most_kill_match = Math.max(...USER_STATS.match_kills); // 최다킬 매치
 
+        console.log(USER_STATS)
         return USER_STATS;
     }
 
@@ -120,8 +135,14 @@ export default function Rating({ userData }) {
     }
 
     function getSeasonGameWinDefeatRecord() {
+
+
+
         const gameRecord = Object.values(userData?.by_season).reduce((PREV_SEASON, CURR_SEASON) => {
-            if (CURR_SEASON?.old === false && CURR_SEASON?.number_of_games) {
+
+            if(CURR_SEASON?.error){
+                return {...PREV_SEASON}
+            }else if (CURR_SEASON?.old === false && CURR_SEASON?.number_of_games) {
                 if (!PREV_SEASON.number_of_games) {
                     return { number_of_games: CURR_SEASON.number_of_games, wins: CURR_SEASON.wins }
                 } else {
@@ -220,7 +241,9 @@ export default function Rating({ userData }) {
                 <div className="stats_detail_container">
                     <div className="stats_rating_container">
                         <span className="rating">레이팅</span>
-                        <select className="act"></select>
+                        <select className="act">
+                            <option>경쟁전</option>
+                        </select>
                     </div>
                     <div className="rank_info_container">
                         <div className="rank_image_container">
