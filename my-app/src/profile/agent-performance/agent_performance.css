@@ -1,0 +1,95 @@
+.agent_performance_container {
+    width: 330px;
+    margin-right: auto;
+}
+
+.agent_performance_detail_container {
+    background-color: #31313c;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+.agent_performance_header {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 16px;
+}
+
+.agent_performance {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.agent_performance_info_container {
+    display: flex;
+    flex-direction: column;
+    /* padding: 16px 16px; */
+    margin: 2px 0 2px 0;
+    border-top: 1px solid #1C1C1F
+}
+
+.agent_performance_info {
+    display: flex;
+    flex-basis: 100%;
+    border-bottom: 1px solid #1C1C1F;
+    padding: 10px 10px;
+}
+
+.agent_performance_info_agent_image_container{
+    flex-basis: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 10px;
+}
+
+.agent_performance_info_agent {
+    flex-basis: 40%;
+    display: flex;
+    flex-direction: column;
+}
+
+.agent_performance_agent {
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.agent_performance_avgscore {
+    font-size: 11px;
+    color: #7b7a8e;
+}
+
+.agent_performance_info_record {
+    flex-basis: 30%;
+    display: flex;
+    flex-direction: column;
+}
+
+.agent_performance_record {
+    font-size: 11px;
+    color: #9897a8;
+    font-weight: bold;
+}
+
+.agent_performance_kda {
+    font-size: 11px;
+    color: #7b7a8e;
+}
+
+.agent_performance_info_winratio {
+    flex-basis: 20%;
+    display: flex;
+    flex-direction: column;
+}
+
+.agent_performance_winratio {
+    font-size: 11px;
+    color: #e05271;
+    font-weight: bold;
+    text-align: right;
+}
+
+.agent_performance_matchcount {
+    font-size: 11px;
+    text-align: right;
+}
