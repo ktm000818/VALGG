@@ -1,18 +1,88 @@
-import React, { userState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './agent_performance.css';
 
 export default function AgentPerfomance({ userData }) {
 
     const [showMore, setShowMore] = useState(false);
+    const [agentInfos, setAgentInfos] = useState([]);
+
+    useEffect(() => {
+        if(userData?.MatchHistory)
+        getAndSetAgentInfos();
+    }, [userData])
 
     function toggleShowMoreAgentInfo() {
-        setShowMore(true);
+        setShowMore(prev => !prev);
     }
 
-    const infos = [
-        { agentName: "zett", avgScore: 340, avgRecord: 1.99, kills: 152, deaths: 91, assists: 29, playedMatch: 3, winRatio: 80 },
-        { agentName: "Omen", avgScore: 400, avgRecord: 2.49, kills: 999, deaths: 91, assists: 29, playedMatch: 2, winRatio: 100 },
-    ]
+    function getAndSetAgentInfos() {
+
+        const MATCH_HISTORY = userData.MatchHistory;
+
+        let UNFILTERED_INFOS = MATCH_HISTORY.reduce((prev, curr) => {
+            const PLAYER = curr.players.all_players.filter(player => player.puuid === userData.puuid)[0];
+            const STATS = PLAYER.stats;
+            const TEAM = PLAYER.team.toLowerCase();
+            const AGENT_ICON_URL = PLAYER.assets.agent.small;
+            const MATCH_RESULT = curr.teams?.[TEAM].has_won ? 'WIN' : 'DEFEAT';
+
+            return [
+                ...prev,
+                {
+                    agent: PLAYER.character,
+                    score: STATS.score,
+                    kills: STATS.kills,
+                    deaths: STATS.deaths,
+                    assists: STATS.assists,
+                    match_result: MATCH_RESULT,
+                    AGENT_ICON_URL
+                }
+            ]
+
+        }, [])
+        
+        const FILTERED_INFOS = UNFILTERED_INFOS.reduce((prev, curr) => {
+            const {agent, assists, deaths, kills, match_result, score, AGENT_ICON_URL} = curr;
+
+            if(prev[agent]){
+                return {
+                    ...prev,
+                    [agent]: {
+                        agent: agent,
+                        assists: prev[agent].assists + assists,
+                        deaths: prev[agent].deaths + deaths,
+                        kills: prev[agent].kills + kills,
+                        score: prev[agent].score + score,
+                        avgRecord: (((prev[agent].kills + kills) + (prev[agent].assists + assists)) / (prev[agent].deaths + deaths)).toFixed(2),
+                        avgScore: ((prev[agent].score + score) / (prev[agent].matchCount + 1)).toFixed(0),
+                        winRatio: ((prev[agent].matchWins + (match_result === "WIN" ? 1 : 0)) / (prev[agent].matchCount + 1) * 100).toFixed(0),
+                        matchWins: prev[agent].matchWins + (match_result === "WIN" ? 1 : 0),
+                        matchCount: prev[agent].matchCount + 1,
+                        AGENT_ICON_URL
+                    }
+                }
+            }else{
+                return {
+                    ...prev,
+                    [agent]: {
+                        agent,
+                        assists,
+                        deaths,
+                        kills,
+                        score,
+                        avgScore: score,
+                        avgRecord: ((kills + assists) / deaths).toFixed(2),
+                        winRatio: match_result === "WIN" ? 100 : 0,
+                        matchWins: match_result === "WIN" ? 1 : 0,
+                        matchCount: 1,
+                        AGENT_ICON_URL
+                    }
+                }
+            }
+        }, {})
+
+        setAgentInfos(Object.values(FILTERED_INFOS));
+    }
 
     return (
         <>
@@ -25,30 +95,8 @@ export default function AgentPerfomance({ userData }) {
                         </select>
                     </div>
                     <div className="agent_performance_info_container">
-                        <div className="agent_performance_info">
-                            <div className="agent_performance_info_agent_image_container">
-                                <img width={20} height={20} />
-                            </div>
-                            <div className="agent_performance_info_agent">
-                                <span className="agent_performance_agent">제트</span>
-                                <span className="agent_performance_avgscore">340 평균 점수</span>
-                            </div>
-                            <div className="agent_performance_info_record">
-                                <span className="agent_performance_record">1.99:1 평점</span>
-                                <span className="agent_performance_kda">152/91/29</span>
-                            </div>
-                            <div className="agent_performance_info_winratio">
-                                <span className="agent_performance_winratio">80%</span>
-                                <span className="agent_performance_matchcount">6게임</span>
-                            </div>
-                        </div>
-                        <div className="agent_performance_info">
-                            dfdf
-                        </div>
-                        <div className="agent_performance_info">
-                            dfdf
-                        </div>
-                        {infos.map((info, index) => {
+                        
+                        {agentInfos.map((info, index) => {
 
                             if (!showMore && index > 2) {
                                 return null;
@@ -58,25 +106,25 @@ export default function AgentPerfomance({ userData }) {
                                 <>
                                     <div className="agent_performance_info">
                                         <div className="agent_performance_info_agent_image_container">
-                                            <img width={20} height={20} />
+                                            <img width={20} height={20} src={info.AGENT_ICON_URL}/>
                                         </div>
                                         <div className="agent_performance_info_agent">
-                                            <span className="agent_performance_agent">{info.agentName}</span>
+                                            <span className="agent_performance_agent">{info.agent}</span>
                                             <span className="agent_performance_avgscore">{info.avgScore} 평균 점수</span>
                                         </div>
                                         <div className="agent_performance_info_record">
                                             <span className="agent_performance_record">{info.avgRecord}:1 평점</span>
-                                            <span className="agent_performance_kda">`${info.kills}/${info.deaths}/${info.assists}`</span>
+                                            <span className="agent_performance_kda">{`${info.kills}/${info.deaths}/${info.assists}`}</span>
                                         </div>
                                         <div className="agent_performance_info_winratio">
                                             <span className="agent_performance_winratio">{info.winRatio}%</span>
-                                            <span className="agent_performance_matchcount">{info.playedMatch}게임</span>
+                                            <span className="agent_performance_matchcount">{info.matchCount}게임</span>
                                         </div>
                                     </div>
                                 </>
                             )
                         })}
-                        <div className="agent_performance_info">
+                        <div style={{display: "flex", justifyContent: "center", padding: "10px", cursor: "pointer"}} onClick={toggleShowMoreAgentInfo}>
                             <span style={{textAlign: "center"}}>
                                 {showMore ? "닫기" : "더보기"}
                             </span>
