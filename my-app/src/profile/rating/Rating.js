@@ -95,7 +95,6 @@ export default function Rating({ userData }) {
 
         USER_STATS.most_kill_match = Math.max(...USER_STATS.match_kills); // 최다킬 매치
 
-        console.log(USER_STATS)
         return USER_STATS;
     }
 
@@ -135,13 +134,10 @@ export default function Rating({ userData }) {
     }
 
     function getSeasonGameWinDefeatRecord() {
-
-
-
         const gameRecord = Object.values(userData?.by_season).reduce((PREV_SEASON, CURR_SEASON) => {
 
             if(CURR_SEASON?.error){
-                return {...PREV_SEASON}
+                return {number_of_games: PREV_SEASON.number_of_games ?? 0, wins: PREV_SEASON.wins ?? 0}
             }else if (CURR_SEASON?.old === false && CURR_SEASON?.number_of_games) {
                 if (!PREV_SEASON.number_of_games) {
                     return { number_of_games: CURR_SEASON.number_of_games, wins: CURR_SEASON.wins }
