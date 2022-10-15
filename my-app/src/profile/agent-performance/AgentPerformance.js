@@ -21,10 +21,10 @@ export default function AgentPerfomance({ userData }) {
 
         let UNFILTERED_INFOS = MATCH_HISTORY.reduce((prev, curr) => {
             const PLAYER = curr.players.all_players.filter(player => player.puuid === userData.puuid)[0];
-            const STATS = PLAYER.stats;
             const TEAM = PLAYER.team.toLowerCase();
-            const AGENT_ICON_URL = PLAYER.assets.agent.small;
             const MATCH_RESULT = curr.teams?.[TEAM].has_won ? 'WIN' : 'DEFEAT';
+            const STATS = PLAYER.stats;
+            const AGENT_ICON_URL = PLAYER.assets.agent.small;
 
             return [
                 ...prev,
