@@ -1,0 +1,99 @@
+.map_performance_container {
+    width: 330px;
+    margin-right: auto;
+}
+
+.map_performance_detail_container {
+    background-color: #31313c;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+.map_performance_header {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 16px;
+}
+
+.map_performance {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.map_performance_info_container {
+    display: flex;
+    flex-direction: column;
+    /* padding: 16px 16px; */
+    margin: 2px 0 2px 0;
+    border-top: 1px solid #1C1C1F
+}
+
+.map_performance_info {
+    display: flex;
+    flex-basis: 100%;
+    border-bottom: 1px solid #1C1C1F;
+    padding: 10px 10px;
+}
+
+.map_performance_info_map_image_container{
+    flex-basis: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 10px;
+}
+
+.map_performance_info_map {
+    flex-basis: 40%;
+    display: flex;
+    flex-direction: column;
+}
+
+.map_performance_map {
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.map_performance_avgscore {
+    font-size: 11px;
+    color: #7b7a8e;
+}
+
+.map_performance_info_record {
+    flex-basis: 30%;
+    display: flex;
+    flex-direction: column;
+}
+
+.map_performance_record {
+    font-size: 11px;
+    color: #9897a8;
+    font-weight: bold;
+}
+
+.map_performance_kda {
+    font-size: 11px;
+    color: #7b7a8e;
+}
+
+.map_performance_info_winratio {
+    flex-basis: 50%;
+    display: flex;
+    flex-direction: column;
+}
+
+.map_performance_winratio {
+    font-size: 11px;
+    color: #e05271;
+    font-weight: bold;
+    text-align: right;
+}
+
+.map_performance_matchcount {
+    font-size: 11px;
+    text-align: right;
+}
+
+.a2{
+    font: 100;
+}
