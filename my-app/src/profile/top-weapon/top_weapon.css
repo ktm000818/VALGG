@@ -1,0 +1,100 @@
+.top_weapon_container {
+    width: 330px;
+    margin-right: auto;
+}
+
+.top_weapon_detail_container {
+    background-color: #31313c;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+.top_weapon_header {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 16px;
+}
+
+.top_weapon {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.top_weapon_info_container {
+    display: flex;
+    flex-direction: column;
+    /* padding: 16px 16px; */
+    margin: 2px 0 2px 0;
+    border-top: 1px solid #1C1C1F
+}
+
+.top_weapon_info {
+    display: flex;
+    flex-basis: 100%;
+    border-bottom: 1px solid #1C1C1F;
+    padding: 10px 10px;
+}
+
+.top_weapon_info_weapon_image_container{
+    flex-basis: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+    background-color: #282830;
+}
+
+.top_weapon_info_weapon {
+    flex-basis: 40%;
+    display: flex;
+    flex-direction: column;
+}
+
+.top_weapon_agent {
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.top_weapon_avgscore {
+    font-size: 11px;
+    color: #7b7a8e;
+}
+
+.top_weapon_info_record {
+    flex-basis: 30%;
+    display: flex;
+    flex-direction: column;
+}
+
+.top_weapon_record {
+    font-size: 11px;
+    color: #9897a8;
+    font-weight: bold;
+}
+
+.top_weapon_kda {
+    font-size: 11px;
+    color: #7b7a8e;
+}
+
+.top_weapon_info_winratio {
+    flex-basis: 20%;
+    display: flex;
+    flex-direction: column;
+}
+
+.top_weapon_winratio {
+    font-size: 11px;
+    color: #e05271;
+    font-weight: bold;
+    text-align: right;
+}
+
+.top_weapon_matchcount {
+    font-size: 11px;
+    text-align: right;
+}
+
+.a2{
+    font: 100;
+}
