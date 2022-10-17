@@ -5,6 +5,7 @@ import ProfileCard from "./profile-card/ProfileCard"
 import Rating from "./rating/Rating";
 import "./profile.css"
 import AgentPerfomance from "./agent-performance/AgentPerformance";
+import TopWeapon from "./top-weapon/TopWeapon";
 import MapPerfomance from "./map-performance/MapPerformance";
 
 export default function Profile() {
@@ -84,6 +85,7 @@ export default function Profile() {
                 <div className="main_defail_container">
                    <Rating userData={userData}/>
                    <AgentPerfomance userData={userData}/>
+                   <TopWeapon userData={userData}/>
                    <MapPerfomance userData={userData}/>
                    {/* <div style={{ width: "740px", maxWidth: "740px", border: "1px solid black" }}>
                     </div> */}
