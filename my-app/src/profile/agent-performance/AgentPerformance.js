@@ -8,14 +8,14 @@ export default function AgentPerfomance({ userData }) {
 
     useEffect(() => {
         if(userData?.MatchHistory)
-        getAndSetAgentInfos();
+        setAgentInfos(getAgentInfos);
     }, [userData])
 
     function toggleShowMoreAgentInfo() {
         setShowMore(prev => !prev);
     }
 
-    function getAndSetAgentInfos() {
+    function getAgentInfos() {
 
         const MATCH_HISTORY = userData.MatchHistory;
 
@@ -81,7 +81,7 @@ export default function AgentPerfomance({ userData }) {
             }
         }, {})
 
-        setAgentInfos(Object.values(FILTERED_INFOS));
+        return Object.values(FILTERED_INFOS);
     }
 
     return (
