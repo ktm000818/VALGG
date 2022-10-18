@@ -1,6 +1,5 @@
 .stats_container{
     width: 330px;
-    margin-right: auto;
 }
 
 .stats_detail_container{
@@ -12,11 +11,16 @@
     display: flex;
     justify-content: space-between;
     padding: 4px 16px;
+    height: 29px;
+
 }
 
 .rating{
-    font-size: 13px;
+    font-size: 14px;
     font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .act{

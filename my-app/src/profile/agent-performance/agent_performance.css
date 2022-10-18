@@ -1,6 +1,5 @@
 .agent_performance_container {
     width: 330px;
-    margin-right: auto;
 }
 
 .agent_performance_detail_container {
@@ -13,11 +12,15 @@
     display: flex;
     justify-content: space-between;
     padding: 4px 16px;
+    height: 29px;
 }
 
 .agent_performance {
     font-size: 13px;
     font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .agent_performance_info_container {
