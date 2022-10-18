@@ -1,0 +1,51 @@
+.main_stats_container{
+    width: 740px;
+}
+
+.main_stats_search_container{
+    background-color: #31313c;
+    border-radius: 4px;
+}
+
+.stats_search_container{
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 16px;
+    height: 29px;
+
+}
+
+.rating{
+    font-size: 14px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.act{
+    width: 100px
+}
+
+.stats_chart_container{
+    display: flex;
+    padding: 16px 16px;
+    margin: 2px 0 2px 0;
+    border-top: 1px solid #1C1C1F;
+}
+
+.charts_s1_container{
+    display: flex;
+    flex-basis: 33%;
+}
+
+.charts_s2_container{
+    display: flex;
+    flex-basis: 33%;
+}
+
+.charts_s2_container{
+    display: flex;
+    flex-basis: 33%;
+
+}

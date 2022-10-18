@@ -7,6 +7,7 @@ import "./profile.css"
 import AgentPerfomance from "./agent-performance/AgentPerformance";
 import TopWeapon from "./top-weapon/TopWeapon";
 import MapPerfomance from "./map-performance/MapPerformance";
+import MainStats from "./main-stats/MainStats";
 
 export default function Profile() {
     const [defaultUserData, setDefaultUserData] = useState({});
@@ -39,10 +40,10 @@ export default function Profile() {
      * 유저의 전체 데이터 조회
      */
     async function getWholeUserData(matchFilter = "competitive") {
-        const { 
+        const {
             name,
-            tag, 
-            region, 
+            tag,
+            region,
             puuid
         } = defaultUserData;
 
@@ -80,16 +81,20 @@ export default function Profile() {
 
     return (
         <>
-            <ProfileCard defaultUserData={defaultUserData} setWholeUserData={setWholeUserData}/>
+            <ProfileCard defaultUserData={defaultUserData} setWholeUserData={setWholeUserData} />
             <div className="main_container">
-                <div className="main_defail_container">
-                   <Rating userData={userData}/>
-                   <AgentPerfomance userData={userData}/>
-                   <TopWeapon userData={userData}/>
-                   <MapPerfomance userData={userData}/>
-                   {/* <div style={{ width: "740px", maxWidth: "740px", border: "1px solid black" }}>
-                    </div> */}
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                    <div className="side_container">
+                        <Rating userData={userData} />
+                        <AgentPerfomance userData={userData} />
+                        <TopWeapon userData={userData} />
+                        <MapPerfomance userData={userData} />
+                    </div>
+                    <main className="center_container">
+                        <MainStats/>
+                    </main>
                 </div>
+
             </div>
         </>
     )
