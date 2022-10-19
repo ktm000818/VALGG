@@ -218,7 +218,7 @@ const WinRatioPieChart = () => {
 
         //파이차트
         let chart = root.container.children.push(am5percent.PieChart.new(root, {
-            innerRadius: 40,
+            innerRadius: 30,
             layout: root.verticalLayout,
             radius: am5.percent(100)
         }));
@@ -279,7 +279,7 @@ const WinRatioPieChart = () => {
     }, [])
 
     return (
-        <div id="chartdiv" style={{ width: "100px", height: "100px" }}></div>
+        <div id="chartdiv" style={{ width: "90px", height: "90px" }}></div>
     );
 
 }

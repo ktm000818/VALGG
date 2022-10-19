@@ -12,7 +12,6 @@
     justify-content: space-between;
     padding: 4px 16px;
     height: 29px;
-
 }
 
 .rating{
@@ -34,18 +33,16 @@
     border-top: 1px solid #1C1C1F;
 }
 
-.charts_s1_container{
-    display: flex;
-    flex-basis: 33%;
+.chart_s1_container{
+    flex-basis: 35%;
+    flex-direction: column;
 }
 
-.charts_s2_container{
-    display: flex;
-    flex-basis: 33%;
+.chart_s2_container{
+    flex-basis: 35%;
 }
 
-.charts_s2_container{
-    display: flex;
-    flex-basis: 33%;
-
+.chart_s3_container{
+    flex-basis: 30%;
+    flex-direction: column;
 }
