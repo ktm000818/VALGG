@@ -32,16 +32,18 @@ const react_1 = __importStar(require("react"));
 const CustomAutoComplete = ({ options = [{ name: '' }], id = '', onChange = () => { }, onInputChange = () => { }, style = { width: 200 } }) => {
     var _a;
     const [inputValue, setInputValue] = (0, react_1.useState)('');
-    const [hasInputValue, SetHasInputValue] = (0, react_1.useState)(false);
+    const [hasInputValue, setHasInputValue] = (0, react_1.useState)(false);
     const [dropDownLiKey, setDropDownLiKey] = (0, react_1.useState)(0);
     (0, react_1.useEffect)(() => {
         onInputChange(inputValue);
+        // autocomplete input value가 공란일 때
         if (inputValue === '') {
-            SetHasInputValue(false);
+            setHasInputValue(false);
             setDropDownLiKey(0);
         }
-        else {
-            SetHasInputValue(true);
+        // autocomplete input value가 존재하고, #을 포함할 때만 검색함.
+        if (inputValue && inputValue.includes("#")) {
+            setHasInputValue(true);
         }
     }, [inputValue]);
     (0, react_1.useEffect)(() => {
@@ -52,15 +54,14 @@ const CustomAutoComplete = ({ options = [{ name: '' }], id = '', onChange = () =
             setDropDownLiKey(options.length - 1);
         }
     }, [dropDownLiKey]);
-    const filterDropDownList = () => {
-        if (inputValue === '') {
-        }
-        else {
-            SetHasInputValue(true);
-            // const filteredDropDownList = options.filter(item => item.name.includes(inputValue));
-            // setDropDownList(filteredDropDownList);
-        }
-    };
+    // const filterDropDownList = () => {
+    //     if (inputValue === '') {
+    //     } else {
+    //         setHasInputValue(true);
+    //         // const filteredDropDownList = options.filter(item => item.name.includes(inputValue));
+    //         // setDropDownList(filteredDropDownList);
+    //     }
+    // };
     const handleChange = (e) => {
         var _a;
         setInputValue((_a = e.target) === null || _a === void 0 ? void 0 : _a.value);

@@ -25,17 +25,21 @@ const CustomAutoComplete = ({
 
 
     const [inputValue, setInputValue] = useState<string>('');
-    const [hasInputValue, SetHasInputValue] = useState<boolean>(false);
+    const [hasInputValue, setHasInputValue] = useState<boolean>(false);
     const [dropDownLiKey, setDropDownLiKey] = useState<number>(0);
 
     useEffect(() => {
         onInputChange(inputValue);
 
+        // autocomplete input value가 공란일 때
         if (inputValue === '') {
-            SetHasInputValue(false);
+            setHasInputValue(false);
             setDropDownLiKey(0);
-        } else {
-            SetHasInputValue(true);
+        }
+
+        // autocomplete input value가 존재하고, #을 포함할 때만 검색함.
+        if(inputValue && inputValue.includes("#")) {
+            setHasInputValue(true);
         }
     }, [inputValue])
 
@@ -49,15 +53,15 @@ const CustomAutoComplete = ({
         }
     }, [dropDownLiKey])
 
-    const filterDropDownList = () => {
-        if (inputValue === '') {
+    // const filterDropDownList = () => {
+    //     if (inputValue === '') {
 
-        } else {
-            SetHasInputValue(true);
-            // const filteredDropDownList = options.filter(item => item.name.includes(inputValue));
-            // setDropDownList(filteredDropDownList);
-        }
-    };
+    //     } else {
+    //         setHasInputValue(true);
+    //         // const filteredDropDownList = options.filter(item => item.name.includes(inputValue));
+    //         // setDropDownList(filteredDropDownList);
+    //     }
+    // };
 
     const handleChange = (e: React.SyntheticEvent) => {
         setInputValue((e.target as HTMLInputElement)?.value)
