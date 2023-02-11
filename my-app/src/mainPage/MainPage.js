@@ -1,9 +1,9 @@
+import styled from '@emotion/styled';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CustomAutoComplete from '../components/CustomAutoComplete';
 import { getAccountData } from '../store/RiotApi';
 import { debounce } from '../Utils';
-import "./main_page.css";
 
 export default function MainPage() {
 
@@ -37,16 +37,45 @@ export default function MainPage() {
 
     return (
         <>
-            <div className='main'>
-                <div className='main_content'>
-                    <div className='main_content_logo_image'>
+            <MainWrapper>
+                <MainContentWrapper>
+                    <MainContentLogoImageWrapper>
                         <img src={"https://valorant.op.gg/images/valorant.png"} width="240px" />
-                    </div>
-                    <div className='main_content_autoComplete'>
+                    </MainContentLogoImageWrapper>
+                    <AutoCompleteWrapper>
                         <CustomAutoComplete options={userList} onInputChange={handleChangeTextField} onChange={handleChangeAutoComplete} style={{ width: "500px" }} />
-                    </div>
-                </div>
-            </div>
+                    </AutoCompleteWrapper>
+                </MainContentWrapper>
+            </MainWrapper>
         </>
     )
 }
+
+const MainWrapper = styled.div`
+    background: url(https://valorant.op.gg/images/main_bg_desktop.jpeg) no-repeat center top;
+    position: relative;
+    min-height: 1080px;
+    background-size: cover;
+`
+
+const MainContentWrapper = styled.div`
+    position: relative;
+    width: 50%;
+    height: 900px;
+    margin: auto;
+    padding-top: 50px;
+`
+
+const MainContentLogoImageWrapper = styled.div`
+    width: 100%;
+    position: absolute;
+    left: 0;
+`
+
+const AutoCompleteWrapper = styled.div`
+    position: absolute;
+    margin: auto;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+`
