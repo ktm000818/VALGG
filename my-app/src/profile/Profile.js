@@ -91,7 +91,7 @@ export default function Profile() {
                         <MapPerfomance userData={userData} />
                     </div>
                     <main className="center_container">
-                        <MainStats/>
+                        <MainStats userData={userData}/>
                     </main>
                 </div>
 
