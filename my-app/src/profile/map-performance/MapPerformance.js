@@ -24,7 +24,6 @@ export default function MapPerfomance({ userData }) {
             const PLAYER = curr.players.all_players.filter(player => player.puuid === userData.puuid)[0];
             const TEAM = PLAYER.team.toLowerCase();
             const MATCH_RESULT = curr.teams?.[TEAM].has_won ? 1 : 0;
-            console.log(prev, curr)
             if (prev[MAP]) {
                 return {
                     ...prev,
@@ -56,7 +55,6 @@ export default function MapPerfomance({ userData }) {
             }
         }, {})
 
-        console.log(MatchHistoryGroupByMap)
 
         setMapInfos(Object.values(MatchHistoryGroupByMap))
     }

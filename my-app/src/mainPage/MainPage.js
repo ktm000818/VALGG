@@ -27,7 +27,6 @@ export default function MainPage() {
             debounce(async () => {
                 const [name, tag] = value.split("#");
                 const USER_LIST = await getAccountData(name, tag, true);
-                console.log(USER_LIST)
                 setUserList([USER_LIST]);
             }, 500)
         } else {

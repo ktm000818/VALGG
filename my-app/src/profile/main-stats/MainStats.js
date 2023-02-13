@@ -12,14 +12,12 @@ export default function MainStats({ userData }) {
     useEffect(() => {
         if (userData?.MatchHistory) {
             setAgentInfos(getAgentInfos);
-            console.log(getAgentInfos())
         }
     }, [userData])
 
     useEffect(() => {
         if (agentInfos.length > 0) {
             setWholeStat(getWinRatioAndKDARating(agentInfos));
-            console.log(getWinRatioAndKDARating(agentInfos))
         }
     }, [agentInfos])
 
@@ -97,7 +95,6 @@ export default function MainStats({ userData }) {
             const { kills, deaths, assists, matchCount, matchWins, score } = curr;
             const kdaRatio = (kills + deaths + assists) / deaths;
             const matchDefeats = matchCount - matchWins;
-            console.log(prev, curr)
             if (prev?.matchCount) {
                 return {
                     kills: prev.kills + kills,
