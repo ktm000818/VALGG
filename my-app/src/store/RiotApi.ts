@@ -21,7 +21,7 @@ export function getAllUserData(props: AllProps) {
 
     let arr = [
         getMatchHistoryByPUUID(props),
-        getAccountDataTest(props),
+        // getAccountDataTest(props),
         // getMMRData(props),
         // getMMRHistory(props),
         getMMRDataByPUUID(props),
@@ -34,7 +34,7 @@ export function getAllUserData(props: AllProps) {
 
 }
 
-export async function getAccountData(name: string, tag: string, onlyname?: boolean): Promise<object> {
+export async function getAccountData(name: string, tag: string, onlyname?: boolean): Promise<any> {
     try {
         const response = await axios.get(`${baseUrl}/valorant/v1/account/${name}/${tag}`);
 
