@@ -18,7 +18,7 @@ const baseUrl = "https://api.henrikdev.xyz";
 function getAllUserData(props) {
     let arr = [
         getMatchHistoryByPUUID(props),
-        getAccountDataTest(props),
+        // getAccountDataTest(props),
         // getMMRData(props),
         // getMMRHistory(props),
         getMMRDataByPUUID(props),
