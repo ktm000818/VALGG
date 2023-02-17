@@ -7,8 +7,8 @@ export const playerDefaultInfoState = atom({
     default: {}
 })
 
-export const playerInfoState = atom({
-    key: `playerInfoState${makeUUID()}`,
+export const playerWholeInfoState = atom({
+    key: `playerWholeInfoState${makeUUID()}`,
     default: {}
 })
 
@@ -24,7 +24,7 @@ export const puuidState = selector({
 export const currentTierState = selector({
     key: `currentTierState${makeUUID()}`,
     get: ({ get }) => {
-        const { current_data } = get(playerInfoState);
+        const { current_data } = get(playerWholeInfoState);
 
         return current_data?.currenttier;
     }
@@ -33,7 +33,7 @@ export const currentTierState = selector({
 export const currentTierImageSmallState = selector({
     key: `currentTierImageSmallState${makeUUID()}`,
     get: ({ get }) => {
-        const { current_data } = get(playerInfoState);
+        const { current_data } = get(playerWholeInfoState);
 
         return current_data?.images?.small;
     }
@@ -42,7 +42,7 @@ export const currentTierImageSmallState = selector({
 export const currentTierPatchedState = selector({
     key: `currentTierPatchedState${makeUUID()}`,
     get: ({ get }) => {
-        const { current_data } = get(playerInfoState);
+        const { current_data } = get(playerWholeInfoState);
 
         return current_data?.currenttierpatched ?? "unranked";
     }
@@ -51,7 +51,7 @@ export const currentTierPatchedState = selector({
 export const latestFiveGamesState = selector({
     key: `latestFiveGamesState${makeUUID()}`,
     get: ({ get }) => {
-        const { MatchHistory } = get(playerInfoState);
+        const { MatchHistory } = get(playerWholeInfoState);
 
         return MatchHistory;
     }
@@ -60,10 +60,8 @@ export const latestFiveGamesState = selector({
 export const latestFiveGamesStatsState = selector({
     key: `latestFiveGamesStatsState${makeUUID()}`,
     get: ({ get }) => {
-        console.log(get(playerInfoState))
-        const LATEST_FIVE_GAMES = get(playerInfoState)?.MatchHistory;
+        const LATEST_FIVE_GAMES = get(playerWholeInfoState)?.MatchHistory;
         const PLAYER_PUUID = get(playerDefaultInfoState)?.puuid;
-        console.log(LATEST_FIVE_GAMES, PLAYER_PUUID);
 
         if (!PLAYER_PUUID) {
             return;
@@ -125,7 +123,6 @@ export const latestFiveGamesStatsState = selector({
 
         USER_STATS.most_kill_match = Math.max(...USER_STATS.match_kills); // 최다킬 매치
 
-        console.log(USER_STATS)
         return USER_STATS;
     }
 })
@@ -173,8 +170,7 @@ export const latestFiveGamesKDRatioState = selector({
 export const seasonGameWinDefeatRecordState = selector({
     key: `seasonGameWinDefeatRecordState${makeUUID()}`,
     get: ({ get }) => {
-        // console.log(get(playerInfoState))
-        const BY_SEASON_DATA = get(playerInfoState)?.by_season;
+        const BY_SEASON_DATA = get(playerWholeInfoState)?.by_season;
 
         if (isEmpty(BY_SEASON_DATA)) {
             return {};
@@ -286,7 +282,6 @@ export const latestFiveGamesDPRState = selector({
     get: ({ get }) => {
         const latestFiveGamesRounds = get(latestFiveGamesWholeRoundsState);
         const latestFiveGamesWholeDamage = get(latestFiveGamesWholeDamageState);
-        console.log(latestFiveGamesRounds, latestFiveGamesWholeDamage)
 
         if (latestFiveGamesRounds === undefined || latestFiveGamesWholeDamage === undefined) {
             return 0;
@@ -344,7 +339,7 @@ export const latestFiveGamesHeadshotPercentageState = selector({
     key: `headshotPercentageState${makeUUID()}`,
     get: ({ get }) => {
         const LATEST_FIVE_GAMES_STATS = get(latestFiveGamesStatsState);
-        if(isEmpty(LATEST_FIVE_GAMES_STATS)){
+        if (isEmpty(LATEST_FIVE_GAMES_STATS)) {
             return 0 + "%";
         }
         const { headshots, bodyshots, legshots } = LATEST_FIVE_GAMES_STATS;
@@ -356,7 +351,7 @@ export const latestFiveGamesBodyshotPercentageState = selector({
     key: `bodyshotPercentageState${makeUUID()}`,
     get: ({ get }) => {
         const LATEST_FIVE_GAMES_STATS = get(latestFiveGamesStatsState);
-        if(isEmpty(LATEST_FIVE_GAMES_STATS)){
+        if (isEmpty(LATEST_FIVE_GAMES_STATS)) {
             return 0 + "%";
         }
         const { headshots, bodyshots, legshots } = LATEST_FIVE_GAMES_STATS;
@@ -368,10 +363,89 @@ export const latestFiveGamesLegshotPercentageState = selector({
     key: `legshotPercentageState${makeUUID()}`,
     get: ({ get }) => {
         const LATEST_FIVE_GAMES_STATS = get(latestFiveGamesStatsState);
-        if(isEmpty(LATEST_FIVE_GAMES_STATS)){
+        if (isEmpty(LATEST_FIVE_GAMES_STATS)) {
             return 0 + "%";
         }
         const { headshots, bodyshots, legshots } = LATEST_FIVE_GAMES_STATS;
         return (legshots / (headshots + bodyshots + legshots) * 100).toFixed(2) + "%";
+    }
+})
+
+export const agentPlayInfosState = selector({
+    key: `agentPlayInfosState${makeUUID()}`,
+    get: ({ get }) => {
+        const LATEST_FIVE_GAMES = get(latestFiveGamesState);
+
+        if (isEmpty(LATEST_FIVE_GAMES)) {
+            return [];
+        }
+
+        let UNFILTERED_INFOS = LATEST_FIVE_GAMES.reduce((prev, curr) => {
+            const PLAYER = curr.players.all_players.filter(player => player.puuid === get(puuidState))[0];
+            const TEAM = PLAYER.team.toLowerCase();
+            const MATCH_RESULT = curr.teams?.[TEAM].has_won ? 'WIN' : 'DEFEAT';
+            const STATS = PLAYER.stats;
+            const AGENT_ICON_URL = PLAYER.assets.agent.small;
+
+            return [
+                ...prev,
+                {
+                    agent: PLAYER.character,
+                    score: STATS.score,
+                    kills: STATS.kills,
+                    deaths: STATS.deaths,
+                    assists: STATS.assists,
+                    match_result: MATCH_RESULT,
+                    AGENT_ICON_URL
+                }
+            ]
+
+        }, [])
+
+        const FILTERED_INFOS = UNFILTERED_INFOS.reduce((prev, curr) => {
+            const { agent, assists, deaths, kills, match_result, score, AGENT_ICON_URL } = curr;
+
+            if (prev[agent]) {
+                return {
+                    ...prev,
+                    [agent]: {
+                        agent: agent,
+                        assists: prev[agent].assists + assists,
+                        deaths: prev[agent].deaths + deaths,
+                        kills: prev[agent].kills + kills,
+                        score: prev[agent].score + score,
+                        avgRecord: (((prev[agent].kills + kills) + (prev[agent].assists + assists)) / (prev[agent].deaths + deaths)).toFixed(2),
+                        avgScore: ((prev[agent].score + score) / (prev[agent].matchCount + 1)).toFixed(0),
+                        winRatio: ((prev[agent].matchWins + (match_result === "WIN" ? 1 : 0)) / (prev[agent].matchCount + 1) * 100).toFixed(0),
+                        matchWins: prev[agent].matchWins + (match_result === "WIN" ? 1 : 0),
+                        matchCount: prev[agent].matchCount + 1,
+                        AGENT_ICON_URL
+                    }
+                }
+            } else {
+                return {
+                    ...prev,
+                    [agent]: {
+                        agent,
+                        assists,
+                        deaths,
+                        kills,
+                        score,
+                        avgScore: score,
+                        avgRecord: ((kills + assists) / deaths).toFixed(2),
+                        winRatio: match_result === "WIN" ? 100 : 0,
+                        matchWins: match_result === "WIN" ? 1 : 0,
+                        matchCount: 1,
+                        AGENT_ICON_URL
+                    }
+                }
+            }
+        }, {})
+
+        if (isEmpty(FILTERED_INFOS)) {
+            return [];
+        }
+
+        return Object.values(FILTERED_INFOS);
     }
 })
