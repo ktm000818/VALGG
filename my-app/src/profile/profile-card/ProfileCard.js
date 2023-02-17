@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { useRecoilValue } from "recoil"
 import { playerDefaultInfoState } from "../../store/playerWholeInfoStore"
 
-export default function ProfileCard({ setPlayerInfo = () => { } }) {
+export default function ProfileCard({ updatePlayerInfo = () => { } }) {
     const playerDefaultInfo = useRecoilValue(playerDefaultInfoState);
     return (
         <>
@@ -23,7 +23,7 @@ export default function ProfileCard({ setPlayerInfo = () => { } }) {
                                     <ProfileLadderRank>1231th</ProfileLadderRank>
                                 </ProfileInfo>
                                 <ProfileInfo>
-                                    <HistoryUpdateButton onClick={setPlayerInfo}>전적 갱신</HistoryUpdateButton>
+                                    <HistoryUpdateButton onClick={updatePlayerInfo}>전적 갱신</HistoryUpdateButton>
                                 </ProfileInfo>
                                 <ProfileInfo>
                                     <LatestUpdateDate>최근 업데이트: {playerDefaultInfo?.last_update}</LatestUpdateDate>
