@@ -8,7 +8,7 @@ import TopWeapon from "./top-weapon/TopWeapon";
 import MapPerfomance from "./map-performance/MapPerformance";
 import MainStats from "./main-stats/MainStats";
 import { useRecoilState } from "recoil";
-import { playerDefaultInfoState, playerInfoState } from "../store/playerWholeInfoStore";
+import { playerDefaultInfoState, playerWholeInfoState } from "../store/playerWholeInfoStore";
 import styled from "@emotion/styled";
 
 interface DEFAULT_USER_DATA_CARD {
@@ -32,12 +32,12 @@ interface DEFAULT_USER_DATA {
 
 export default function Profile() {
     const [defaultInfoRecoil, setDefaultInfoRecoil] = useRecoilState(playerDefaultInfoState);
-    const [infoRecoil, setInfoRecoil] = useRecoilState(playerInfoState);
+    const [infoRecoil, setInfoRecoil] = useRecoilState(playerWholeInfoState);
     const { name, tag } = useLocation().state;
 
     useEffect(() => {
         if (name && tag) {
-            setPlayerInfo();
+            updatePlayerInfo();
         }
     }, [name])
 
@@ -94,7 +94,7 @@ export default function Profile() {
     /**
      * 플레이어의 모든 정보를 Recoil Store에 저장함
      */
-    const setPlayerInfo = async () => {
+    const updatePlayerInfo = async () => {
         const DEFAULT_USER_DATA: DEFAULT_USER_DATA = await getDefaultUserData();
         const WHOLE_USER_DATA = await getWholeUserData("competitive", DEFAULT_USER_DATA);
         setDefaultInfoRecoil(DEFAULT_USER_DATA);
@@ -103,14 +103,14 @@ export default function Profile() {
 
     return (
         <>
-            <ProfileCard setPlayerInfo={setPlayerInfo} />
+            <ProfileCard updatePlayerInfo={updatePlayerInfo} />
             <MainWrapper>
                 <Main>
                     <SideContentWrapper>
                         <Rating />
                         {/* TODO 컴포넌트 Emotion, TypeScript 적용! */}
-                        {/* <AgentPerfomance/>
-                        <TopWeapon/>
+                        <AgentPerfomance/>
+                        {/* <TopWeapon/>
                         <MapPerfomance/> */}
                     </SideContentWrapper>
                     <CenterContentWrapper>

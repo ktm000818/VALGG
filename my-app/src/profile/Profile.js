@@ -18,16 +18,17 @@ const react_router_dom_1 = require("react-router-dom");
 const RiotApi_1 = require("../store/RiotApi");
 const ProfileCard_1 = __importDefault(require("./profile-card/ProfileCard"));
 const Rating_1 = __importDefault(require("./rating/Rating"));
+const AgentPerformance_1 = __importDefault(require("./agent-performance/AgentPerformance"));
 const recoil_1 = require("recoil");
 const playerWholeInfoStore_1 = require("../store/playerWholeInfoStore");
 const styled_1 = __importDefault(require("@emotion/styled"));
 function Profile() {
     const [defaultInfoRecoil, setDefaultInfoRecoil] = (0, recoil_1.useRecoilState)(playerWholeInfoStore_1.playerDefaultInfoState);
-    const [infoRecoil, setInfoRecoil] = (0, recoil_1.useRecoilState)(playerWholeInfoStore_1.playerInfoState);
+    const [infoRecoil, setInfoRecoil] = (0, recoil_1.useRecoilState)(playerWholeInfoStore_1.playerWholeInfoState);
     const { name, tag } = (0, react_router_dom_1.useLocation)().state;
     (0, react_1.useEffect)(() => {
         if (name && tag) {
-            setPlayerInfo();
+            updatePlayerInfo();
         }
     }, [name]);
     /**
@@ -82,13 +83,13 @@ function Profile() {
     /**
      * 플레이어의 모든 정보를 Recoil Store에 저장함
      */
-    const setPlayerInfo = () => __awaiter(this, void 0, void 0, function* () {
+    const updatePlayerInfo = () => __awaiter(this, void 0, void 0, function* () {
         const DEFAULT_USER_DATA = yield getDefaultUserData();
         const WHOLE_USER_DATA = yield getWholeUserData("competitive", DEFAULT_USER_DATA);
         setDefaultInfoRecoil(DEFAULT_USER_DATA);
         setInfoRecoil(WHOLE_USER_DATA);
     });
-    return ((0, jsx_runtime_1.jsxs)(jsx_runtime_1.Fragment, { children: [(0, jsx_runtime_1.jsx)(ProfileCard_1.default, { setPlayerInfo: setPlayerInfo }), (0, jsx_runtime_1.jsx)(MainWrapper, { children: (0, jsx_runtime_1.jsxs)(Main, { children: [(0, jsx_runtime_1.jsx)(SideContentWrapper, { children: (0, jsx_runtime_1.jsx)(Rating_1.default, {}) }), (0, jsx_runtime_1.jsx)(CenterContentWrapper, {})] }) })] }));
+    return ((0, jsx_runtime_1.jsxs)(jsx_runtime_1.Fragment, { children: [(0, jsx_runtime_1.jsx)(ProfileCard_1.default, { updatePlayerInfo: updatePlayerInfo }), (0, jsx_runtime_1.jsx)(MainWrapper, { children: (0, jsx_runtime_1.jsxs)(Main, { children: [(0, jsx_runtime_1.jsxs)(SideContentWrapper, { children: [(0, jsx_runtime_1.jsx)(Rating_1.default, {}), (0, jsx_runtime_1.jsx)(AgentPerformance_1.default, {})] }), (0, jsx_runtime_1.jsx)(CenterContentWrapper, {})] }) })] }));
 }
 exports.default = Profile;
 const MainWrapper = styled_1.default.div `
