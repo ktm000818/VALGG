@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
+import { ToggleButtonWrapper, ToggleButton } from '../../components/commonStyledComponents';
 import { agentPlayInfosState } from '../../store/playerWholeInfoStore';
 import './agent_performance.css';
 
@@ -53,9 +54,9 @@ export default function AgentPerfomance() {
                         })}
 
                         <ToggleButtonWrapper onClick={toggleShowMoreAgentInfo}>
-                            <span style={{ textAlign: "center" }}>
+                            <ToggleButton>
                                 {showMore ? "닫기" : "더보기"}
-                            </span>
+                            </ToggleButton>
                         </ToggleButtonWrapper>
                     </AgentPerformanceInfoWrapper>
                 </AgentPerformanceDetailWrapper>
@@ -162,11 +163,4 @@ const AgentPerformanceWinratio = styled.span`
 const AgentPerformanceMatchcount = styled.span`
     font-size: 11px;
     text-align: right;
-`
-
-const ToggleButtonWrapper = styled.div`
-    display: "flex";
-    justify-content: "center";
-    padding: "10px";
-    cursor: "pointer";
 `
