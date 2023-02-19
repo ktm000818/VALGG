@@ -19,6 +19,7 @@ const RiotApi_1 = require("../store/RiotApi");
 const ProfileCard_1 = __importDefault(require("./profile-card/ProfileCard"));
 const Rating_1 = __importDefault(require("./rating/Rating"));
 const AgentPerformance_1 = __importDefault(require("./agent-performance/AgentPerformance"));
+const TopWeapon_1 = __importDefault(require("./top-weapon/TopWeapon"));
 const recoil_1 = require("recoil");
 const playerWholeInfoStore_1 = require("../store/playerWholeInfoStore");
 const styled_1 = __importDefault(require("@emotion/styled"));
@@ -89,7 +90,7 @@ function Profile() {
         setDefaultInfoRecoil(DEFAULT_USER_DATA);
         setInfoRecoil(WHOLE_USER_DATA);
     });
-    return ((0, jsx_runtime_1.jsxs)(jsx_runtime_1.Fragment, { children: [(0, jsx_runtime_1.jsx)(ProfileCard_1.default, { updatePlayerInfo: updatePlayerInfo }), (0, jsx_runtime_1.jsx)(MainWrapper, { children: (0, jsx_runtime_1.jsxs)(Main, { children: [(0, jsx_runtime_1.jsxs)(SideContentWrapper, { children: [(0, jsx_runtime_1.jsx)(Rating_1.default, {}), (0, jsx_runtime_1.jsx)(AgentPerformance_1.default, {})] }), (0, jsx_runtime_1.jsx)(CenterContentWrapper, {})] }) })] }));
+    return ((0, jsx_runtime_1.jsxs)(jsx_runtime_1.Fragment, { children: [(0, jsx_runtime_1.jsx)(ProfileCard_1.default, { updatePlayerInfo: updatePlayerInfo }), (0, jsx_runtime_1.jsx)(MainWrapper, { children: (0, jsx_runtime_1.jsxs)(Main, { children: [(0, jsx_runtime_1.jsxs)(SideContentWrapper, { children: [(0, jsx_runtime_1.jsx)(Rating_1.default, {}), (0, jsx_runtime_1.jsx)(AgentPerformance_1.default, {}), (0, jsx_runtime_1.jsx)(TopWeapon_1.default, {})] }), (0, jsx_runtime_1.jsx)(CenterContentWrapper, {})] }) })] }));
 }
 exports.default = Profile;
 const MainWrapper = styled_1.default.div `
