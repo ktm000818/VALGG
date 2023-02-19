@@ -110,8 +110,8 @@ export default function Profile() {
                         <Rating />
                         {/* TODO 컴포넌트 Emotion, TypeScript 적용! */}
                         <AgentPerfomance/>
-                        {/* <TopWeapon/>
-                        <MapPerfomance/> */}
+                        <TopWeapon/>
+                        {/* <MapPerfomance/> */}
                     </SideContentWrapper>
                     <CenterContentWrapper>
                         {/* <MainStats/> */}
