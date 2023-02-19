@@ -449,3 +449,48 @@ export const agentPlayInfosState = selector({
         return Object.values(FILTERED_INFOS);
     }
 })
+
+export const weaponStatsInfoState = selector({
+    key: `weaponStatsInfo${makeUUID()}`,
+    get: ({ get }) => {
+        const { MatchHistory } = get(playerWholeInfoState);
+        if(isEmpty(MatchHistory)){
+            return [];
+        }
+        const WHOLE_KILLS = MatchHistory.reduce((PREV_MATCH, CURRENT_MATCH) => {
+            const KILLS_INFO_ARR = CURRENT_MATCH.kills.filter(killer => killer.killer_puuid === get(puuidState));
+    
+            if (!PREV_MATCH) {
+                return [...PREV_MATCH]
+            } else {
+                return [...PREV_MATCH, ...KILLS_INFO_ARR]
+            }
+        }, [])
+
+        const KILL_INFO_GROUP_BY_WEAPON = WHOLE_KILLS.reduce((prev, curr) => {
+            const weaponName = curr.damage_weapon_name || 'Ultimate';
+            const WEAPON_IMAGE_ASSETS = curr.damage_weapon_assets?.display_icon;
+            if (!prev) {
+                return {
+                    ...prev,
+                    [weaponName]: {
+                        weaponName,
+                        WEAPON_IMAGE_ASSETS,
+                        kill: 1
+                    }
+                }
+            } else {
+                return {
+                    ...prev,
+                    [weaponName]: {
+                        weaponName,
+                        WEAPON_IMAGE_ASSETS,
+                        kill: (prev[weaponName]?.kill || 0) + 1
+                    }
+                }
+            }
+        }, {})
+
+        return Object.values(KILL_INFO_GROUP_BY_WEAPON);
+    }
+})
