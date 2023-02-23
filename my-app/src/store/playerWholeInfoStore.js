@@ -454,12 +454,12 @@ export const weaponStatsInfoState = selector({
     key: `weaponStatsInfo${makeUUID()}`,
     get: ({ get }) => {
         const { MatchHistory } = get(playerWholeInfoState);
-        if(isEmpty(MatchHistory)){
+        if (isEmpty(MatchHistory)) {
             return [];
         }
         const WHOLE_KILLS = MatchHistory.reduce((PREV_MATCH, CURRENT_MATCH) => {
             const KILLS_INFO_ARR = CURRENT_MATCH.kills.filter(killer => killer.killer_puuid === get(puuidState));
-    
+
             if (!PREV_MATCH) {
                 return [...PREV_MATCH]
             } else {
@@ -492,5 +492,55 @@ export const weaponStatsInfoState = selector({
         }, {})
 
         return Object.values(KILL_INFO_GROUP_BY_WEAPON);
+    }
+})
+
+export const matchHistoryGroupByMapState = selector({
+    key: `matchHistoryGroupByMapState${makeUUID()}`,
+    get: ({ get }) => {
+        const MATCH_HISTORY = get(latestFiveGamesState);
+
+        if (isEmpty(MATCH_HISTORY)) {
+            return [];
+        }
+
+        const MatchHistoryGroupByMap = MATCH_HISTORY.reduce((prev, curr) => {
+            const META_DATA = curr.metadata;
+            const MAP = META_DATA.map;
+            const PLAYER = curr.players.all_players.filter(player => player.puuid === get(puuidState))[0];
+            const TEAM = PLAYER.team.toLowerCase();
+            const MATCH_RESULT = curr.teams?.[TEAM].has_won ? 1 : 0;
+            if (prev[MAP]) {
+                return {
+                    ...prev,
+                    [MAP]: {
+                        map: MAP,
+                        metadata: [...prev[MAP].metadata, { ...META_DATA }],
+                        matchWins: prev[MAP].matchWins + MATCH_RESULT,
+                        winRatio: ((prev[MAP].matchWins + MATCH_RESULT) / (prev[MAP].matchCount + 1) * 100).toFixed(0),
+                        matchCount: prev[MAP].matchCount + 1,
+                        matchDefeats: (prev[MAP].matchCount + 1) - (prev[MAP].matchWins + MATCH_RESULT)
+
+                    }
+                }
+            } else if (MAP) {
+                return {
+                    ...prev,
+                    [MAP]: {
+                        map: MAP,
+                        metadata: [{ ...META_DATA }],
+                        matchWins: MATCH_RESULT,
+                        winRatio: MATCH_RESULT ? 100 : 0,
+                        matchCount: 1,
+                        matchDefeats: MATCH_RESULT ? 0 : 1
+                    }
+                }
+            }
+            else {
+                return { ...prev }
+            }
+        }, {})
+
+        return Object.values(MatchHistoryGroupByMap);
     }
 })
