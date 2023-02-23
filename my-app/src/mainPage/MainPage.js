@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { isEmpty, uniqBy } from 'lodash';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CustomAutoComplete from '../components/CustomAutoComplete';
@@ -7,12 +8,18 @@ import { debounce } from '../Utils';
 
 export default function MainPage() {
 
-    const [userList, setUserList] = useState([{ name: '' }]);
+    const LS_SEARCH_HISTORY = JSON.parse(localStorage.getItem("searchHistory")) ?? [];
+    const [userList, setUserList] = useState({name: ''});
     const navigate = useNavigate();
 
     const handleChangeAutoComplete = useCallback((value) => {
         if (value) {
             const [name, tag] = value.split("#");
+
+            let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) ?? [];
+            searchHistory.push({name: value});
+            localStorage.setItem("searchHistory", JSON.stringify(Array.from(uniqBy(searchHistory, "name"))));
+
             navigate(`/profile?name=${name}&tag=${tag}`, {
                 state: {
                     name,
@@ -42,7 +49,7 @@ export default function MainPage() {
                         <img src={"https://valorant.op.gg/images/valorant.png"} width="240px" />
                     </MainContentLogoImageWrapper>
                     <AutoCompleteWrapper>
-                        <CustomAutoComplete options={userList} onInputChange={handleChangeTextField} onChange={handleChangeAutoComplete} style={{ width: "500px" }} />
+                        <CustomAutoComplete searchHistory={LS_SEARCH_HISTORY} options={userList} onInputChange={handleChangeTextField} onChange={handleChangeAutoComplete} style={{ width: "500px" }} />
                     </AutoCompleteWrapper>
                 </MainContentWrapper>
             </MainWrapper>

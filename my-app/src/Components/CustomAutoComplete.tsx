@@ -3,7 +3,12 @@ import React, { KeyboardEventHandler, useCallback, useEffect, useState } from "r
 import { debounce } from "../Utils";
 import PropTypes from "prop-types";
 
+interface SearchHistory {
+    name: string
+}
+
 interface properties {
+    searchHistory: Array<SearchHistory>
     options: dropDownList[];
     style: React.CSSProperties;
     id: string;
@@ -15,12 +20,13 @@ interface dropDownList {
     name: string
 }
 
-const CustomAutoComplete = ({ 
+const CustomAutoComplete = ({
+    searchHistory = [],
     options = [{ name: '' }],
     id = '',
     onChange = () => { },
     onInputChange = () => { },
-    style = {width: 200}
+    style = { width: 200 }
 }: properties) => {
 
 
@@ -38,7 +44,7 @@ const CustomAutoComplete = ({
         }
 
         // autocomplete input value가 존재하고, #을 포함할 때만 검색함.
-        if(inputValue && inputValue.includes("#")) {
+        if (inputValue && inputValue.includes("#")) {
             setHasInputValue(true);
         }
     }, [inputValue])
@@ -100,7 +106,7 @@ const CustomAutoComplete = ({
         <>
             <Container>
                 <CustomInputContainer id={id} hasInputValue={hasInputValue}>
-                    <CustomInput value={inputValue} onChange={handleChange} onKeyDown={handleKeyPress} style={style}/>
+                    <CustomInput value={inputValue} onChange={handleChange} onKeyDown={handleKeyPress} style={style} />
                     <DeleteButton onClick={deleteInputValue}>x</DeleteButton>
                 </CustomInputContainer>
                 {hasInputValue && (
@@ -117,6 +123,20 @@ const CustomAutoComplete = ({
                             </DropDownListLi>
                         ))}
                     </DropDownListUl>
+                )}
+                {searchHistory.length >= 1 && (
+                    <>
+                        <div>
+                            최근 검색
+                        </div>
+                        {searchHistory.map((item) => {
+                            return (
+                                <div onClick={selectDropDown} style={{cursor: "pointer"}}>
+                                    {item.name}
+                                </div>
+                            )
+                        })}
+                    </>
                 )}
             </Container>
         </>
@@ -144,7 +164,7 @@ const CustomInputContainer = styled.div<{ hasInputValue: boolean }>`
     }
 `
 
-const CustomInput = styled.input<{style: React.CSSProperties}>`
+const CustomInput = styled.input<{ style: React.CSSProperties }>`
     flex-grow: 1;
     width: ${props => props.style.width};
     margin: 0;
@@ -165,7 +185,7 @@ const DeleteButton = styled.button`
     cursor: pointer;
 `
 
-const DropDownListUl = styled.ul<{style: React.CSSProperties}>`
+const DropDownListUl = styled.ul<{ style: React.CSSProperties }>`
     position: absolute;
     width: ${props => props.style.width};
     display: block;
