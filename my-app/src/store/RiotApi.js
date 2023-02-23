@@ -16,17 +16,25 @@ exports.getFeaturedBundle = exports.getAllAvailableOffers = exports.getMatchData
 const axios_1 = __importDefault(require("axios"));
 const baseUrl = "https://api.henrikdev.xyz";
 function getAllUserData(props) {
-    let arr = [
-        getMatchHistoryByPUUID(props),
-        // getAccountDataTest(props),
-        // getMMRData(props),
-        // getMMRHistory(props),
-        getMMRDataByPUUID(props),
-        getMMRHistoryByPUUID(props),
-        getAllAvailableOffers(),
-        getFeaturedBundle(),
-    ];
-    return Promise.all(arr);
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            let arr = [
+                getMatchHistoryByPUUID(props),
+                // getAccountDataTest(props),
+                // getMMRData(props),
+                // getMMRHistory(props),
+                getMMRDataByPUUID(props),
+                getMMRHistoryByPUUID(props),
+                getAllAvailableOffers(),
+                getFeaturedBundle(),
+            ];
+            return yield Promise.all(arr);
+        }
+        catch (error) {
+            alert("전체 데이터 조회 중 에러 발생");
+            return [];
+        }
+    });
 }
 exports.getAllUserData = getAllUserData;
 function getAccountData(name, tag, onlyname) {
@@ -60,7 +68,7 @@ function getAccountData(name, tag, onlyname) {
 }
 exports.getAccountData = getAccountData;
 function getAccountDataTest(props) {
-    return axios_1.default.get(`${baseUrl}/valorant/v1/account/${props.name}/${props.tag}`);
+    return axios_1.default.get(`${baseUrl}/valorant/v1/account/${props.name}/${props.tag}`).then(res => res.data.data);
 }
 exports.getAccountDataTest = getAccountDataTest;
 //MMR

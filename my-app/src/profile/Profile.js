@@ -37,12 +37,13 @@ function Profile() {
      */
     const getDefaultUserData = () => __awaiter(this, void 0, void 0, function* () {
         try {
-            const { data } = yield (0, RiotApi_1.getAccountDataTest)({ name, tag });
-            return data.data;
+            const data = yield (0, RiotApi_1.getAccountDataTest)({ name, tag });
+            return data;
         }
         catch (error) {
             console.error(error);
             alert("조회 중 에러 발생!");
+            return false;
         }
     });
     /**
@@ -59,7 +60,7 @@ function Profile() {
             matchFilter
         };
         try {
-            const result = yield (0, RiotApi_1.getAllUserData)(prop).then(values => values);
+            const result = yield (0, RiotApi_1.getAllUserData)(prop);
             const filteredResult = result.reduce((prev, curr) => {
                 const responseData = curr.data.data;
                 if (Array.isArray(curr.data.data)) {
@@ -86,9 +87,11 @@ function Profile() {
      */
     const updatePlayerInfo = () => __awaiter(this, void 0, void 0, function* () {
         const DEFAULT_USER_DATA = yield getDefaultUserData();
-        const WHOLE_USER_DATA = yield getWholeUserData("competitive", DEFAULT_USER_DATA);
-        setDefaultInfoRecoil(DEFAULT_USER_DATA);
-        setInfoRecoil(WHOLE_USER_DATA);
+        if (DEFAULT_USER_DATA) {
+            const WHOLE_USER_DATA = yield getWholeUserData("competitive", DEFAULT_USER_DATA);
+            setDefaultInfoRecoil(DEFAULT_USER_DATA);
+            setInfoRecoil(WHOLE_USER_DATA);
+        }
     });
     return ((0, jsx_runtime_1.jsxs)(jsx_runtime_1.Fragment, { children: [(0, jsx_runtime_1.jsx)(ProfileCard_1.default, { updatePlayerInfo: updatePlayerInfo }), (0, jsx_runtime_1.jsx)(MainWrapper, { children: (0, jsx_runtime_1.jsxs)(Main, { children: [(0, jsx_runtime_1.jsxs)(SideContentWrapper, { children: [(0, jsx_runtime_1.jsx)(Rating_1.default, {}), (0, jsx_runtime_1.jsx)(AgentPerformance_1.default, {}), (0, jsx_runtime_1.jsx)(TopWeapon_1.default, {})] }), (0, jsx_runtime_1.jsx)(CenterContentWrapper, {})] }) })] }));
 }

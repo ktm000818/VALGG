@@ -17,20 +17,24 @@ export interface AllProps {
 
 const baseUrl = "https://api.henrikdev.xyz";
 
-export function getAllUserData(props: AllProps) {
-
-    let arr = [
-        getMatchHistoryByPUUID(props),
-        // getAccountDataTest(props),
-        // getMMRData(props),
-        // getMMRHistory(props),
-        getMMRDataByPUUID(props),
-        getMMRHistoryByPUUID(props),
-        getAllAvailableOffers(),
-        getFeaturedBundle(),
-    ]
-
-    return Promise.all(arr)
+export async function getAllUserData(props: AllProps) {
+    try {
+        let arr = [
+            getMatchHistoryByPUUID(props),
+            // getAccountDataTest(props),
+            // getMMRData(props),
+            // getMMRHistory(props),
+            getMMRDataByPUUID(props),
+            getMMRHistoryByPUUID(props),
+            getAllAvailableOffers(),
+            getFeaturedBundle(),
+        ]
+    
+        return await Promise.all(arr)
+    } catch (error) {
+        alert("전체 데이터 조회 중 에러 발생")
+        return [];
+    }
 
 }
 
@@ -61,7 +65,7 @@ export async function getAccountData(name: string, tag: string, onlyname?: boole
 }
 
 export function getAccountDataTest(props: AllProps) {
-    return axios.get(`${baseUrl}/valorant/v1/account/${props.name}/${props.tag}`)
+    return axios.get(`${baseUrl}/valorant/v1/account/${props.name}/${props.tag}`).then(res => res.data.data)
 }
 
 //MMR

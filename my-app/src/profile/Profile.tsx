@@ -10,6 +10,7 @@ import MainStats from "./main-stats/MainStats";
 import { useRecoilState } from "recoil";
 import { playerDefaultInfoState, playerWholeInfoState } from "../store/playerWholeInfoStore";
 import styled from "@emotion/styled";
+import { AxiosResponse } from "axios";
 
 interface DEFAULT_USER_DATA_CARD {
     id: string,
@@ -30,10 +31,15 @@ interface DEFAULT_USER_DATA {
     matchFilter?: MatchFilter
 }
 
+interface Location {
+    name: string,
+    tag: string
+}
+
 export default function Profile() {
     const [defaultInfoRecoil, setDefaultInfoRecoil] = useRecoilState(playerDefaultInfoState);
     const [infoRecoil, setInfoRecoil] = useRecoilState(playerWholeInfoState);
-    const { name, tag } = useLocation().state;
+    const { name, tag }: Location = useLocation().state;
 
     useEffect(() => {
         if (name && tag) {
@@ -46,11 +52,12 @@ export default function Profile() {
      */
     const getDefaultUserData = async () => {
         try {
-            const { data } = await getAccountDataTest({ name, tag });
-            return data.data;
+            const data: DEFAULT_USER_DATA = await getAccountDataTest({ name, tag });
+            return data;
         } catch (error) {
             console.error(error);
             alert("조회 중 에러 발생!");
+            return false;
         }
     }
 
@@ -70,7 +77,7 @@ export default function Profile() {
         };
 
         try {
-            const result = await getAllUserData(prop).then(values => values);
+            const result = await getAllUserData(prop);
             const filteredResult = result.reduce((prev, curr) => {
                 const responseData = curr.data.data;
                 if (Array.isArray(curr.data.data)) {
@@ -95,10 +102,12 @@ export default function Profile() {
      * 플레이어의 모든 정보를 Recoil Store에 저장함
      */
     const updatePlayerInfo = async () => {
-        const DEFAULT_USER_DATA: DEFAULT_USER_DATA = await getDefaultUserData();
-        const WHOLE_USER_DATA = await getWholeUserData("competitive", DEFAULT_USER_DATA);
-        setDefaultInfoRecoil(DEFAULT_USER_DATA);
-        setInfoRecoil(WHOLE_USER_DATA);
+        const DEFAULT_USER_DATA: DEFAULT_USER_DATA | boolean = await getDefaultUserData();
+        if(DEFAULT_USER_DATA){
+            const WHOLE_USER_DATA = await getWholeUserData ("competitive", DEFAULT_USER_DATA);
+            setDefaultInfoRecoil(DEFAULT_USER_DATA);
+            setInfoRecoil(WHOLE_USER_DATA);
+        }
     }
 
     return (
