@@ -1,16 +1,14 @@
-import { useEffect, useState } from "react";
+import styled from "@emotion/styled";
+import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { AllProps, DEFAULT_USER_DATA, getAccountDataTest, getAllUserData, MatchFilter, Region } from "../store/RiotApi";
-import ProfileCard from "./profile-card/ProfileCard"
-import Rating from "./rating/Rating";
-import AgentPerfomance from "./agent-performance/AgentPerformance";
-import TopWeapon from "./top-weapon/TopWeapon";
-import MapPerfomance from "./map-performance/MapPerformance";
-import MainStats from "./main-stats/MainStats";
 import { useRecoilState } from "recoil";
 import { playerDefaultInfoState, playerWholeInfoState } from "../store/playerWholeInfoStore";
-import styled from "@emotion/styled";
-import { AxiosResponse } from "axios";
+import { AllProps, DEFAULT_USER_DATA, getAccountDataTest, getAllUserData, MatchFilter } from "../store/RiotApi";
+import AgentPerfomance from "./agent-performance/AgentPerformance";
+import MapPerfomance from "./map-performance/MapPerformance";
+import ProfileCard from "./profile-card/ProfileCard";
+import Rating from "./rating/Rating";
+import TopWeapon from "./top-weapon/TopWeapon";
 
 interface Location {
     name: string,

@@ -13,17 +13,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const jsx_runtime_1 = require("react/jsx-runtime");
+const styled_1 = __importDefault(require("@emotion/styled"));
 const react_1 = require("react");
 const react_router_dom_1 = require("react-router-dom");
-const RiotApi_1 = require("../store/RiotApi");
-const ProfileCard_1 = __importDefault(require("./profile-card/ProfileCard"));
-const Rating_1 = __importDefault(require("./rating/Rating"));
-const AgentPerformance_1 = __importDefault(require("./agent-performance/AgentPerformance"));
-const TopWeapon_1 = __importDefault(require("./top-weapon/TopWeapon"));
-const MapPerformance_1 = __importDefault(require("./map-performance/MapPerformance"));
 const recoil_1 = require("recoil");
 const playerWholeInfoStore_1 = require("../store/playerWholeInfoStore");
-const styled_1 = __importDefault(require("@emotion/styled"));
+const RiotApi_1 = require("../store/RiotApi");
+const AgentPerformance_1 = __importDefault(require("./agent-performance/AgentPerformance"));
+const MapPerformance_1 = __importDefault(require("./map-performance/MapPerformance"));
+const ProfileCard_1 = __importDefault(require("./profile-card/ProfileCard"));
+const Rating_1 = __importDefault(require("./rating/Rating"));
+const TopWeapon_1 = __importDefault(require("./top-weapon/TopWeapon"));
 function Profile() {
     const [defaultInfoRecoil, setDefaultInfoRecoil] = (0, recoil_1.useRecoilState)(playerWholeInfoStore_1.playerDefaultInfoState);
     const [infoRecoil, setInfoRecoil] = (0, recoil_1.useRecoilState)(playerWholeInfoStore_1.playerWholeInfoState);
