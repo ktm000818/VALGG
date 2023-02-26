@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { AllProps, getAccountDataTest, getAllUserData, MatchFilter, Region } from "../store/RiotApi";
+import { AllProps, DEFAULT_USER_DATA, getAccountDataTest, getAllUserData, MatchFilter, Region } from "../store/RiotApi";
 import ProfileCard from "./profile-card/ProfileCard"
 import Rating from "./rating/Rating";
 import AgentPerfomance from "./agent-performance/AgentPerformance";
@@ -11,25 +11,6 @@ import { useRecoilState } from "recoil";
 import { playerDefaultInfoState, playerWholeInfoState } from "../store/playerWholeInfoStore";
 import styled from "@emotion/styled";
 import { AxiosResponse } from "axios";
-
-interface DEFAULT_USER_DATA_CARD {
-    id: string,
-    large: string,
-    small: string,
-    wide: string
-}
-
-interface DEFAULT_USER_DATA {
-    account_level?: number
-    card?: DEFAULT_USER_DATA_CARD,
-    last_update?: string,
-    last_update_raw?: number,
-    name: string,
-    puuid: string,
-    region: Region,
-    tag: string,
-    matchFilter?: MatchFilter
-}
 
 interface Location {
     name: string,
@@ -43,6 +24,8 @@ export default function Profile() {
 
     useEffect(() => {
         if (name && tag) {
+            setDefaultInfoRecoil({})
+            setInfoRecoil({})
             updatePlayerInfo();
         }
     }, [name])

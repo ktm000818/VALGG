@@ -30,6 +30,8 @@ function Profile() {
     const { name, tag } = (0, react_router_dom_1.useLocation)().state;
     (0, react_1.useEffect)(() => {
         if (name && tag) {
+            setDefaultInfoRecoil({});
+            setInfoRecoil({});
             updatePlayerInfo();
         }
     }, [name]);
