@@ -4,6 +4,25 @@ export type Version = 'v1' | 'v2';
 export type Region = 'eu' | 'na' | 'ap' | 'kr';
 export type MatchFilter = 'escalation' | 'spikerush' | 'deathmatch' | 'competitive' | 'unrated' | 'replication';
 
+export interface DEFAULT_USER_DATA_CARD {
+    id: string,
+    large: string,
+    small: string,
+    wide: string
+}
+
+export interface DEFAULT_USER_DATA {
+    account_level?: number
+    card?: DEFAULT_USER_DATA_CARD,
+    last_update?: string,
+    last_update_raw?: number,
+    name: string,
+    puuid: string,
+    region: Region,
+    tag: string,
+    matchFilter?: MatchFilter
+}
+
 export interface AllProps {
     name?: string;
     tag?: string;
