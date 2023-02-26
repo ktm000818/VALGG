@@ -1,4 +1,5 @@
 // import styled from "@emotion/styled";
+import { Skeleton } from "@mui/material";
 import dayjs from "dayjs";
 import { get } from "lodash";
 import { useEffect, useState } from "react";
@@ -40,16 +41,34 @@ export default function Rating() {
                         </select>
                     </StatsRatingWrapper>
                     <RankInfoWrapper>
-                        <RankImageWrapper>
-                            {currentTier && (
-                                //TODO 이미지 태그 Emotion으로 교체!
+                        {/* //TODO 이미지 태그 Emotion으로 교체! */}
+                        {currentTier ? (
+                            <RankImageWrapper>
                                 <img className="rank_image" src={currentTierImageSmall} onError={setDefaultRankImage} />
-                            )}
-                        </RankImageWrapper>
+                            </RankImageWrapper>
+                        ) : (
+                            <Skeleton variant="circular" sx={{ width: "75px", height: "72px", marginRight: "20px" }} />
+                        )}
                         <RankStatsWrapper>
-                            <Rank>{currentTierPatched}</Rank>
-                            <Kda>최근 5게임 KDA 비율 {latestFiveGamesKDARatio} : 1</Kda>
-                            <WinLose>시즌 전적 : {`${currentSeasonWins}승 ${currentSeasonDefeats}패`}</WinLose>
+                            {currentTierPatched ? (
+                                <Rank>{currentTierPatched}</Rank>
+                            ) : (
+                                <Skeleton sx={{ fontSize: "18px" }} />
+                            )}
+                            {latestFiveGamesKDARatio ? (
+                                <Kda>최근 5게임 KDA 비율 {latestFiveGamesKDARatio} : 1</Kda>
+                            ) : (
+                                <Skeleton>
+                                    <Kda>최근 5게임 KDA 비율 {latestFiveGamesKDARatio} : 1</Kda>
+                                </Skeleton>
+                            )}
+                            {(currentSeasonWins && currentSeasonDefeats) ? (
+                                <WinLose>시즌 전적 : {`${currentSeasonWins}승 ${currentSeasonDefeats}패`}</WinLose>
+                            ) : (
+                                <Skeleton>
+                                    <WinLose>시즌 전적 : {`${currentSeasonWins}승 ${currentSeasonDefeats}패`}</WinLose>
+                                </Skeleton>
+                            )}
                         </RankStatsWrapper>
                     </RankInfoWrapper>
                     <RecordDescription>최근 5경기</RecordDescription>
@@ -102,7 +121,9 @@ export default function Rating() {
                         </DetailRecordMostKillMatchWrapper>
                         <DetailRecordPlayTimeWrapper>
                             <PlayTime>플레이 시간</PlayTime>
-                            <PlayTimeCount>{dayjs(get(STATS, 'play_time', 0)).format("HH시 MM분 ss”")}</PlayTimeCount>
+                            <PlayTimeCount>{
+                                get(STATS, 'play_time', 0) ? dayjs(get(STATS, 'play_time', 0)).format("HH시 MM분 ss”") : "플레이 시간 없음"
+                            }</PlayTimeCount>
                         </DetailRecordPlayTimeWrapper>
                     </DetailRecordWrapper>
                 </StatsDetailWrapper>
