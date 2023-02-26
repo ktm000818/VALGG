@@ -7,10 +7,10 @@ interface SearchHistory {
     name: string
 }
 
-interface properties {
-    searchHistory: Array<SearchHistory>
+interface Properties {
+    searchHistory?: Array<SearchHistory>
     options: dropDownList[];
-    style: React.CSSProperties;
+    style?: React.CSSProperties;
     id: string;
     onChange: (value: string) => void;
     onInputChange: (value: string) => void;
@@ -27,7 +27,7 @@ const CustomAutoComplete = ({
     onChange = () => { },
     onInputChange = () => { },
     style = { width: 200 }
-}: properties) => {
+}: Properties) => {
 
 
     const [inputValue, setInputValue] = useState<string>('');
