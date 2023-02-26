@@ -44,7 +44,7 @@ export const currentTierPatchedState = selector({
     get: ({ get }) => {
         const { current_data } = get(playerWholeInfoState);
 
-        return current_data?.currenttierpatched ?? "unranked";
+        return current_data?.currenttierpatched ?? null;
     }
 })
 
