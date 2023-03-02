@@ -2,6 +2,11 @@ import { isEmpty } from "lodash";
 import { atom, selector } from "recoil";
 import { makeUUID } from "../components/uuid";
 
+export const loadingState = atom({
+    key: `recoilLoadingState${makeUUID()}`,
+    default: false
+})
+
 export const playerDefaultInfoState = atom({
     key: `playerDefaultInfoState${makeUUID()}`,
     default: {}
@@ -542,5 +547,123 @@ export const matchHistoryGroupByMapState = selector({
         }, {})
 
         return Object.values(MatchHistoryGroupByMap);
+    }
+})
+
+export const agentInfoState = selector({
+    key: `agentInfoState${makeUUID()}`,
+    get: ({ get }) => {
+        const MATCH_HISTORY = get(latestFiveGamesState);
+
+        if (isEmpty(MATCH_HISTORY)) {
+            return [];
+        }
+
+        let UNFILTERED_INFOS = MATCH_HISTORY.reduce((prev, curr) => {
+            const PLAYER = curr.players.all_players.filter(player => player.puuid === get(puuidState))[0];
+            const TEAM = PLAYER.team.toLowerCase();
+            const MATCH_RESULT = curr.teams?.[TEAM].has_won ? 'WIN' : 'DEFEAT';
+            const STATS = PLAYER.stats;
+            const AGENT_ICON_URL = PLAYER.assets.agent.small;
+
+            return [
+                ...prev,
+                {
+                    agent: PLAYER.character,
+                    score: STATS.score,
+                    kills: STATS.kills,
+                    deaths: STATS.deaths,
+                    assists: STATS.assists,
+                    match_result: MATCH_RESULT,
+                    AGENT_ICON_URL
+                }
+            ]
+
+        }, [])
+
+        const FILTERED_INFOS = UNFILTERED_INFOS.reduce((prev, curr) => {
+            const { agent, assists, deaths, kills, match_result, score, AGENT_ICON_URL } = curr;
+
+            if (prev[agent]) {
+                return {
+                    ...prev,
+                    [agent]: {
+                        agent: agent,
+                        assists: prev[agent].assists + assists,
+                        deaths: prev[agent].deaths + deaths,
+                        kills: prev[agent].kills + kills,
+                        score: prev[agent].score + score,
+                        avgRecord: (((prev[agent].kills + kills) + (prev[agent].assists + assists)) / (prev[agent].deaths + deaths)).toFixed(2),
+                        avgScore: ((prev[agent].score + score) / (prev[agent].matchCount + 1)).toFixed(0),
+                        winRatio: ((prev[agent].matchWins + (match_result === "WIN" ? 1 : 0)) / (prev[agent].matchCount + 1) * 100).toFixed(0),
+                        matchWins: prev[agent].matchWins + (match_result === "WIN" ? 1 : 0),
+                        matchCount: prev[agent].matchCount + 1,
+                        AGENT_ICON_URL
+                    }
+                }
+            } else {
+                return {
+                    ...prev,
+                    [agent]: {
+                        agent,
+                        assists,
+                        deaths,
+                        kills,
+                        score,
+                        avgScore: score,
+                        avgRecord: ((kills + assists) / deaths).toFixed(2),
+                        winRatio: match_result === "WIN" ? 100 : 0,
+                        matchWins: match_result === "WIN" ? 1 : 0,
+                        matchCount: 1,
+                        AGENT_ICON_URL
+                    }
+                }
+            }
+        }, {})
+
+        return Object.values(FILTERED_INFOS);
+    }
+})
+
+export const winRatioAndKDARatingState = selector({
+    key: `agentInfoState${makeUUID()}`,
+    get: ({get}) => {
+        const AGENT_INFOS = get(agentInfoState);
+
+        if(isEmpty(AGENT_INFOS)){
+            return [];
+        }
+
+        const STATS = AGENT_INFOS.reduce((prev, curr) => {
+            const { kills, deaths, assists, matchCount, matchWins, score } = curr;
+            const kdaRatio = (kills + deaths + assists) / deaths;
+            const matchDefeats = matchCount - matchWins;
+            if (prev?.matchCount) {
+                return {
+                    kills: prev.kills + kills,
+                    deaths: prev.deaths + deaths,
+                    assists: prev.assists + assists,
+                    matchCount: prev.matchCount + matchCount,
+                    matchWins: prev.matchWins + matchWins,
+                    matchDefeats: prev.matchDefeats + matchDefeats,
+                    kdaRatio: prev.kdaRatio + kdaRatio,
+                    score: prev.score + score,
+    
+                }
+            } else {
+                return {
+                    kills,
+                    deaths,
+                    assists,
+                    matchCount,
+                    matchWins,
+                    matchDefeats,
+                    kdaRatio,
+                    score
+                }
+            }
+        }, {})
+    
+        return STATS;
     }
 })
