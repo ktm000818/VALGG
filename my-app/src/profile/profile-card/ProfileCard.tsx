@@ -3,21 +3,13 @@ import { Skeleton } from "@mui/material";
 import { get, isEmpty } from "lodash";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil"
-import { playerDefaultInfoState } from "../../store/playerWholeInfoStore"
+import LoadingButton from "../../components/LoadingButton";
+import { loadingState, playerDefaultInfoState } from "../../store/playerWholeInfoStore"
 import { DEFAULT_USER_DATA } from "../../store/RiotApi";
 
 export default function ProfileCard({ updatePlayerInfo = () => { } }) {
     const playerDefaultInfo: DEFAULT_USER_DATA | unknown = useRecoilValue(playerDefaultInfoState);
-    const [loading, setLoading] = useState<boolean>(false);
-
-    useEffect(() => {
-        if (isEmpty(playerDefaultInfo)) {
-            setLoading(true);
-        } else {
-            setLoading(false);
-        }
-    }, [playerDefaultInfo])
-
+    const loading = useRecoilValue(loadingState);
     return (
         <>
             <ProfileCardWrapper>
@@ -26,7 +18,7 @@ export default function ProfileCard({ updatePlayerInfo = () => { } }) {
                         <Profile>
                             <ProfileImageWrapper>
                                 <>
-                                    {loading ? (
+                                    {isEmpty(playerDefaultInfo) ? (
                                         <Skeleton variant="rectangular">
                                             <ProfileImage />
                                         </Skeleton>
@@ -37,7 +29,7 @@ export default function ProfileCard({ updatePlayerInfo = () => { } }) {
                             </ProfileImageWrapper>
                             <ProfileInfoWrapper>
                                 <ProfileInfo>
-                                    {loading ? (
+                                    {isEmpty(playerDefaultInfo) ? (
                                         <Skeleton variant="text" sx={{ fontSize: "24px" }} />
                                     ) : (
                                         <>
@@ -51,10 +43,11 @@ export default function ProfileCard({ updatePlayerInfo = () => { } }) {
                                     <ProfileLadderRank>1231th</ProfileLadderRank>
                                 </ProfileInfo>
                                 <ProfileInfo>
-                                    <HistoryUpdateButton onClick={updatePlayerInfo}>전적 갱신</HistoryUpdateButton>
+                                    <LoadingButton onClick={updatePlayerInfo} loading={loading}>전적 갱신</LoadingButton>
+                                    {/* <HistoryUpdateButton onClick={updatePlayerInfo}>전적 갱신</HistoryUpdateButton> */}
                                 </ProfileInfo>
                                 <ProfileInfo>
-                                    {loading ? (
+                                    {isEmpty(playerDefaultInfo) ? (
                                         <Skeleton variant="text" sx={{ fontSize: "11px" }} />
                                     ) : (
                                         <LatestUpdateDate>최근 업데이트: {get(playerDefaultInfo, 'last_update', '')}</LatestUpdateDate>
