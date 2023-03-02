@@ -1,10 +1,11 @@
 import styled from "@emotion/styled";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import { playerDefaultInfoState, playerWholeInfoState } from "../store/playerWholeInfoStore";
+import { useSetRecoilState } from "recoil";
+import { loadingState, playerDefaultInfoState, playerWholeInfoState } from "../store/playerWholeInfoStore";
 import { AllProps, DEFAULT_USER_DATA, getAccountDataTest, getAllUserData, MatchFilter } from "../store/RiotApi";
 import AgentPerfomance from "./agent-performance/AgentPerformance";
+import MainStats from "./main-stats/MainStats";
 import MapPerfomance from "./map-performance/MapPerformance";
 import ProfileCard from "./profile-card/ProfileCard";
 import Rating from "./rating/Rating";
@@ -16,8 +17,9 @@ interface Location {
 }
 
 export default function Profile() {
-    const [defaultInfoRecoil, setDefaultInfoRecoil] = useRecoilState(playerDefaultInfoState);
-    const [infoRecoil, setInfoRecoil] = useRecoilState(playerWholeInfoState);
+    const setDefaultInfoRecoil = useSetRecoilState(playerDefaultInfoState);
+    const setInfoRecoil = useSetRecoilState(playerWholeInfoState);
+    const setLoadingState = useSetRecoilState(loadingState);
     const { name, tag }: Location = useLocation().state;
 
     useEffect(() => {
@@ -83,11 +85,13 @@ export default function Profile() {
      * 플레이어의 모든 정보를 Recoil Store에 저장함
      */
     const updatePlayerInfo = async () => {
+        setLoadingState(true);
         const DEFAULT_USER_DATA: DEFAULT_USER_DATA | boolean = await getDefaultUserData();
         if(DEFAULT_USER_DATA){
             const WHOLE_USER_DATA = await getWholeUserData ("competitive", DEFAULT_USER_DATA);
             setDefaultInfoRecoil(DEFAULT_USER_DATA);
             setInfoRecoil(WHOLE_USER_DATA);
+            setLoadingState(false);
         }
     }
 
@@ -104,7 +108,7 @@ export default function Profile() {
                         <MapPerfomance/>
                     </SideContentWrapper>
                     <CenterContentWrapper>
-                        {/* <MainStats/> */}
+                        <MainStats/>
                     </CenterContentWrapper>
                 </Main>
 

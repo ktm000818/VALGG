@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const jsx_runtime_1 = require("react/jsx-runtime");
+const jsx_runtime_1 = require("@emotion/react/jsx-runtime");
 const styled_1 = __importDefault(require("@emotion/styled"));
 const react_1 = require("react");
 const react_router_dom_1 = require("react-router-dom");
@@ -20,13 +20,15 @@ const recoil_1 = require("recoil");
 const playerWholeInfoStore_1 = require("../store/playerWholeInfoStore");
 const RiotApi_1 = require("../store/RiotApi");
 const AgentPerformance_1 = __importDefault(require("./agent-performance/AgentPerformance"));
+const MainStats_1 = __importDefault(require("./main-stats/MainStats"));
 const MapPerformance_1 = __importDefault(require("./map-performance/MapPerformance"));
 const ProfileCard_1 = __importDefault(require("./profile-card/ProfileCard"));
 const Rating_1 = __importDefault(require("./rating/Rating"));
 const TopWeapon_1 = __importDefault(require("./top-weapon/TopWeapon"));
 function Profile() {
-    const [defaultInfoRecoil, setDefaultInfoRecoil] = (0, recoil_1.useRecoilState)(playerWholeInfoStore_1.playerDefaultInfoState);
-    const [infoRecoil, setInfoRecoil] = (0, recoil_1.useRecoilState)(playerWholeInfoStore_1.playerWholeInfoState);
+    const setDefaultInfoRecoil = (0, recoil_1.useSetRecoilState)(playerWholeInfoStore_1.playerDefaultInfoState);
+    const setInfoRecoil = (0, recoil_1.useSetRecoilState)(playerWholeInfoStore_1.playerWholeInfoState);
+    const setLoadingState = (0, recoil_1.useSetRecoilState)(playerWholeInfoStore_1.loadingState);
     const { name, tag } = (0, react_router_dom_1.useLocation)().state;
     (0, react_1.useEffect)(() => {
         if (name && tag) {
@@ -89,14 +91,16 @@ function Profile() {
      * 플레이어의 모든 정보를 Recoil Store에 저장함
      */
     const updatePlayerInfo = () => __awaiter(this, void 0, void 0, function* () {
+        setLoadingState(true);
         const DEFAULT_USER_DATA = yield getDefaultUserData();
         if (DEFAULT_USER_DATA) {
             const WHOLE_USER_DATA = yield getWholeUserData("competitive", DEFAULT_USER_DATA);
             setDefaultInfoRecoil(DEFAULT_USER_DATA);
             setInfoRecoil(WHOLE_USER_DATA);
+            setLoadingState(false);
         }
     });
-    return ((0, jsx_runtime_1.jsxs)(jsx_runtime_1.Fragment, { children: [(0, jsx_runtime_1.jsx)(ProfileCard_1.default, { updatePlayerInfo: updatePlayerInfo }), (0, jsx_runtime_1.jsx)(MainWrapper, { children: (0, jsx_runtime_1.jsxs)(Main, { children: [(0, jsx_runtime_1.jsxs)(SideContentWrapper, { children: [(0, jsx_runtime_1.jsx)(Rating_1.default, {}), (0, jsx_runtime_1.jsx)(AgentPerformance_1.default, {}), (0, jsx_runtime_1.jsx)(TopWeapon_1.default, {}), (0, jsx_runtime_1.jsx)(MapPerformance_1.default, {})] }), (0, jsx_runtime_1.jsx)(CenterContentWrapper, {})] }) })] }));
+    return ((0, jsx_runtime_1.jsxs)(jsx_runtime_1.Fragment, { children: [(0, jsx_runtime_1.jsx)(ProfileCard_1.default, { updatePlayerInfo: updatePlayerInfo }), (0, jsx_runtime_1.jsx)(MainWrapper, { children: (0, jsx_runtime_1.jsxs)(Main, { children: [(0, jsx_runtime_1.jsxs)(SideContentWrapper, { children: [(0, jsx_runtime_1.jsx)(Rating_1.default, {}), (0, jsx_runtime_1.jsx)(AgentPerformance_1.default, {}), (0, jsx_runtime_1.jsx)(TopWeapon_1.default, {}), (0, jsx_runtime_1.jsx)(MapPerformance_1.default, {})] }), (0, jsx_runtime_1.jsx)(CenterContentWrapper, { children: (0, jsx_runtime_1.jsx)(MainStats_1.default, {}) })] }) })] }));
 }
 exports.default = Profile;
 const MainWrapper = styled_1.default.div `
