@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { ToggleButtonWrapper, ToggleButton } from '../../components/commonStyledComponents';
+import { getAgentName } from '../../store/translate';
 import { agentPlayInfosState } from '../../store/playerWholeInfoStore';
 import './agent_performance.css';
 
@@ -37,7 +38,7 @@ export default function AgentPerfomance() {
                                             <img width={20} height={20} src={info.AGENT_ICON_URL} />
                                         </AgentPerformanceInfoAgentImageWrapper>
                                         <AgentPerformanceInfoAgent>
-                                            <AgentPerformanceAgent>{info.agent}</AgentPerformanceAgent>
+                                            <AgentPerformanceAgent>{getAgentName(info.agent)}</AgentPerformanceAgent>
                                             <AgentPerformanceAvgscore>{info.avgScore} 평균 점수</AgentPerformanceAvgscore>
                                         </AgentPerformanceInfoAgent>
                                         <AgentPerformanceInfoRecord>
