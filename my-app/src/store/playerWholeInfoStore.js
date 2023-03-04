@@ -83,21 +83,7 @@ export const latestFiveGamesStatsState = selector({
             const MATCH_KILLS = PLAYER.stats.kills;
             const PLAY_TIME = CURRENT_GAME.metadata.game_length;
 
-            if (LATEST_FIVE_GAMES.length === 1) {
-                // if match history array has only one object, just return it. 
-                return {
-                    kills: PLAYER.stats.kills,
-                    deaths: PLAYER.stats.deaths,
-                    assists: PLAYER.stats.assists,
-                    bodyshots: PLAYER.stats.bodyshots,
-                    headshots: PLAYER.stats.headshots,
-                    legshots: PLAYER.stats.legshots,
-                    score: PLAYER.stats.score,
-                    match_kills: [MATCH_KILLS],
-                    match_results: [MATCH_RESULT],
-                    play_time: PLAY_TIME
-                }
-            } else if (PREVIOUS_GAME.kills === undefined) {
+            if (isEmpty(PLAYER)) {
                 return {
                     kills: 0,
                     deaths: 0,
@@ -109,6 +95,21 @@ export const latestFiveGamesStatsState = selector({
                     match_kills: [],
                     match_results: [],
                     play_time: 0
+                }
+            }
+            
+            if (PREVIOUS_GAME.kills === undefined) {
+                return {
+                    kills: PLAYER.stats.kills,
+                    deaths: PLAYER.stats.deaths,
+                    assists: PLAYER.stats.assists,
+                    bodyshots: PLAYER.stats.bodyshots,
+                    headshots: PLAYER.stats.headshots,
+                    legshots: PLAYER.stats.legshots,
+                    score: PLAYER.stats.score,
+                    match_kills: [MATCH_KILLS],
+                    match_results: [MATCH_RESULT],
+                    play_time: PLAY_TIME
                 }
             } else {
                 return {
@@ -136,7 +137,7 @@ export const latestFiveGamesKDARatioState = selector({
     key: `latestFiveGamesKDARatioState${makeUUID()}`,
     get: ({ get }) => {
         const stats = get(latestFiveGamesStatsState);
-
+        console.log(stats)
         if (isEmpty(stats)) {
             return 0;
         }
@@ -146,7 +147,7 @@ export const latestFiveGamesKDARatioState = selector({
         if (deaths === 0) {
             return kills + assists;
         } else {
-            const ratio = (kills + assists) / deaths;
+            const ratio = ((kills + assists) / deaths);
             return ratio.toFixed(2);
         }
     }
@@ -627,10 +628,10 @@ export const agentInfoState = selector({
 
 export const winRatioAndKDARatingState = selector({
     key: `agentInfoState${makeUUID()}`,
-    get: ({get}) => {
+    get: ({ get }) => {
         const AGENT_INFOS = get(agentInfoState);
 
-        if(isEmpty(AGENT_INFOS)){
+        if (isEmpty(AGENT_INFOS)) {
             return [];
         }
 
@@ -648,7 +649,7 @@ export const winRatioAndKDARatingState = selector({
                     matchDefeats: prev.matchDefeats + matchDefeats,
                     kdaRatio: prev.kdaRatio + kdaRatio,
                     score: prev.score + score,
-    
+
                 }
             } else {
                 return {
@@ -663,7 +664,7 @@ export const winRatioAndKDARatingState = selector({
                 }
             }
         }, {})
-    
+
         return STATS;
     }
 })
