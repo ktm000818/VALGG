@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { currentSeasonDefeatsState, currentSeasonWinsState, currentTierImageSmallState, currentTierPatchedState, currentTierState, latestFiveGamesBodyshotPercentageState, latestFiveGamesDPRState, latestFiveGamesHeadshotPercentageState, latestFiveGamesKDARatioState, latestFiveGamesKDRatioState, latestFiveGamesLegshotPercentageState, latestFiveGamesSPRState, latestFiveGamesStatsState, latestFiveGamesWinRatioState } from "../../store/playerWholeInfoStore";
+import { getTierName } from "../../store/translate";
 import './rating.css';
 
 export default function Rating() {
@@ -51,7 +52,7 @@ export default function Rating() {
                         )}
                         <RankStatsWrapper>
                             {currentTierPatched ? (
-                                <Rank>{currentTierPatched}</Rank>
+                                <Rank>{getTierName(currentTierPatched)}</Rank>
                             ) : (
                                 <Skeleton sx={{ fontSize: "18px" }} />
                             )}
