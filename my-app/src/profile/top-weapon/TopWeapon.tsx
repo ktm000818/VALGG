@@ -1,7 +1,7 @@
+import styled from '@emotion/styled';
 import React, { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import styled from 'styled-components';
-import { ToggleButton, ToggleButtonWrapper } from '../../components/commonStyledComponents';
+import { ToggleButton, ToggleButtonWrapper } from '../../components/emotionStorage';
 import { weaponStatsInfoState } from '../../store/playerWholeInfoStore';
 import './top_weapon.css';
 

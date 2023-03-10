@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import styled from 'styled-components';
-import { ToggleButtonWrapper, ToggleButton } from '../../components/commonStyledComponents';
+import { ToggleButtonWrapper, ToggleButton } from '../../components/emotionStorage';
 import { getAgentName } from '../../store/translate';
 import { agentPlayInfosState } from '../../store/playerWholeInfoStore';
 import './agent_performance.css';
+import styled from '@emotion/styled';
 
 export default function AgentPerfomance() {
 

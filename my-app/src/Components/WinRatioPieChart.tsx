@@ -1,11 +1,8 @@
-import * as am5 from "@amcharts/amcharts5"
-import * as am5xy from "@amcharts/amcharts5/xy";
-import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
+import * as am5 from "@amcharts/amcharts5";
 import am5locales_ko_KR from "@amcharts/amcharts5/locales/ko_KR";
 import * as am5percent from "@amcharts/amcharts5/percent";
-
-import { useEffect, useLayoutEffect } from "react";
-import { fontWeight } from "@mui/system";
+import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
+import { useLayoutEffect } from "react";
 
 const WinRatioPieChart = ({matchWins = 0, matchDefeats = 0, matchCount = 0}) => {
 

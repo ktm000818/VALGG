@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import { get } from "lodash";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
-import styled from "styled-components";
+import styled from '@emotion/styled';
 import { currentSeasonDefeatsState, currentSeasonWinsState, currentTierImageSmallState, currentTierPatchedState, currentTierState, latestFiveGamesBodyshotPercentageState, latestFiveGamesDPRState, latestFiveGamesHeadshotPercentageState, latestFiveGamesKDARatioState, latestFiveGamesKDRatioState, latestFiveGamesLegshotPercentageState, latestFiveGamesSPRState, latestFiveGamesStatsState, latestFiveGamesWinRatioState } from "../../store/playerWholeInfoStore";
 import { getTierName } from "../../store/translate";
 import './rating.css';

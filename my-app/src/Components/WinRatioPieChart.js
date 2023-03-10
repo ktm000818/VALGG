@@ -28,9 +28,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const jsx_runtime_1 = require("@emotion/react/jsx-runtime");
 const am5 = __importStar(require("@amcharts/amcharts5"));
-const Animated_1 = __importDefault(require("@amcharts/amcharts5/themes/Animated"));
 const ko_KR_1 = __importDefault(require("@amcharts/amcharts5/locales/ko_KR"));
 const am5percent = __importStar(require("@amcharts/amcharts5/percent"));
+const Animated_1 = __importDefault(require("@amcharts/amcharts5/themes/Animated"));
 const react_1 = require("react");
 const WinRatioPieChart = ({ matchWins = 0, matchDefeats = 0, matchCount = 0 }) => {
     (0, react_1.useLayoutEffect)(() => {

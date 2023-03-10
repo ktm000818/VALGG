@@ -7,7 +7,7 @@ const jsx_runtime_1 = require("@emotion/react/jsx-runtime");
 const styled_1 = __importDefault(require("@emotion/styled"));
 const react_1 = require("react");
 const recoil_1 = require("recoil");
-const commonStyledComponents_1 = require("../../components/commonStyledComponents");
+const emotionStorage_1 = require("../../components/emotionStorage");
 const playerWholeInfoStore_1 = require("../../store/playerWholeInfoStore");
 require("./map_performance.css");
 function MapPerfomance() {
@@ -21,7 +21,7 @@ function MapPerfomance() {
                                     return null;
                                 }
                                 return ((0, jsx_runtime_1.jsx)(jsx_runtime_1.Fragment, { children: (0, jsx_runtime_1.jsxs)(MapPerformanceInfo, { children: [(0, jsx_runtime_1.jsx)(MapPerformanceInfoMapImageWrapper, { children: (0, jsx_runtime_1.jsx)("img", { width: 80, height: 40, src: `https://opgg-valorant-cdn.akamaized.net/Maps/${info.map}.png`, alt: "이미지 없음" }) }), (0, jsx_runtime_1.jsx)(MapPerformanceInfoMap, { children: (0, jsx_runtime_1.jsx)(MapPerformanceMapLabel, { children: info.map }) }), (0, jsx_runtime_1.jsxs)(MapPerformanceInfoWinratioWrapper, { children: [(0, jsx_runtime_1.jsxs)(MapPerformanceWinratio, { children: [info.winRatio, "%"] }), (0, jsx_runtime_1.jsx)(MapPerformanceMatchCount, { children: `${info.matchWins}승 - ${info.matchDefeats}패` })] })] }) }));
-                            }), (0, jsx_runtime_1.jsx)(commonStyledComponents_1.ToggleButtonWrapper, { children: (0, jsx_runtime_1.jsx)(commonStyledComponents_1.ToggleButton, Object.assign({ onClick: toggleShowMoreMapInfo }, { children: showMore ? "닫기" : "더보기" })) })] })] }) }) }));
+                            }), (0, jsx_runtime_1.jsx)(emotionStorage_1.ToggleButtonWrapper, { children: (0, jsx_runtime_1.jsx)(emotionStorage_1.ToggleButton, Object.assign({ onClick: toggleShowMoreMapInfo }, { children: showMore ? "닫기" : "더보기" })) })] })] }) }) }));
 }
 exports.default = MapPerfomance;
 const MapPerformanceWrapper = styled_1.default.div `
