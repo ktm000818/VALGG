@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import React, { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import { ToggleButton, ToggleButtonWrapper } from '../../components/commonStyledComponents';
+import { ToggleButton, ToggleButtonWrapper } from '../../components/emotionStorage';
 import { matchHistoryGroupByMapState } from '../../store/playerWholeInfoStore';
 import './map_performance.css';
 
