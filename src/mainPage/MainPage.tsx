@@ -65,6 +65,7 @@ export default function MainPage() {
             <img
               src={"https://valorant.op.gg/images/valorant.png"}
               width="240px"
+              height={"35px"}
             />
           </MainContentLogoImageWrapper>
           <AutoCompleteWrapper>
