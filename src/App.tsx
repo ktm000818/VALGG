@@ -15,12 +15,11 @@ export default function App() {
             <Header />
             <Routes>
               <Route path="/" element={<MainPage />} />
-              <Route path="/profile" element={<Profile />} />
+              <Route path="/profile/:name/:tag" element={<Profile />} />
             </Routes>
           </ErrorBoundary>
         </RecoilRoot>
       </BrowserRouter>
     </>
-
-  )
+  );
 }
