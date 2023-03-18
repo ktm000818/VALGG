@@ -17,6 +17,7 @@ import {
 import AgentPerfomance from "./agent-performance/AgentPerformance";
 import MainStats from "./main-stats/MainStats";
 import MapPerfomance from "./map-performance/MapPerformance";
+import MatchHistory from "./match-history/MatchHistory";
 import ProfileCard from "./profile-card/ProfileCard";
 import Rating from "./rating/Rating";
 import TopWeapon from "./top-weapon/TopWeapon";
@@ -127,6 +128,7 @@ export default function Profile() {
           </SideContentWrapper>
           <CenterContentWrapper>
             <MainStats />
+            <MatchHistory />
           </CenterContentWrapper>
         </Main>
       </MainWrapper>
@@ -156,4 +158,5 @@ const CenterContentWrapper = styled.div`
   max-width: 740px;
   border: 1px solid black;
   display: flex;
+  flex-direction: column;
 `;
