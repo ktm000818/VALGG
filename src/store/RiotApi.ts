@@ -74,8 +74,8 @@ export async function getAccountData(
 
     if (onlyname) {
       if (response.status === 200) {
-        const { name, tag } = response.data.data;
-        return { name: `${name}#${tag}` };
+        const { name, tag, card } = response.data.data;
+        return { name: `${name}#${tag}`, card };
       } else {
         return {};
       }
