@@ -7,56 +7,6 @@ import { getAccountData } from "../store/RiotApi";
 import { debounce } from "../Utils";
 
 export default function MainPage() {
-  interface UserList {
-    name: string;
-  }
-
-  const LS_SEARCH_HISTORY = JSON.parse(
-    localStorage.getItem("searchHistory") ?? "[]"
-  );
-  const [userList, setUserList] = useState<UserList[]>([{ name: "" }]);
-  const navigate = useNavigate();
-
-  const handleChangeAutoComplete = useCallback(
-    (value: string) => {
-      if (value) {
-        const [name, tag] = value.split("#");
-
-        let searchHistory = JSON.parse(
-          localStorage.getItem("searchHistory") ?? "[]"
-        );
-        searchHistory.push({ name: value });
-        localStorage.setItem(
-          "searchHistory",
-          JSON.stringify(Array.from(uniqBy(searchHistory, "name")))
-        );
-
-        navigate(`/profile/${name}/${tag}`, {
-          state: {
-            name,
-            tag,
-          },
-        });
-      }
-    },
-    [navigate]
-  );
-
-  const handleChangeTextField = useCallback(
-    async (value: string) => {
-      if (value.includes("#")) {
-        debounce(async () => {
-          const [name, tag] = value.split("#");
-          const USER_LIST: UserList = await getAccountData(name, tag, true);
-          setUserList([USER_LIST]);
-        }, 500);
-      } else {
-        setUserList([{ name: "" }]);
-      }
-    },
-    [userList]
-  );
-
   return (
     <>
       <MainWrapper>
@@ -71,11 +21,7 @@ export default function MainPage() {
           <AutoCompleteWrapper>
             <CustomAutoComplete
               id="main_auto_complete"
-              searchHistory={LS_SEARCH_HISTORY}
-              options={userList}
-              onInputChange={handleChangeTextField}
-              onChange={handleChangeAutoComplete}
-              style={{ width: "500px" }}
+              style={{ width: "750px" }}
             />
           </AutoCompleteWrapper>
         </MainContentWrapper>
