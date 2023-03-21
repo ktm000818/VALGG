@@ -13,6 +13,7 @@ import { getAccountData } from "../store/RiotApi";
 import { Box, Tab, Tabs, Typography } from "@mui/material";
 import { ReactComponent as Star } from "../assets/images/star.svg";
 import { ReactComponent as Delete } from "../assets/images/delete.svg";
+import { ReactComponent as FilledStar } from "../assets/images/filled-star.svg";
 import { borderRadius } from "@mui/system";
 
 interface Card {
@@ -61,7 +62,7 @@ const CustomAutoComplete = ({
     let searchHistory = JSON.parse(
       localStorage.getItem("searchHistory") ?? "[]"
     );
-    searchHistory.push({ name: nameValue, card });
+    searchHistory.push({ name: nameValue, card, favorite: false });
     localStorage.setItem(
       "searchHistory",
       JSON.stringify(Array.from(uniqBy(searchHistory, "name")))
@@ -300,21 +301,32 @@ function a11yProps(index: number) {
   };
 }
 
-interface SearchHistoryGridList {
+interface ISearchHistoryGridList {
   onClickHistory: (value: string, card: Card) => void;
   style: React.CSSProperties;
+}
+
+interface SearchList {
+  name: string;
+  card: Card;
+  favorite: boolean;
+}
+
+interface FavoriteList {
+  name: string;
+  card: Card;
 }
 
 const SearchHistoryGridList = ({
   onClickHistory = () => {},
   style = { width: 200 },
-}: SearchHistoryGridList) => {
+}: ISearchHistoryGridList) => {
   const [value, setValue] = useState(0);
-  const [favoriteHistory, setFavoriteHistory] = useState<Array<UserList>>(
-    JSON.parse(localStorage.getItem("favoriteHistory") ?? "[]")
+  const [searchHistory, setSearchHistory] = useState<Array<SearchList>>(
+    JSON.parse(localStorage.getItem("searchHistory") ?? "[]")
   );
-  const searchHistory: Array<UserList> = JSON.parse(
-    localStorage.getItem("searchHistory") ?? "[]"
+  const [favoriteHistory, setFavoriteHistory] = useState<Array<FavoriteList>>(
+    JSON.parse(localStorage.getItem("favoriteHistory") ?? "[]")
   );
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -322,18 +334,75 @@ const SearchHistoryGridList = ({
   };
 
   const addFavoriteHistory = (item: { name: string; card: Card }) => {
-    let favoriteHistory = JSON.parse(
-      localStorage.getItem("favoriteHistory") ?? "[]"
-    );
-    favoriteHistory.push(item);
-    localStorage.setItem(
-      "favoriteHistory",
-      JSON.stringify(uniqBy(favoriteHistory, "name"))
-    );
+    setFavoriteHistory((curr) => {
+      let newFavoriteHistory = [...curr];
+      newFavoriteHistory.push(item);
 
-    setFavoriteHistory(
-      JSON.parse(localStorage.getItem("favoriteHistory") ?? "[]")
-    );
+      localStorage.setItem(
+        "favoriteHistory",
+        JSON.stringify(uniqBy(newFavoriteHistory, "name"))
+      );
+
+      return [...newFavoriteHistory];
+    });
+    setSearchHistory((curr) => {
+      let searchHistory = [...curr];
+      const newSearchHistory = searchHistory.map((i) => {
+        if (i.name === item.name) {
+          return { ...i, favorite: true };
+        } else {
+          return { ...i };
+        }
+      });
+
+      localStorage.setItem(
+        "searchHistory",
+        JSON.stringify(uniqBy(newSearchHistory, "name"))
+      );
+
+      return [...newSearchHistory];
+    });
+  };
+
+  const deleteFavoriteHistory = (name: string) => {
+    setFavoriteHistory((curr) => {
+      let newFavoriteHistory = [...curr].filter((i) => i.name !== name);
+
+      localStorage.setItem(
+        "favoriteHistory",
+        JSON.stringify(uniqBy(newFavoriteHistory, "name"))
+      );
+
+      return [...newFavoriteHistory];
+    });
+    setSearchHistory((curr) => {
+      const newSearchHistory = [...curr];
+      curr.forEach((i, index) => {
+        if (i.name === name) {
+          newSearchHistory[index]["favorite"] = false;
+        }
+      });
+
+      localStorage.setItem(
+        "searchHistory",
+        JSON.stringify(uniqBy(newSearchHistory, "name"))
+      );
+
+      return [...newSearchHistory];
+    });
+  };
+
+  const deleteSearchHistory = (name: string) => {
+    setSearchHistory((curr) => {
+      const newSearchHistory = [...curr].filter((i) => i.name !== name);
+
+      localStorage.setItem(
+        "searchHistory",
+        JSON.stringify(uniqBy(newSearchHistory, "name"))
+      );
+
+      return [...newSearchHistory];
+    });
   };
 
   return (
@@ -375,7 +444,12 @@ const SearchHistoryGridList = ({
                       onClickHistory(item.name, item.card);
                     }}
                   >
-                    <img src={item.card.small} width={40} height={40}></img>
+                    <img
+                      src={item.card.small}
+                      width={40}
+                      height={40}
+                      alt=""
+                    ></img>
                   </div>
                   <div
                     style={{
@@ -401,9 +475,16 @@ const SearchHistoryGridList = ({
                       alignItems: "center",
                       paddingRight: "10px",
                     }}
-                    onClick={() => addFavoriteHistory(item)}
+                    onClick={() => {
+                      if (item.favorite) {
+                        deleteFavoriteHistory(item.name);
+                      } else {
+                        addFavoriteHistory(item);
+                      }
+                    }}
                   >
-                    <Star width={24} height={24} />
+                    {item.favorite && <FilledStar width={24} height={24} />}
+                    {!item.favorite && <Star width={24} height={24} />}
                   </div>
                   <div
                     style={{
@@ -411,7 +492,7 @@ const SearchHistoryGridList = ({
                       alignItems: "center",
                       paddingRight: "10px",
                     }}
-                    onClick={() => addFavoriteHistory(item)}
+                    onClick={() => deleteSearchHistory(item.name)}
                   >
                     <Delete width={24} height={24} />
                   </div>
@@ -437,7 +518,12 @@ const SearchHistoryGridList = ({
                       onClickHistory(item.name, item.card);
                     }}
                   >
-                    <img src={item.card.small} width={40} height={40}></img>
+                    <img
+                      src={item.card.small}
+                      width={40}
+                      height={40}
+                      alt=""
+                    ></img>
                   </div>
                   <div
                     style={{
@@ -463,17 +549,7 @@ const SearchHistoryGridList = ({
                       alignItems: "center",
                       paddingRight: "10px",
                     }}
-                    onClick={() => addFavoriteHistory(item)}
-                  >
-                    <Star width={24} height={24} />
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      paddingRight: "10px",
-                    }}
-                    onClick={() => addFavoriteHistory(item)}
+                    onClick={() => deleteFavoriteHistory(item.name)}
                   >
                     <Delete width={24} height={24} />
                   </div>
