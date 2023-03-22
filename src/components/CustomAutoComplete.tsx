@@ -432,70 +432,41 @@ const SearchHistoryGridList = ({
             {searchHistory.map((item) => {
               return (
                 <History>
-                  <div
-                    style={{
-                      margin: "0px 0px 0px 10px",
-                      display: "flex",
-                      border: "0px",
-                      borderRadius: "10px",
-                      overflow: "hidden",
-                    }}
+                  <ImgWrapper
                     onClick={() => {
                       onClickHistory(item.name, item.card);
                     }}
                   >
-                    <img
+                    <ProfileImage
                       src={item.card.small}
                       width={40}
                       height={40}
                       alt=""
-                    ></img>
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "left",
-                      flex: 3,
-                    }}
+                    ></ProfileImage>
+                  </ImgWrapper>
+                  <NicknameWrapper
                     onClick={() => {
                       onClickHistory(item.name, item.card);
                     }}
                   >
-                    <span style={{ fontSize: "14px" }}>
-                      {item.name.split("#")[0]}
-                    </span>
-                    <span style={{ fontSize: "12px" }}>
-                      {"#" + item.name.split("#")[1]}
-                    </span>
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      paddingRight: "10px",
-                    }}
+                    <Nickname>{item.name.split("#")[0]}</Nickname>
+                    <Tag>{"#" + item.name.split("#")[1]}</Tag>
+                  </NicknameWrapper>
+                  <AddFavButtonWrapper
                     onClick={() => {
-                      if (item.favorite) {
-                        deleteFavoriteHistory(item.name);
-                      } else {
-                        addFavoriteHistory(item);
-                      }
+                      item.favorite
+                        ? deleteFavoriteHistory(item.name)
+                        : addFavoriteHistory(item);
                     }}
                   >
                     {item.favorite && <FilledStar width={24} height={24} />}
                     {!item.favorite && <Star width={24} height={24} />}
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      paddingRight: "10px",
-                    }}
+                  </AddFavButtonWrapper>
+                  <DeleteButtonWrapper
                     onClick={() => deleteSearchHistory(item.name)}
                   >
                     <Delete width={24} height={24} />
-                  </div>
+                  </DeleteButtonWrapper>
                 </History>
               );
             })}
@@ -506,53 +477,31 @@ const SearchHistoryGridList = ({
             {favoriteHistory.map((item) => {
               return (
                 <History>
-                  <div
-                    style={{
-                      margin: "0px 0px 0px 10px",
-                      display: "flex",
-                      border: "0px",
-                      borderRadius: "10px",
-                      overflow: "hidden",
-                    }}
+                  <ImgWrapper
                     onClick={() => {
                       onClickHistory(item.name, item.card);
                     }}
                   >
-                    <img
+                    <ProfileImage
                       src={item.card.small}
                       width={40}
                       height={40}
                       alt=""
-                    ></img>
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "left",
-                      flex: 3,
-                    }}
+                    />
+                  </ImgWrapper>
+                  <NicknameWrapper
                     onClick={() => {
                       onClickHistory(item.name, item.card);
                     }}
                   >
-                    <span style={{ fontSize: "14px" }}>
-                      {item.name.split("#")[0]}
-                    </span>
-                    <span style={{ fontSize: "12px" }}>
-                      {"#" + item.name.split("#")[1]}
-                    </span>
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      paddingRight: "10px",
-                    }}
+                    <Nickname>{item.name.split("#")[0]}</Nickname>
+                    <Tag>{"#" + item.name.split("#")[1]}</Tag>
+                  </NicknameWrapper>
+                  <DeleteButtonWrapper
                     onClick={() => deleteFavoriteHistory(item.name)}
                   >
                     <Delete width={24} height={24} />
-                  </div>
+                  </DeleteButtonWrapper>
                 </History>
               );
             })}
@@ -580,6 +529,46 @@ const History = styled.div`
   &:hover {
     background-color: lightgray;
   }
+`;
+
+const ImgWrapper = styled.div`
+  margin: 0px 0px 0px 10px;
+  display: flex;
+  border: 0px;
+  borderradius: 10px;
+  overflow: hidden;
+`;
+
+const ProfileImage = styled.img`
+  width: ${(props) => props.width}px;
+  height: ${(props) => props.height}px;
+`;
+
+const NicknameWrapper = styled.div`
+  display: flex;
+  flexdirection: column;
+  justifycontent: left;
+  flex: 3;
+`;
+
+const Nickname = styled.span`
+  font-size: 14px;
+`;
+
+const Tag = styled.span`
+  font-size: 12px;
+`;
+
+const AddFavButtonWrapper = styled.div`
+  display: flex;
+  alignitems: center;
+  paddingright: 10px;
+`;
+
+const DeleteButtonWrapper = styled.div`
+  display: flex;
+  alignitems: center;
+  paddingright: 10px;
 `;
 
 export default CustomAutoComplete;
