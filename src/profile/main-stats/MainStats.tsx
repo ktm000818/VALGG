@@ -29,11 +29,9 @@ export default function MainStats() {
               {_.isEmpty(wholeStat) && <h2>Loading...</h2>}
               {!_.isEmpty(wholeStat) && (
                 <>
-                  <WinLoseCount>{`${wholeStat.matchCount}게임 ${
-                    wholeStat.matchWins
-                  }승 ${
-                    wholeStat.matchCount - wholeStat.matchWins
-                  }패`}</WinLoseCount>
+                  <WinLoseCount>{`${wholeStat.matchCount}게임 ${wholeStat.matchWins
+                    }승 ${wholeStat.matchCount - wholeStat.matchWins
+                    }패`}</WinLoseCount>
                   <div
                     style={{
                       display: "flex",
@@ -48,23 +46,38 @@ export default function MainStats() {
                     />
                     <ChartDetailWrapper>
                       <KDAWrapper>
-                        <ChartDetailKill>{`${(
-                          wholeStat.kills / wholeStat.matchCount
-                        ).toFixed(1)} / `}</ChartDetailKill>
-                        <ChartDetailDeath>{`${(
-                          wholeStat.deaths / wholeStat.matchCount
-                        ).toFixed(1)}`}</ChartDetailDeath>
-                        <ChartDetailAssists>{` / ${(
-                          wholeStat.assists / wholeStat.matchCount
-                        ).toFixed(1)}`}</ChartDetailAssists>
+                        {wholeStat.kills === 0 && wholeStat.deaths === 0 && wholeStat.assists === 0 ? (
+                          <>
+                            <ChartDetailKill> {`0 / `}</ChartDetailKill>
+                            <ChartDetailDeath>{`0 / `}</ChartDetailDeath>
+                            <ChartDetailAssists>{`0`}</ChartDetailAssists>
+                          </>
+                        ) : (
+                          <>
+                            <ChartDetailKill> {`${(
+                              wholeStat.kills / wholeStat.matchCount
+                            ).toFixed(1)} / `}</ChartDetailKill>
+                            <ChartDetailDeath>{`${(
+                              wholeStat.deaths / wholeStat.matchCount
+                            ).toFixed(1)}`}</ChartDetailDeath>
+                            <ChartDetailAssists>{` / ${(
+                              wholeStat.assists / wholeStat.matchCount
+                            ).toFixed(1)}`}</ChartDetailAssists>
+                          </>
+
+                        )}
+
                       </KDAWrapper>
                       <Rating>
-                        {`${(
-                          (wholeStat.kills / wholeStat.matchCount +
-                            wholeStat.assists / wholeStat.matchCount) /
-                          (wholeStat.deaths / wholeStat.matchCount)
-                        ).toFixed(2)}`}{" "}
-                        : 1
+                        {wholeStat.kills === 0 && wholeStat.deaths === 0 && wholeStat.assists === 0 ? (
+                          "0 : 1"
+                        ) : (
+                          `${(
+                            (wholeStat.kills / wholeStat.matchCount +
+                              wholeStat.assists / wholeStat.matchCount) /
+                            (wholeStat.deaths / wholeStat.matchCount)
+                          ).toFixed(2)} : 1`
+                        )}
                       </Rating>
                       <InvolvementRate>킬 관여율 22.32%</InvolvementRate>
                     </ChartDetailWrapper>
@@ -108,9 +121,8 @@ export default function MainStats() {
                             {getAgentName(info.agent)}
                           </span>
                           <span style={{ fontSize: "11px", color: "#E84057" }}>
-                            {`${info.winRatio}% ${info.matchWins}승 ${
-                              info.matchCount - info.matchWins
-                            }패 ${info.avgRecord}:1 평점`}
+                            {`${info.winRatio}% ${info.matchWins}승 ${info.matchCount - info.matchWins
+                              }패 ${info.avgRecord}:1 평점`}
                           </span>
                         </div>
                       </div>
