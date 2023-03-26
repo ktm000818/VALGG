@@ -43,7 +43,7 @@ export default function Rating() {
                     </StatsRatingWrapper>
                     <RankInfoWrapper>
                         {/* //TODO 이미지 태그 Emotion으로 교체! */}
-                        {currentTier ? (
+                        {currentTierImageSmall ? (
                             <RankImageWrapper>
                                 <img className="rank_image" src={currentTierImageSmall} onError={setDefaultRankImage} />
                             </RankImageWrapper>
@@ -56,14 +56,14 @@ export default function Rating() {
                             ) : (
                                 <Skeleton sx={{ fontSize: "18px" }} />
                             )}
-                            {latestFiveGamesKDARatio ? (
+                            {latestFiveGamesKDARatio >= 0 ? (
                                 <Kda>최근 5게임 KDA 비율 {latestFiveGamesKDARatio} : 1</Kda>
                             ) : (
                                 <Skeleton>
                                     <Kda>최근 5게임 KDA 비율 {latestFiveGamesKDARatio} : 1</Kda>
                                 </Skeleton>
                             )}
-                            {(currentSeasonWins && currentSeasonDefeats) ? (
+                            {(currentSeasonWins >= 0 && currentSeasonDefeats >= 0) ? (
                                 <WinLose>시즌 전적 : {`${currentSeasonWins}승 ${currentSeasonDefeats}패`}</WinLose>
                             ) : (
                                 <Skeleton>
