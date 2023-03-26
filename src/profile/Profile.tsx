@@ -1,7 +1,8 @@
 import styled from "@emotion/styled";
+import { isEmpty } from "lodash";
 import { useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
   loadingState,
   playerDefaultInfoState,
@@ -26,6 +27,7 @@ export default function Profile() {
   const setDefaultInfoRecoil = useSetRecoilState(playerDefaultInfoState);
   const setInfoRecoil = useSetRecoilState(playerWholeInfoState);
   const setLoadingState = useSetRecoilState(loadingState);
+  const wholeStatsInfo = useRecoilValue(playerWholeInfoState);
   const { name, tag } = useParams<{
     name: string;
     tag: string;
@@ -74,7 +76,7 @@ export default function Profile() {
     try {
       const result = await getAllUserData(prop);
       const filteredResult = result.reduce((prev, curr) => {
-        const responseData = curr.data.data;
+        const responseData: any = curr.data.data;
         if (Array.isArray(curr.data.data)) {
           if (
             responseData.length > 0 &&
@@ -118,19 +120,25 @@ export default function Profile() {
     <>
       <ProfileCard updatePlayerInfo={updatePlayerInfo} />
       <MainWrapper>
-        <Main>
-          <SideContentWrapper>
-            <Rating />
-            {/* TODO 컴포넌트 Emotion, TypeScript 적용! */}
-            <AgentPerfomance />
-            <TopWeapon />
-            <MapPerfomance />
-          </SideContentWrapper>
-          <CenterContentWrapper>
-            <MainStats />
-            <MatchHistory />
-          </CenterContentWrapper>
-        </Main>
+        {isEmpty(wholeStatsInfo.MatchHistory) ? (
+          <NoDataMain>전적 없음</NoDataMain>
+        ) : (
+          <>
+          <Main>
+            <SideContentWrapper>
+              <Rating />
+              {/* TODO 컴포넌트 Emotion, TypeScript 적용! */}
+              <AgentPerfomance />
+              <TopWeapon />
+              <MapPerfomance />
+            </SideContentWrapper>
+            <CenterContentWrapper>
+              <MainStats />
+              <MatchHistory />
+            </CenterContentWrapper>
+          </Main>
+          </>
+        )}
       </MainWrapper>
     </>
   );
@@ -141,6 +149,14 @@ const MainWrapper = styled.div`
   padding: 20px 110px;
   margin: auto;
   box-sizing: border-box;
+`;
+
+const NoDataMain = styled.div`
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40px;
 `;
 
 const Main = styled.div`
