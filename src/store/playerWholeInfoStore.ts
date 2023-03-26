@@ -93,6 +93,10 @@ export const currentTierPatchedState = selector<string | undefined>({
   get: ({ get }) => {
     const { current_data } = get(playerWholeInfoState);
 
+    if (!current_data?.currenttierpatched) {
+      return "unranked"
+    }
+
     return current_data?.currenttierpatched;
   },
 });
@@ -1229,9 +1233,26 @@ export const winRatioAndKDARatingState = selector({
   key: `agentInfoState${makeUUID()}`,
   get: ({ get }) => {
     const AGENT_INFOS = get(agentInfoState);
+    console.log(AGENT_INFOS)
+    const DEFAULT_RETURN_DATA = {
+      kills: 0,
+      deaths: 0,
+      assists: 0,
+      matchCount: 0,
+      matchWins: 0,
+      matchDefeats: 0,
+      kdaRatio: 0,
+      score: 0,
+    };
 
     if (isEmpty(AGENT_INFOS)) {
-      return [];
+      console.log("here2");
+      return DEFAULT_RETURN_DATA
+    }
+
+    if (isUndefined(AGENT_INFOS)) {
+      console.log("here.")
+      return DEFAULT_RETURN_DATA
     }
 
     const STATS = AGENT_INFOS.reduce((prev, curr) => {
@@ -1263,6 +1284,7 @@ export const winRatioAndKDARatingState = selector({
       }
     }, {});
 
+    console.log(STATS);
     return STATS;
   },
 });

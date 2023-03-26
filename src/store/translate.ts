@@ -86,6 +86,7 @@ export const agent = {
 } as const
 
 export const tier = {
+    'unranked': new Tier("unranked", "랭크 없음"),
     'Iron 1': new Tier("Iron 1", "아이언 1"),
     'Iron 2': new Tier("Iron 2", "아이언 2"),
     'Iron 3': new Tier("Iron 3", "아이언 3"),
