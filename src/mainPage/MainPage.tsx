@@ -21,7 +21,7 @@ export default function MainPage() {
           <AutoCompleteWrapper>
             <CustomAutoComplete
               id="main_auto_complete"
-              style={{ width: "750px" }}
+              style={{ width: 665 }}
               showHistory={true}
             />
           </AutoCompleteWrapper>

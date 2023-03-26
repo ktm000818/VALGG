@@ -14,7 +14,7 @@ import { Box, Tab, Tabs, Typography } from "@mui/material";
 import { ReactComponent as Star } from "../assets/images/star.svg";
 import { ReactComponent as Delete } from "../assets/images/delete.svg";
 import { ReactComponent as FilledStar } from "../assets/images/filled-star.svg";
-import { borderRadius } from "@mui/system";
+import { ReactComponent as SearchButton } from "../assets/images/search.svg";
 
 interface Card {
   small: string;
@@ -28,7 +28,9 @@ interface UserList {
 }
 
 interface Properties {
-  style?: React.CSSProperties;
+  style: {
+    width: number
+  };
   id: string;
   showHistory?: boolean
 }
@@ -160,11 +162,14 @@ const CustomAutoComplete = ({
       <Container>
         <CustomInputContainer id={id} hasInputValue={hasInputValue}>
           <CustomInput
+            placeholder="닉네임#태그"
             value={inputValue}
             onChange={handleChange}
             onKeyDown={handleKeyPress}
             style={style}
           />
+          {/* <SearchButton width={30} height={30} /> */}
+          <SearchButton_ onClick={deleteInputValue}>e</SearchButton_>
           <DeleteButton onClick={deleteInputValue}>x</DeleteButton>
         </CustomInputContainer>
         {hasInputValue && (
@@ -242,7 +247,7 @@ interface FavoriteList {
 }
 
 const SearchHistoryGridList = ({
-  onClickHistory = () => {},
+  onClickHistory = () => { },
   style = { width: 200 },
 }: ISearchHistoryGridList) => {
   const [value, setValue] = useState(0);
@@ -339,7 +344,7 @@ const SearchHistoryGridList = ({
         backgroundColor: "white",
         position: "absolute",
         padding: "0px 16px",
-        ...style,
+        width: style?.width !== undefined ? style.width as number + 86 : style.width
       }}
     >
       <Box sx={{ width: "100%" }}>
@@ -454,7 +459,7 @@ const CustomInputContainer = styled.div<{ hasInputValue: boolean }>`
   position: relative;
   display: flex;
   // flex-direction: row;
-  padding: 16px;
+  padding: 16px 100px 16px 16px;
   border: 1px solid lightgray;
   border-radius: ${(props) =>
     props.hasInputValue ? actvBorderRadius : inactvBorderRadius};
@@ -467,7 +472,7 @@ const CustomInputContainer = styled.div<{ hasInputValue: boolean }>`
 
 const CustomInput = styled.input<{ style: React.CSSProperties }>`
   flex-grow: 1;
-  width: ${(props) => props.style.width};
+  width: ${(props) => props.style.width}px;
   margin: 0;
   padding: 0;
   background-color: transparent;
@@ -477,10 +482,20 @@ const CustomInput = styled.input<{ style: React.CSSProperties }>`
   color: black;
 `;
 
+const SearchButton_ = styled.button`
+  position: absolute;
+  width: 30px;
+  right: 40px;
+  
+  background-color: transparent;
+  border: 5px solid red;
+  cursor: pointer;
+`
+
 const DeleteButton = styled.button`
   position: absolute;
   width: 30px;
-  right: 0;
+  right: 0px;
   background-color: transparent;
   border: none;
   cursor: pointer;
@@ -488,7 +503,7 @@ const DeleteButton = styled.button`
 
 const DropDownListUl = styled.ul<{ style: React.CSSProperties }>`
   position: absolute;
-  width: ${(props) => props.style.width};
+  width: ${(props) => props.style.width}px;
   display: block;
   list-style: none;
   background-color: white;
