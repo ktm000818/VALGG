@@ -72,8 +72,12 @@ const WinRatioPieChart = ({matchWins = 0, matchDefeats = 0, matchCount = 0}) => 
             fontWeight: "bold",
         }));
 
-        let winRatio = ((matchWins / matchCount) * 100) + "%";
-        label.set("text", winRatio);
+        if(matchCount > 0){
+            let winRatio = ((matchWins / matchCount) * 100) + "%";
+            label.set("text", winRatio);
+        }else{
+            label.set("text", "0%");
+        }
 
         // Animate chart data
         // function loop() {
