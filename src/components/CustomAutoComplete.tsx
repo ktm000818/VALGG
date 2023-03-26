@@ -30,11 +30,13 @@ interface UserList {
 interface Properties {
   style?: React.CSSProperties;
   id: string;
+  showHistory?: boolean
 }
 
 const CustomAutoComplete = ({
   id = "",
   style = { width: 200 },
+  showHistory = false
 }: Properties) => {
   const [userList, setUserList] = useState<Array<UserList>>([]);
   const [inputValue, setInputValue] = useState<string>("");
@@ -182,20 +184,7 @@ const CustomAutoComplete = ({
             ))}
           </DropDownListUl>
         )}
-
-        {/* {searchHistory.length >= 1 && (
-          <>
-            <div>최근 검색</div>
-            {searchHistory.map((item) => {
-              return (
-                <div onClick={selectDropDown} style={{ cursor: "pointer" }}>
-                  {item.name}
-                </div>
-              );
-            })}
-          </>
-        )} */}
-        {!inputValue && (
+        {!inputValue && showHistory && (
           <SearchHistoryGridList
             onClickHistory={handleChangeAutoComplete}
             style={style}
@@ -205,71 +194,6 @@ const CustomAutoComplete = ({
     </>
   );
 };
-
-const Container = styled.div`
-  padding: 10px;
-  height: 100%;
-  position: relative;
-`;
-
-const actvBorderRadius = "10px 10px 0 0";
-const inactvBorderRadius = "10px 10px 10px 10px";
-
-const CustomInputContainer = styled.div<{ hasInputValue: boolean }>`
-  position: relative;
-  display: flex;
-  // flex-direction: row;
-  padding: 16px;
-  border: 1px solid lightgray;
-  border-radius: ${(props) =>
-    props.hasInputValue ? actvBorderRadius : inactvBorderRadius};
-  background-color: white;
-  z-index: 99;
-  &:focus-within {
-    box-shadow: 0 10px 10px rgb(0, 0, 0, 0.3);
-  }
-`;
-
-const CustomInput = styled.input<{ style: React.CSSProperties }>`
-  flex-grow: 1;
-  width: ${(props) => props.style.width};
-  margin: 0;
-  padding: 0;
-  background-color: transparent;
-  border: none;
-  outline: none;
-  font-size: 16px;
-  color: black;
-`;
-
-const DeleteButton = styled.button`
-  position: absolute;
-  width: 30px;
-  right: 0;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-`;
-
-const DropDownListUl = styled.ul<{ style: React.CSSProperties }>`
-  position: absolute;
-  width: ${(props) => props.style.width};
-  display: block;
-  list-style: none;
-  background-color: white;
-  margin: 0px;
-  padding: 16px;
-  z-index: 99;
-`;
-
-const DropDownListLi = styled.li`
-  cursor: pointer;
-  padding: 0 16px;
-  color: black;
-  &.selected {
-    background-color: lightgray;
-  }
-`;
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -376,7 +300,8 @@ const SearchHistoryGridList = ({
       return [...newFavoriteHistory];
     });
     setSearchHistory((curr) => {
-      const newSearchHistory = [...curr];
+      let newSearchHistory = [...curr];
+
       curr.forEach((i, index) => {
         if (i.name === name) {
           newSearchHistory[index]["favorite"] = false;
@@ -403,6 +328,8 @@ const SearchHistoryGridList = ({
 
       return [...newSearchHistory];
     });
+
+    deleteFavoriteHistory(name);
   };
 
   return (
@@ -511,6 +438,75 @@ const SearchHistoryGridList = ({
     </div>
   );
 };
+
+// autocomplete
+
+const Container = styled.div`
+  padding: 10px;
+  height: 100%;
+  position: relative;
+`;
+
+const actvBorderRadius = "10px 10px 0 0";
+const inactvBorderRadius = "10px 10px 10px 10px";
+
+const CustomInputContainer = styled.div<{ hasInputValue: boolean }>`
+  position: relative;
+  display: flex;
+  // flex-direction: row;
+  padding: 16px;
+  border: 1px solid lightgray;
+  border-radius: ${(props) =>
+    props.hasInputValue ? actvBorderRadius : inactvBorderRadius};
+  background-color: white;
+  z-index: 99;
+  &:focus-within {
+    box-shadow: 0 10px 10px rgb(0, 0, 0, 0.3);
+  }
+`;
+
+const CustomInput = styled.input<{ style: React.CSSProperties }>`
+  flex-grow: 1;
+  width: ${(props) => props.style.width};
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  color: black;
+`;
+
+const DeleteButton = styled.button`
+  position: absolute;
+  width: 30px;
+  right: 0;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+`;
+
+const DropDownListUl = styled.ul<{ style: React.CSSProperties }>`
+  position: absolute;
+  width: ${(props) => props.style.width};
+  display: block;
+  list-style: none;
+  background-color: white;
+  margin: 0px;
+  padding: 16px;
+  z-index: 99;
+`;
+
+const DropDownListLi = styled.li`
+  cursor: pointer;
+  padding: 0 16px;
+  color: black;
+  &.selected {
+    background-color: lightgray;
+  }
+`;
+
+// history list
 
 const HistoryWrapper = styled.div`
   display: flex;
