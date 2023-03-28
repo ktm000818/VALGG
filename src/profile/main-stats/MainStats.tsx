@@ -1,18 +1,71 @@
-import React, { Suspense, useEffect, useState } from "react";
+import styled from "@emotion/styled";
+import _, { isEmpty } from "lodash";
+import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
 import WinRatioPieChart from "../../components/WinRatioPieChart";
-import "./main_stats.css";
-import _ from "lodash";
 import {
   agentInfoState,
-  winRatioAndKDARatingState,
+  winRatioAndKDARatingState
 } from "../../store/playerWholeInfoStore";
-import { useRecoilValue } from "recoil";
-import styled from "@emotion/styled";
-import { getAgentName } from "../../store/translate";
+import { AgentRoleEn, getAgentName } from "../../store/translate";
+import "./main_stats.css";
 
 export default function MainStats() {
   const agentInfos = useRecoilValue(agentInfoState);
+
+  interface AgentPlayRatioInfo {
+    Duelist: number;
+    Initiator: number;
+    Controller: number;
+    Sentinel: number;
+    None?: number;
+  }
+
+  interface AgentInfo {
+    role: AgentRoleEn;
+    matchCount: number;
+  }
+  const [agentPlayRatioInfo, setAgentPlayRatioInfo] = useState<AgentPlayRatioInfo>({
+     Duelist: 0, Initiator: 0, Controller: 0, Sentinel: 0 
+  });
+
   const wholeStat = useRecoilValue(winRatioAndKDARatingState);
+
+  useEffect(() => {
+    if (!isEmpty(agentInfos)) {
+      let newAgentPlayRatioInfo: AgentPlayRatioInfo = agentInfos.reduce((prev: AgentPlayRatioInfo, curr: AgentInfo) => {
+        const { role, matchCount } = curr;
+        if (role) {
+          return {
+            ...prev,
+            [role]: (prev[role] ?? 0) + matchCount
+          }
+        } else {
+          return {
+            ...prev
+          }
+        }
+      }, { Duelist: 0, Initiator: 0, Controller: 0, Sentinel: 0 })
+
+      setAgentPlayRatioInfo(newAgentPlayRatioInfo);
+    }
+  }, [agentInfos])
+
+  const getRatioOfRole = (role: AgentRoleEn) => {
+    const overallPlayCount = agentPlayRatioInfo['Duelist'] + agentPlayRatioInfo['Sentinel'] + agentPlayRatioInfo['Controller'] + agentPlayRatioInfo['Initiator'];
+    switch (role) {
+      case 'Duelist':
+        return (Math.floor((agentPlayRatioInfo['Duelist'] / overallPlayCount * 100))) + "%"
+      case 'Sentinel':
+        return (Math.floor((agentPlayRatioInfo['Sentinel'] / overallPlayCount * 100))) + "%"
+      case 'Controller':
+        return (Math.floor((agentPlayRatioInfo['Controller'] / overallPlayCount * 100))) + "%"
+      case 'Initiator':
+        return (Math.floor((agentPlayRatioInfo['Initiator'] / overallPlayCount * 100))) + "%"
+      default:
+        return "0%"
+    }
+  }
 
   return (
     <>
@@ -22,7 +75,6 @@ export default function MainStats() {
             <select className="act">
               <option>경쟁전</option>
             </select>
-            {/* <CustomAgentSearchAutoComplete /> */}
           </StatsSearchWrapper>
           <StatsChartWrapper>
             <ChartSection1Wrapper>
@@ -161,7 +213,7 @@ export default function MainStats() {
                     }}
                   >
                     <span
-                      style={{ backgroundColor: "#5383E3", height: "20%" }}
+                      style={{ backgroundColor: "#5383E3", height: getRatioOfRole('Duelist') }}
                     ></span>
                   </div>
                   <div style={{ marginTop: "10px", display: "flex" }}>
@@ -179,7 +231,7 @@ export default function MainStats() {
                     }}
                   >
                     <span
-                      style={{ backgroundColor: "#5383E3", height: "20%" }}
+                      style={{ backgroundColor: "#5383E3", height: getRatioOfRole('Initiator') }}
                     ></span>
                   </div>
                   <div style={{ marginTop: "10px", display: "flex" }}>
@@ -197,7 +249,7 @@ export default function MainStats() {
                     }}
                   >
                     <span
-                      style={{ backgroundColor: "#5383E3", height: "20%" }}
+                      style={{ backgroundColor: "#5383E3", height: getRatioOfRole('Sentinel') }}
                     ></span>
                   </div>
                   <div style={{ marginTop: "10px", display: "flex" }}>
@@ -215,7 +267,7 @@ export default function MainStats() {
                     }}
                   >
                     <span
-                      style={{ backgroundColor: "#5383E3", height: "20%" }}
+                      style={{ backgroundColor: "#5383E3", height: getRatioOfRole('Controller') }}
                     ></span>
                   </div>
                   <div style={{ marginTop: "10px", display: "flex" }}>
