@@ -31,16 +31,16 @@ interface UserList {
 
 interface Properties {
   style: {
-    width: number
+    width: number;
   };
   id: string;
-  showHistory?: boolean
+  showHistory?: boolean;
 }
 
 const CustomAutoComplete = ({
   id = "",
   style = { width: 200 },
-  showHistory = false
+  showHistory = false,
 }: Properties) => {
   const [userList, setUserList] = useState<Array<UserList>>([]);
   const [inputValue, setInputValue] = useState<string>("");
@@ -171,10 +171,10 @@ const CustomAutoComplete = ({
             style={style}
           />
           <SearchButtonWrapper>
-            <IoSearchCircleSharp fontSize={40} onClick={selectDropDown}/>
+            <IoSearchCircleSharp fontSize={40} onClick={selectDropDown} />
           </SearchButtonWrapper>
           <ClearInputButtonWrapper onClick={deleteInputValue}>
-            <IoCloseCircleSharp fontSize={37} onClick={deleteInputValue}/>
+            <IoCloseCircleSharp fontSize={37} onClick={deleteInputValue} />
           </ClearInputButtonWrapper>
         </CustomInputContainer>
         {hasInputValue && (
@@ -195,10 +195,7 @@ const CustomAutoComplete = ({
           </DropDownListUl>
         )}
         {!inputValue && showHistory && (
-          <SearchHistoryGridList
-            onClickHistory={searchPlayer}
-            style={style}
-          />
+          <SearchHistoryGridList onClickHistory={searchPlayer} style={style} />
         )}
       </Container>
     </>
@@ -252,7 +249,7 @@ interface FavoriteList {
 }
 
 const SearchHistoryGridList = ({
-  onClickHistory = () => { },
+  onClickHistory = () => {},
   style = { width: 200 },
 }: ISearchHistoryGridList) => {
   const [value, setValue] = useState(0);
@@ -349,7 +346,10 @@ const SearchHistoryGridList = ({
         backgroundColor: "white",
         position: "absolute",
         padding: "0px 16px",
-        width: style?.width !== undefined ? style.width as number + 86 : style.width
+        width:
+          style?.width !== undefined
+            ? (style.width as number) + 86
+            : style.width,
       }}
     >
       <Box sx={{ width: "100%" }}>
@@ -366,47 +366,48 @@ const SearchHistoryGridList = ({
         </Box>
         <TabPanel value={value} index={0} style={{ width: "100%" }}>
           <HistoryWrapper>
-            {searchHistory.map((item) => {
-              return (
-                <History>
-                  <ImgWrapper
-                    onClick={() => {
-                      onClickHistory(item.name, item.card);
-                    }}
-                  >
-                    <ProfileImage
-                      src={item.card.small}
-                      width={40}
-                      height={40}
-                      alt=""
-                    ></ProfileImage>
-                  </ImgWrapper>
-                  <NicknameWrapper
-                    onClick={() => {
-                      onClickHistory(item.name, item.card);
-                    }}
-                  >
-                    <Nickname>{item.name.split("#")[0]}</Nickname>
-                    <Tag>{"#" + item.name.split("#")[1]}</Tag>
-                  </NicknameWrapper>
-                  <AddFavButtonWrapper
-                    onClick={() => {
-                      item.favorite
-                        ? deleteFavoriteHistory(item.name)
-                        : addFavoriteHistory(item);
-                    }}
-                  >
-                    {item.favorite && <FilledStar width={24} height={24} />}
-                    {!item.favorite && <Star width={24} height={24} />}
-                  </AddFavButtonWrapper>
-                  <DeleteButtonWrapper
-                    onClick={() => deleteSearchHistory(item.name)}
-                  >
-                    <Delete width={24} height={24} />
-                  </DeleteButtonWrapper>
-                </History>
-              );
-            })}
+            {searchHistory.length > 0 &&
+              searchHistory.map((item) => {
+                return (
+                  <History>
+                    <ImgWrapper
+                      onClick={() => {
+                        onClickHistory(item.name, item.card);
+                      }}
+                    >
+                      <ProfileImage
+                        src={item.card.small}
+                        width={40}
+                        height={40}
+                        alt=""
+                      ></ProfileImage>
+                    </ImgWrapper>
+                    <NicknameWrapper
+                      onClick={() => {
+                        onClickHistory(item.name, item.card);
+                      }}
+                    >
+                      <Nickname>{item.name.split("#")[0]}</Nickname>
+                      <Tag>{"#" + item.name.split("#")[1]}</Tag>
+                    </NicknameWrapper>
+                    <AddFavButtonWrapper
+                      onClick={() => {
+                        item.favorite
+                          ? deleteFavoriteHistory(item.name)
+                          : addFavoriteHistory(item);
+                      }}
+                    >
+                      {item.favorite && <FilledStar width={24} height={24} />}
+                      {!item.favorite && <Star width={24} height={24} />}
+                    </AddFavButtonWrapper>
+                    <DeleteButtonWrapper
+                      onClick={() => deleteSearchHistory(item.name)}
+                    >
+                      <Delete width={24} height={24} />
+                    </DeleteButtonWrapper>
+                  </History>
+                );
+              })}
           </HistoryWrapper>
         </TabPanel>
         <TabPanel value={value} index={1} style={{ width: "100%" }}>
@@ -496,7 +497,7 @@ const SearchButtonWrapper = styled.button`
   background-color: transparent;
   border: none;
   cursor: pointer;
-`
+`;
 
 const ClearInputButtonWrapper = styled.button`
   position: absolute;
