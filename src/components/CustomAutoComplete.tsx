@@ -15,6 +15,8 @@ import { ReactComponent as Star } from "../assets/images/star.svg";
 import { ReactComponent as Delete } from "../assets/images/delete.svg";
 import { ReactComponent as FilledStar } from "../assets/images/filled-star.svg";
 import { ReactComponent as SearchButton } from "../assets/images/search.svg";
+import { IoSearchCircleSharp } from "react-icons/io5";
+import { IoCloseCircleSharp } from "react-icons/io5";
 
 interface Card {
   small: string;
@@ -73,7 +75,7 @@ const CustomAutoComplete = ({
     );
   };
 
-  const handleChangeAutoComplete = (value: string, card: Card) => {
+  const searchPlayer = (value: string, card: Card) => {
     if (value) {
       const [name, tag] = value.split("#");
 
@@ -128,7 +130,7 @@ const CustomAutoComplete = ({
   const selectDropDown = (e: React.SyntheticEvent | null) => {
     const focusedItemLabel = Object.values(userList)[dropDownLiKey].name;
     const focusedItemCards = Object.values(userList)[dropDownLiKey].card;
-    handleChangeAutoComplete(
+    searchPlayer(
       (e?.target as HTMLLIElement)?.innerText || focusedItemLabel,
       focusedItemCards
     );
@@ -168,12 +170,15 @@ const CustomAutoComplete = ({
             onKeyDown={handleKeyPress}
             style={style}
           />
-          {/* <SearchButton width={30} height={30} /> */}
-          <SearchButton_ onClick={deleteInputValue}>e</SearchButton_>
-          <DeleteButton onClick={deleteInputValue}>x</DeleteButton>
+          <SearchButtonWrapper>
+            <IoSearchCircleSharp fontSize={40} onClick={selectDropDown}/>
+          </SearchButtonWrapper>
+          <ClearInputButtonWrapper onClick={deleteInputValue}>
+            <IoCloseCircleSharp fontSize={37} onClick={deleteInputValue}/>
+          </ClearInputButtonWrapper>
         </CustomInputContainer>
         {hasInputValue && (
-          <DropDownListUl style={style}>
+          <DropDownListUl width={style.width}>
             {userList.length === 1 && userList[0]?.name === "" && (
               <DropDownListLi key={0}>검색 중 . . .</DropDownListLi>
             )}
@@ -191,7 +196,7 @@ const CustomAutoComplete = ({
         )}
         {!inputValue && showHistory && (
           <SearchHistoryGridList
-            onClickHistory={handleChangeAutoComplete}
+            onClickHistory={searchPlayer}
             style={style}
           />
         )}
@@ -482,28 +487,32 @@ const CustomInput = styled.input<{ style: React.CSSProperties }>`
   color: black;
 `;
 
-const SearchButton_ = styled.button`
+const SearchButtonWrapper = styled.button`
   position: absolute;
-  width: 30px;
+  width: 45px;
+  height: 45px;
   right: 40px;
-  
+  top: 5px;
   background-color: transparent;
-  border: 5px solid red;
+  border: none;
   cursor: pointer;
 `
 
-const DeleteButton = styled.button`
+const ClearInputButtonWrapper = styled.button`
   position: absolute;
-  width: 30px;
+  width: 45px;
+  height: 45px;
+  right: 40px;
+  top: 5px;
   right: 0px;
   background-color: transparent;
   border: none;
   cursor: pointer;
 `;
 
-const DropDownListUl = styled.ul<{ style: React.CSSProperties }>`
+const DropDownListUl = styled.ul<{ width: number }>`
   position: absolute;
-  width: ${(props) => props.style.width}px;
+  width: ${(props) => props.width + 86}px;
   display: block;
   list-style: none;
   background-color: white;
