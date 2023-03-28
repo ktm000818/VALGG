@@ -1,6 +1,7 @@
 import { isEmpty, isUndefined } from "lodash";
 import { atom, selector } from "recoil";
 import { makeUUID } from "../components/uuid";
+import { AgentRoleEn, getAgentRole } from "./translate";
 
 export const loadingState = atom({
   key: `recoilLoadingState${makeUUID()}`,
@@ -1087,18 +1088,33 @@ export const matchHistoryGroupByMapState = selector({
   },
 });
 
-export const agentInfoState = selector({
+interface AgentInfoState {
+  agent: string;
+  assists: number;
+  deaths: number;
+  kills: number;
+  score: number;
+  avgRecord: number;
+  avgScore: number;
+  winRatio: number;
+  matchWins: number;
+  matchCount: number;
+  role: AgentRoleEn;
+  AGENT_ICON_URL: string;
+}
+
+export const agentInfoState = selector<Array<AgentInfoState>>({
   key: `agentInfoState${makeUUID()}`,
   get: ({ get }) => {
     const LATEST_FIVE_GAMES: Array<MatchHistory> | undefined =
       get(latestFiveGamesState);
 
     if (isEmpty(LATEST_FIVE_GAMES)) {
-      return [] as Array<any>;
+      return [] as Array<AgentInfoState>;
     }
 
     if (LATEST_FIVE_GAMES === undefined) {
-      return [] as Array<any>;
+      return [] as Array<AgentInfoState>;
     }
 
     interface UnFilteredInfos {
@@ -1150,6 +1166,7 @@ export const agentInfoState = selector({
         winRatio: number;
         matchWins: number;
         matchCount: number;
+        role: AgentRoleEn;
         AGENT_ICON_URL: string;
       };
     }
@@ -1200,6 +1217,7 @@ export const agentInfoState = selector({
               matchWins:
                 prevInfo[agent].matchWins + (match_result === "WIN" ? 1 : 0),
               matchCount: prevInfo[agent].matchCount + 1,
+              role: getAgentRole(agent, false) as AgentRoleEn,
               AGENT_ICON_URL,
             },
           };
@@ -1217,6 +1235,7 @@ export const agentInfoState = selector({
               winRatio: match_result === "WIN" ? 100 : 0,
               matchWins: match_result === "WIN" ? 1 : 0,
               matchCount: 1,
+              role: getAgentRole(agent, false) as AgentRoleEn,
               AGENT_ICON_URL,
             },
           };
@@ -1233,7 +1252,6 @@ export const winRatioAndKDARatingState = selector({
   key: `agentInfoState${makeUUID()}`,
   get: ({ get }) => {
     const AGENT_INFOS = get(agentInfoState);
-    console.log(AGENT_INFOS)
     const DEFAULT_RETURN_DATA = {
       kills: 0,
       deaths: 0,
@@ -1246,20 +1264,29 @@ export const winRatioAndKDARatingState = selector({
     };
 
     if (isEmpty(AGENT_INFOS)) {
-      console.log("here2");
       return DEFAULT_RETURN_DATA
     }
 
     if (isUndefined(AGENT_INFOS)) {
-      console.log("here.")
       return DEFAULT_RETURN_DATA
     }
 
-    const STATS = AGENT_INFOS.reduce((prev, curr) => {
+    interface Stats {
+      kills: number;
+      deaths: number;
+      assists: number;
+      matchCount: number;
+      matchWins: number;
+      matchDefeats: number;
+      kdaRatio: number;
+      score: number;
+    }
+
+    const STATS: Stats= AGENT_INFOS.reduce((prev, curr) => {
       const { kills, deaths, assists, matchCount, matchWins, score } = curr;
       const kdaRatio = (kills + deaths + assists) / deaths;
       const matchDefeats = matchCount - matchWins;
-      if (prev?.matchCount) {
+      if (!isEmpty(prev)) {
         return {
           kills: prev.kills + kills,
           deaths: prev.deaths + deaths,
@@ -1282,7 +1309,7 @@ export const winRatioAndKDARatingState = selector({
           score,
         };
       }
-    }, {});
+    }, {} as Stats);
 
     console.log(STATS);
     return STATS;
