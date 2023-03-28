@@ -1,38 +1,23 @@
+export type AgentRoleEn = 'Duelist' | 'Initiator' | 'Controller' | 'Sentinel' | 'None';
+export type AgentRoleKr = '타격대' | '척후대' | '전략가' | '감시자' | '미정';
 interface Agent_en_us {
     name: string
-    role: string
+    role: AgentRoleEn
 }
 
 interface Agent_Ko_kr {
     name: string
-    role: string
+    role: AgentRoleKr
 }
-
-interface Tier_en_us {
-    name: string
-}
-
-interface Tier_Ko_kr {
-    name: string
-}
-
-
 interface LocalizationAgent {
     en_us: Agent_en_us
     ko_kr: Agent_Ko_kr
 }
 
-interface Localization {
-    en_us: Tier_en_us
-    ko_kr: Tier_Ko_kr
-}
-
-
-
 class Agent {
     localization: LocalizationAgent
 
-    constructor(name_us: string, name_kr: string, role_us: string, role_kr: string) {
+    constructor(name_us: string, name_kr: string, role_us: AgentRoleEn, role_kr: AgentRoleKr) {
         this.localization = {
             en_us: {
                 name: name_us,
@@ -44,6 +29,19 @@ class Agent {
             }
         }
     }
+}
+
+interface Tier_en_us {
+    name: string
+}
+
+interface Tier_Ko_kr {
+    name: string
+}
+
+interface Localization {
+    en_us: Tier_en_us
+    ko_kr: Tier_Ko_kr
 }
 
 class Tier {
@@ -120,10 +118,19 @@ export const getAgentName: (name: string) => string = (name) => {
     return agent[name as keyof typeof agent]?.['localization'][legion].name ?? name;
 }
 
-export const getAgentRole: (name: string) => string = (name) => {
+export const getAgentRole: (name: string, translate: boolean) => AgentRoleEn | AgentRoleKr = (name, translate) => {
     const legion = "ko_kr"; // 국가 설정 필요
-
-    return agent[name as keyof typeof agent]?.['localization'][legion]?.role ?? '';
+    if(translate){
+        if(!agent[name as keyof typeof agent]){
+            return '미정';
+        }
+        return agent[name as keyof typeof agent]['localization'][legion].role;
+    }else{
+        if(!agent[name as keyof typeof agent]){
+            return 'None';
+        }
+        return agent[name as keyof typeof agent]['localization']['en_us'].role;
+    }
 }
 
 export const getTierName: (name: string) => string = (name) => {
