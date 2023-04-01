@@ -1,7 +1,8 @@
 import styled from "@emotion/styled";
 import { isEmpty } from "lodash";
-import { useEffect } from "react";
+import { CSSProperties, useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
   loadingState,
@@ -28,6 +29,8 @@ export default function Profile() {
   const setInfoRecoil = useSetRecoilState(playerWholeInfoState);
   const setLoadingState = useSetRecoilState(loadingState);
   const wholeStatsInfo = useRecoilValue(playerWholeInfoState);
+  const loading = useRecoilValue(loadingState);
+
   const { name, tag } = useParams<{
     name: string;
     tag: string;
@@ -116,14 +119,36 @@ export default function Profile() {
     }
   };
 
+  const loadingIndicatorCss: CSSProperties = {
+    position: "absolute",
+    display: "block",
+    margin: "0 auto",
+    borderWidth: "10px",
+    borderColor: "lime lime transparent",
+    top: "200px",
+    left: "50%",
+    width: "100px",
+    height: "100px",
+  };
+
   return (
     <>
       <ProfileCard updatePlayerInfo={updatePlayerInfo} />
       <MainWrapper>
-        {isEmpty(wholeStatsInfo.MatchHistory) ? (
-          <NoDataMain>전적 없음</NoDataMain>
-        ) : (
+        {loading && (
           <>
+            <ClipLoader
+              color={"blue"}
+              loading={loading}
+              cssOverride={loadingIndicatorCss}
+              size={150}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+            />
+          </>
+        )}
+
+        {!loading && wholeStatsInfo.MatchHistory && (
           <Main>
             <SideContentWrapper>
               <Rating />
@@ -137,7 +162,12 @@ export default function Profile() {
               <MatchHistory />
             </CenterContentWrapper>
           </Main>
-          </>
+        )}
+
+        {!loading && wholeStatsInfo.MatchHistory === undefined && (
+          <NoDataMain>
+            전적이 없습니다. 경쟁전을 플레이 해주세요.
+          </NoDataMain>
         )}
       </MainWrapper>
     </>
@@ -149,6 +179,7 @@ const MainWrapper = styled.div`
   padding: 20px 110px;
   margin: auto;
   box-sizing: border-box;
+  position: relative;
 `;
 
 const NoDataMain = styled.div`

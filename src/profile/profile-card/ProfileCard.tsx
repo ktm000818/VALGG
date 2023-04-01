@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 import { Skeleton } from "@mui/material";
 import { get, isEmpty } from "lodash";
-import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil"
 import LoadingButton from "../../components/LoadingButton";
 import { loadingState, playerDefaultInfoState } from "../../store/playerWholeInfoStore"
