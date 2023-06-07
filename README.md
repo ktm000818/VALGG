@@ -1,5 +1,6 @@
 # game-pvp-history-search
 발로란트 전적 검색 사이트.
+https://stupendous-semolina-f93ee1.netlify.app/
 
 ### 사용 기술
 <hr/>
