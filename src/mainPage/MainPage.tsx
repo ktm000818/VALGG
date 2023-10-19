@@ -12,11 +12,6 @@ export default function MainPage() {
       <MainWrapper>
         <MainContentWrapper>
           <MainContentLogoImageWrapper>
-            <img
-              src={"https://valorant.op.gg/images/valorant.png"}
-              width="240px"
-              height={"35px"}
-            />
           </MainContentLogoImageWrapper>
           <AutoCompleteWrapper>
             <CustomAutoComplete
@@ -56,7 +51,7 @@ const MainContentLogoImageWrapper = styled.div`
 const AutoCompleteWrapper = styled.div`
   position: absolute;
   margin: auto;
-  top: 40%;
+  top: 10%;
   left: 50%;
   transform: translate(-50%, -50%);
 `;

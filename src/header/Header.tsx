@@ -9,31 +9,6 @@ import { ReactComponent as TitleImage } from "../assets/images/valorant.svg";
 
 export default function Header() {
   const navigate = useNavigate();
-  //   const [userList, setUserList] = useState([{ name: "" }]);
-
-  //   const handleChangeAutoComplete = (value: string) => {
-  //     if (value.includes("#")) {
-  //       const [name, tag] = value.split("#");
-  //       navigate(`/profile?name=${name}&tag=${tag}`, {
-  //         state: {
-  //           name,
-  //           tag,
-  //         },
-  //       });
-  //     }
-  //   };
-
-  //   const handleChangeInput = async (value: string) => {
-  //     if (value.includes("#")) {
-  //       debounce(async () => {
-  //         const [name, tag] = value.split("#");
-  //         const USER_LIST = await getAccountData(name, tag, true);
-  //         setUserList([USER_LIST]);
-  //       }, 1000);
-  //     } else {
-  //       setUserList([{ name: "" }]);
-  //     }
-  //   };
 
   const moveToHome = () => {
     navigate("/");
@@ -45,7 +20,6 @@ export default function Header() {
         <TitleImage onClick={moveToHome} />
         <HeaderTitle onClick={moveToHome}>Valorant</HeaderTitle>
       </TitleImageWrapper>
-      {/* <CustomAutoComplete id="header_auto_complete" options={userList} onInputChange={handleChangeInput} onChange={handleChangeAutoComplete} /> */}
     </HeaderWrapper>
   );
 }
@@ -72,5 +46,3 @@ const HeaderTitle = styled.div`
   font-size: 2rem;
   font-weight: bold;
 `;
-
-// css

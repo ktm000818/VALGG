@@ -36,7 +36,7 @@ export default function MapPerfomance() {
                                 <>
                                     <MapPerformanceInfo>
                                         <MapPerformanceInfoMapImageWrapper>
-                                            <img width={80} height={40} src={`https://opgg-valorant-cdn.akamaized.net/Maps/${info.map}.png`} alt={"이미지 없음"} />
+                                            {/* <img width={80} height={40} src={`https://opgg-valorant-cdn.akamaized.net/Maps/${info.map}.png`} alt={"이미지 없음"} /> */}
                                         </MapPerformanceInfoMapImageWrapper>
                                         <MapPerformanceInfoMap>
                                             <MapPerformanceMapLabel>{info.map}</MapPerformanceMapLabel>
